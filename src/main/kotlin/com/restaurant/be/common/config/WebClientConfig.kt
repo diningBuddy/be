@@ -7,7 +7,7 @@ import org.springframework.web.reactive.function.client.WebClient
 @Configuration
 class WebClientConfig {
     @Bean
-    fun webClient(): WebClient {
+    fun aligoClient(): WebClient {
         return WebClient.builder()
             .baseUrl("https://apis.aligo.in/send/")
             .build()

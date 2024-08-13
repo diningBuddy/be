@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.module.SimpleModule
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
 import com.fasterxml.jackson.module.kotlin.KotlinModule
+import com.restaurant.be.common.CustomDescribeSpec
 import com.restaurant.be.common.IntegrationTest
 import com.restaurant.be.common.PageDeserializer
 import com.restaurant.be.common.response.CommonResponse
@@ -12,7 +13,6 @@ import com.restaurant.be.user.domain.entity.Certification
 import com.restaurant.be.user.presentation.dto.certification.CertifyUserResponse
 import com.restaurant.be.user.repository.v2.MemberRepository
 import com.restaurant.be.user.repository.v2.certification.CertifyUserRepository
-import io.kotest.core.spec.style.DescribeSpec
 import io.kotest.matchers.nulls.shouldBeNull
 import io.kotest.matchers.nulls.shouldNotBeNull
 import io.kotest.matchers.shouldBe
@@ -30,7 +30,7 @@ class CertifyUserControllerTest(
     private val mockMvc: MockMvc,
     private val certifyUserRepository: CertifyUserRepository,
     private val memberRepository: MemberRepository
-) : DescribeSpec() {
+) : CustomDescribeSpec() {
     private val baseUrl = "/v2/users/certification"
     private val objectMapper: ObjectMapper = ObjectMapper().registerModule(KotlinModule()).apply {
         val module = SimpleModule()
@@ -136,10 +136,11 @@ class CertifyUserControllerTest(
 
             it("fail certify user when certification number expired") {
                 // given
+                val registeredAt = LocalDateTime.of(2022, 8, 1, 13, 0)
                 val certificationRequest = Certification(
                     phoneNumber = phoneNumber,
                     certificationNumber = registeredUUID,
-                    createdAt = LocalDateTime.now().minusMinutes(5)
+                    createdAt = registeredAt
                 )
                 certifyUserRepository.save(certificationRequest)
 

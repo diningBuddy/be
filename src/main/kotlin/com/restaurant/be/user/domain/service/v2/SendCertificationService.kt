@@ -21,7 +21,7 @@ import kotlin.random.Random
 @Service
 class SendCertificationService(
     private val sendCertificationRepository: CertifyUserRepository,
-    private val webClient: WebClient,
+    private val aligoClient: WebClient,
     private val environment: Environment,
     @Value("\${aligo.key}") private val apiKey: String,
     @Value("\${aligo.userId}") private val userId: String,
@@ -95,7 +95,7 @@ class SendCertificationService(
         receiver: String,
         msg: String
     ): Mono<String> {
-        return webClient.post()
+        return aligoClient.post()
             .body(
                 BodyInserters.fromFormData("key", apiKey)
                     .with("user_id", userId)
