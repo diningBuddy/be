@@ -11,7 +11,7 @@ import javax.persistence.Id
 class Certification(
     @Id
     @GeneratedValue
-    @Column(name = "certification_id")
+    @Column(name = "id")
     var id: Long? = null,
 
     @Column(name = "phone_number")

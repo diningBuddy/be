@@ -17,7 +17,7 @@ import javax.persistence.Id
 class Member(
     @Id
     @GeneratedValue
-    @Column(name = "member_id")
+    @Column(name = "id")
     var id: Long? = null,
 
     @Column(name = "nick_name")

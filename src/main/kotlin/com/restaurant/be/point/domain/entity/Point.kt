@@ -17,7 +17,7 @@ import javax.persistence.Table
 class Point(
     @Id
     @GeneratedValue
-    @Column(name = "point_logs_id")
+    @Column(name = "id")
     var id: Long? = null,
 
     @ManyToOne
