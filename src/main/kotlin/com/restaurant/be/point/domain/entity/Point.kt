@@ -1,7 +1,7 @@
 package com.restaurant.be.point.domain.entity
 
 import com.restaurant.be.point.domain.PointDetail
-import com.restaurant.be.user.domain.entity.Member
+import com.restaurant.be.user.domain.entity.User
 import org.springframework.data.annotation.CreatedDate
 import java.time.LocalDateTime
 import javax.persistence.Column
@@ -21,8 +21,8 @@ class Point(
     var id: Long? = null,
 
     @ManyToOne
-    @JoinColumn(name = "member_id")
-    var member: Member?,
+    @JoinColumn(name = "user_id")
+    var user: User?,
 
     @Column(name = "delta_point")
     var deltaPoint: Long?,
@@ -39,17 +39,17 @@ class Point(
 
 ) {
     constructor(
-        member: Member,
+        user: User,
         pointDetail: PointDetail
     ) : this (
-        member = member,
+        user =user,
         deltaPoint = pointDetail.deltaPoint,
         detail = pointDetail.detail,
-        currentPoint = getLastUserPoint(member) + pointDetail.deltaPoint
+        currentPoint = getLastUserPoint(user) + pointDetail.deltaPoint
     )
 
     companion object {
-        private fun getLastUserPoint(member: Member): Long {
+        private fun getLastUserPoint(user: User): Long {
             // ToDo : 갱신전 사용자의 마지막 포인트를 가져오는 로직 작성
             return 0
         }

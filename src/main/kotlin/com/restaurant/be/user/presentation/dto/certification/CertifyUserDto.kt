@@ -1,8 +1,6 @@
 package com.restaurant.be.user.presentation.dto.certification
 
-import com.restaurant.be.user.domain.entity.Member
-import com.restaurant.be.user.domain.entity.embed.AccountPeriod
-import com.restaurant.be.user.domain.entity.embed.Privacy
+import com.restaurant.be.user.domain.entity.User
 import io.swagger.annotations.ApiModelProperty
 import io.swagger.v3.oas.annotations.media.Schema
 import java.time.LocalDateTime
@@ -21,9 +19,9 @@ data class CertifyUserRequest(
     @ApiModelProperty(value = "여섯자리 수", example = "012345", required = true)
     val certificationNumber: String
 ) {
-    fun toMemberEntity() = Member(
-        privacy = Privacy(phoneNumber = phoneNumber, null, null),
-        accountPeriod = AccountPeriod(LocalDateTime.now(), null)
+    fun toUserEntity() = User(
+        phoneNumber = phoneNumber,
+        createdAt = LocalDateTime.now(),
     )
 }
 data class CertifyUserResponse(

@@ -15,34 +15,8 @@ import javax.transaction.Transactional
 
 @Service
 class UpdateUserService(
-    private val redisRepository: RedisRepository,
     private val userRepository: UserRepository
 ) {
-
-    @Transactional
-    fun updatePassword(request: UpdatePasswordRequest) {
-        val user = userRepository.findByEmail(request.email) ?: throw NotFoundUserEmailException()
-        val token = redisRepository
-            .getValue(
-                "user:${request.email}:${EmailSendType
-                    .RESET_PASSWORD
-                    .name
-                    .lowercase(Locale.getDefault())}_token"
-            )
-            ?: throw InvalidUserResetPasswordStateException()
-        if (token != request.token) throw NotEqualTokenException()
-
-        user.updatePassword(request.password)
-        userRepository.save(user)
-
-        redisRepository.delValue(
-            "user:${request.email}:${EmailSendType
-                .RESET_PASSWORD
-                .name
-                .lowercase(Locale.getDefault())}_token"
-        )
-    }
-
     @Transactional
     fun updateUser(request: UpdateUserRequest, email: String): UpdateUserResponse {
         val user = userRepository.findByEmail(email)

@@ -64,7 +64,7 @@ data class ReviewResponseDto(
                 id = review.id ?: 0,
                 userId = review.user.id ?: 0,
                 username = review.user.nickname,
-                profileImageUrl = review.user.profileImageUrl,
+                profileImageUrl = review.user.profileImageUrl ?: "",
                 restaurantId = review.restaurantId,
                 rating = review.rating,
                 content = review.content,

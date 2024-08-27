@@ -4,7 +4,7 @@ import com.restaurant.be.common.exception.DuplicateCertificationException
 import com.restaurant.be.user.domain.entity.Certification
 import com.restaurant.be.user.presentation.dto.certification.CertifyUserRequest
 import com.restaurant.be.user.presentation.dto.certification.CertifyUserResponse
-import com.restaurant.be.user.repository.v2.MemberRepository
+import com.restaurant.be.user.repository.UserRepository
 import com.restaurant.be.user.repository.v2.certification.CertifyUserRepository
 import org.springframework.stereotype.Service
 import java.time.LocalDateTime
@@ -12,7 +12,7 @@ import java.time.LocalDateTime
 @Service
 class CertifyUserService(
     private val sendCertificationRepository: CertifyUserRepository,
-    private val memberRepository: MemberRepository
+    private val userRepository: UserRepository
 ) {
     fun certify(request: CertifyUserRequest): CertifyUserResponse {
         val phoneNumber = request.phoneNumber
@@ -28,7 +28,7 @@ class CertifyUserService(
             val response = validate(certification.expiredAt, LocalDateTime.now())
             if (response.isAuthenticated) {
                 certification.verified = true
-                memberRepository.save(request.toMemberEntity())
+                userRepository.save(request.toUserEntity())
             }
             return response
         } else {

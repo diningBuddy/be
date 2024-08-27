@@ -11,7 +11,7 @@ import com.restaurant.be.common.PageDeserializer
 import com.restaurant.be.common.response.CommonResponse
 import com.restaurant.be.user.domain.entity.Certification
 import com.restaurant.be.user.presentation.dto.certification.CertifyUserResponse
-import com.restaurant.be.user.repository.v2.MemberRepository
+import com.restaurant.be.user.repository.UserRepository
 import com.restaurant.be.user.repository.v2.certification.CertifyUserRepository
 import io.kotest.matchers.nulls.shouldBeNull
 import io.kotest.matchers.nulls.shouldNotBeNull
@@ -29,7 +29,7 @@ import java.time.LocalDateTime
 class CertifyUserControllerTest(
     private val mockMvc: MockMvc,
     private val certifyUserRepository: CertifyUserRepository,
-    private val memberRepository: MemberRepository
+    private val userRepository: UserRepository
 ) : CustomDescribeSpec() {
     private val baseUrl = "/v2/users/certification"
     private val objectMapper: ObjectMapper = ObjectMapper().registerModule(KotlinModule()).apply {
@@ -87,7 +87,7 @@ class CertifyUserControllerTest(
                 val lastCertification = certifyUserRepository.findByPhoneNumberOrderByCreatedAtDesc(phoneNumber).get(0)
                 lastCertification.verified shouldBe true
 
-                memberRepository.findByPrivacyPhoneNumber(phoneNumber).shouldNotBeNull()
+                userRepository.findByPhoneNumber(phoneNumber).shouldNotBeNull()
             }
 
             it("fail certify user when certification number is not valid") {
@@ -131,7 +131,7 @@ class CertifyUserControllerTest(
 
                 val lastCertification = certifyUserRepository.findByPhoneNumberOrderByCreatedAtDesc(phoneNumber).get(0)
                 lastCertification.verified shouldBe false
-                memberRepository.findByPrivacyPhoneNumber(phoneNumber).shouldBeNull()
+                userRepository.findByPhoneNumber(phoneNumber).shouldBeNull()
             }
 
             it("fail certify user when certification number expired") {
@@ -181,7 +181,7 @@ class CertifyUserControllerTest(
 
                 val lastCertification = certifyUserRepository.findByPhoneNumberOrderByCreatedAtDesc(phoneNumber).get(0)
                 lastCertification.verified shouldBe false
-                memberRepository.findByPrivacyPhoneNumber(phoneNumber).shouldBeNull()
+                userRepository.findByPhoneNumber(phoneNumber).shouldBeNull()
             }
         }
     }

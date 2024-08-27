@@ -7,6 +7,7 @@ import com.restaurant.be.user.domain.entity.User
 import com.restaurant.be.user.presentation.dto.common.UserDto
 import io.swagger.annotations.ApiModelProperty
 import io.swagger.v3.oas.annotations.media.Schema
+import java.time.LocalDateTime
 import javax.validation.constraints.Email
 import javax.validation.constraints.NotBlank
 import javax.validation.constraints.Size
@@ -16,11 +17,6 @@ data class SignUpUserRequest(
     @field:NotBlank(message = "아이디를 입력해 주세요.")
     @ApiModelProperty(value = "이메일 아이디", example = "test@gmail.com", required = true)
     val email: String,
-
-    @field:Size(min = 8, max = 20, message = "8~20자 이내로 입력해 주세요.")
-    @field:NotBlank(message = "비밀번호를 입력해 주세요.")
-    @ApiModelProperty(value = "비밀번호", example = "test12!@", required = true)
-    val password: String,
 
     @field:NotBlank(message = "닉네임을 입력해 주세요.")
     @ApiModelProperty(value = "닉네임", example = "닉네임", required = true)
@@ -32,16 +28,7 @@ data class SignUpUserRequest(
         required = true
     )
     val profileImageUrl: String
-) {
-
-    fun toEntity() = User(
-        email = email,
-        password = password.run(PasswordService::hashPassword),
-        nickname = nickname,
-        roles = listOf(Role.ROLE_USER.toString()),
-        profileImageUrl = profileImageUrl
-    )
-}
+)
 
 data class SignUpUserResponse(
     @Schema(description = "유저 정보")
@@ -54,7 +41,7 @@ data class SignUpUserResponse(
             id = user.id ?: 0,
             email = user.email,
             nickname = user.nickname,
-            profileImageUrl = user.profileImageUrl
+            profileImageUrl = user.profileImageUrl ?: ""
         ),
         token = token
     )
