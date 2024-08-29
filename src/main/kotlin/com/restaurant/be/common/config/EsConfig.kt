@@ -42,10 +42,6 @@ fun ktorClientWithJavaEngine(
         requestTimeoutMillis = timeoutMillis
     }
 
-    defaultRequest {
-        header("X-Elastic-Product", "Elasticsearch")
-    }
-
 //    로컬 환경에서만 enable해서 사용
 //    install(Logging) {
 //        logger = Logger.DEFAULT

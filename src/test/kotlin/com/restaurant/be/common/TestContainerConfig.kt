@@ -44,7 +44,7 @@ object TestContainerConfig {
             }
 
     val elasticsearchContainer: GenericContainer<*> =
-        GenericContainer<Nothing>(DockerImageName.parse("docker.elastic.co/elasticsearch/elasticsearch:7.13.4"))
+        GenericContainer<Nothing>(DockerImageName.parse("docker.elastic.co/elasticsearch/elasticsearch:8.2.0"))
             .apply {
                 withCreateContainerCmdModifier {
                     it.withPortBindings(PortBinding.parse("9201:9200"))
