@@ -2,8 +2,8 @@ package com.restaurant.be.user.presentation.dto
 
 import com.restaurant.be.user.presentation.dto.common.EmailSendType
 import io.swagger.annotations.ApiModelProperty
-import javax.validation.constraints.Email
-import javax.validation.constraints.NotEmpty
+import jakarta.validation.constraints.Email
+import jakarta.validation.constraints.NotEmpty
 
 data class ValidateEmailRequest(
     @field:NotEmpty(message = "이메일은 필수 값 입니다.")

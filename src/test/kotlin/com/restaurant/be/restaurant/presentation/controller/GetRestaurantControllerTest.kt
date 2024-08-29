@@ -23,21 +23,21 @@ import com.restaurant.be.restaurant.repository.RestaurantLikeRepository
 import com.restaurant.be.restaurant.repository.RestaurantRepository
 import com.restaurant.be.user.repository.UserRepository
 import io.kotest.matchers.shouldBe
+import jakarta.transaction.Transactional
 import org.springframework.data.domain.Page
-import org.springframework.data.elasticsearch.core.ElasticsearchRestTemplate
+import org.springframework.data.elasticsearch.core.ElasticsearchOperations
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 import java.nio.charset.Charset
-import javax.transaction.Transactional
 
 @IntegrationTest
 @Transactional
 class GetRestaurantControllerTest(
     private val mockMvc: MockMvc,
     private val userRepository: UserRepository,
-    private val elasticsearchTemplate: ElasticsearchRestTemplate,
+    private val elasticsearchOperations: ElasticsearchOperations,
     private val restaurantRepository: RestaurantRepository,
     private val categoryRepository: CategoryRepository,
     private val restaurantCategoryRepository: RestaurantCategoryRepository,
@@ -53,7 +53,7 @@ class GetRestaurantControllerTest(
     init {
         beforeEach {
             setUpUser("test@gmail.com", userRepository)
-            val indexOperations = elasticsearchTemplate.indexOps(RestaurantDocument::class.java)
+            val indexOperations = elasticsearchOperations.indexOps(RestaurantDocument::class.java)
             if (indexOperations.exists()) {
                 indexOperations.delete()
             }
@@ -62,7 +62,7 @@ class GetRestaurantControllerTest(
         }
 
         afterEach {
-            val indexOperations = elasticsearchTemplate.indexOps(RestaurantDocument::class.java)
+            val indexOperations = elasticsearchOperations.indexOps(RestaurantDocument::class.java)
             if (indexOperations.exists()) {
                 indexOperations.delete()
             }
@@ -102,8 +102,8 @@ class GetRestaurantControllerTest(
                     id = restaurantEntity.id,
                     name = "목구멍 율전점"
                 )
-                elasticsearchTemplate.save(restaurantDocument)
-                elasticsearchTemplate.indexOps(RestaurantDocument::class.java).refresh()
+                elasticsearchOperations.save(restaurantDocument)
+                elasticsearchOperations.indexOps(RestaurantDocument::class.java).refresh()
 
                 // when
                 val result = mockMvc.perform(
@@ -150,8 +150,8 @@ class GetRestaurantControllerTest(
                     name = "목구멍 율전점",
                     category = "한식"
                 )
-                elasticsearchTemplate.save(restaurantDocument)
-                elasticsearchTemplate.indexOps(RestaurantDocument::class.java).refresh()
+                elasticsearchOperations.save(restaurantDocument)
+                elasticsearchOperations.indexOps(RestaurantDocument::class.java).refresh()
 
                 // when
                 val result = mockMvc.perform(
@@ -197,8 +197,8 @@ class GetRestaurantControllerTest(
                     name = "목구멍 율전점",
                     category = "한식"
                 )
-                elasticsearchTemplate.save(restaurantDocument)
-                elasticsearchTemplate.indexOps(RestaurantDocument::class.java).refresh()
+                elasticsearchOperations.save(restaurantDocument)
+                elasticsearchOperations.indexOps(RestaurantDocument::class.java).refresh()
 
                 // when
                 val result = mockMvc.perform(
@@ -235,8 +235,8 @@ class GetRestaurantControllerTest(
                     id = restaurantEntity.id,
                     name = "목구멍 율전점"
                 )
-                elasticsearchTemplate.save(restaurantDocument)
-                elasticsearchTemplate.indexOps(RestaurantDocument::class.java).refresh()
+                elasticsearchOperations.save(restaurantDocument)
+                elasticsearchOperations.indexOps(RestaurantDocument::class.java).refresh()
 
                 // when
                 val result = mockMvc.perform(
@@ -274,8 +274,8 @@ class GetRestaurantControllerTest(
                     name = "목구멍 율전점",
                     discountContent = "성대생 할인 10%"
                 )
-                elasticsearchTemplate.save(restaurantDocument)
-                elasticsearchTemplate.indexOps(RestaurantDocument::class.java).refresh()
+                elasticsearchOperations.save(restaurantDocument)
+                elasticsearchOperations.indexOps(RestaurantDocument::class.java).refresh()
 
                 // when
                 val result = mockMvc.perform(
@@ -315,8 +315,8 @@ class GetRestaurantControllerTest(
                     name = "목구멍 율전점",
                     discountContent = "성대생 할인 10%"
                 )
-                elasticsearchTemplate.save(restaurantDocument)
-                elasticsearchTemplate.indexOps(RestaurantDocument::class.java).refresh()
+                elasticsearchOperations.save(restaurantDocument)
+                elasticsearchOperations.indexOps(RestaurantDocument::class.java).refresh()
 
                 // when
                 val result = mockMvc.perform(
@@ -354,8 +354,8 @@ class GetRestaurantControllerTest(
                     name = "목구멍 율전점",
                     discountContent = null
                 )
-                elasticsearchTemplate.save(restaurantDocument)
-                elasticsearchTemplate.indexOps(RestaurantDocument::class.java).refresh()
+                elasticsearchOperations.save(restaurantDocument)
+                elasticsearchOperations.indexOps(RestaurantDocument::class.java).refresh()
 
                 // when
                 val result = mockMvc.perform(
@@ -392,8 +392,8 @@ class GetRestaurantControllerTest(
                     name = "목구멍 율전점",
                     discountContent = null
                 )
-                elasticsearchTemplate.save(restaurantDocument)
-                elasticsearchTemplate.indexOps(RestaurantDocument::class.java).refresh()
+                elasticsearchOperations.save(restaurantDocument)
+                elasticsearchOperations.indexOps(RestaurantDocument::class.java).refresh()
 
                 // when
                 val result = mockMvc.perform(
@@ -432,8 +432,8 @@ class GetRestaurantControllerTest(
                     id = restaurantEntity.id,
                     name = "목구멍 율전점"
                 )
-                elasticsearchTemplate.save(restaurantDocument)
-                elasticsearchTemplate.indexOps(RestaurantDocument::class.java).refresh()
+                elasticsearchOperations.save(restaurantDocument)
+                elasticsearchOperations.indexOps(RestaurantDocument::class.java).refresh()
 
                 restaurantLikeRepository.save(
                     RestaurantLike(
@@ -478,8 +478,8 @@ class GetRestaurantControllerTest(
                     id = restaurantEntity.id,
                     name = "목구멍 율전점"
                 )
-                elasticsearchTemplate.save(restaurantDocument)
-                elasticsearchTemplate.indexOps(RestaurantDocument::class.java).refresh()
+                elasticsearchOperations.save(restaurantDocument)
+                elasticsearchOperations.indexOps(RestaurantDocument::class.java).refresh()
 
                 // when
                 val result = mockMvc.perform(
@@ -517,8 +517,8 @@ class GetRestaurantControllerTest(
                     id = restaurantEntity.id,
                     name = "목구멍 율전점"
                 )
-                elasticsearchTemplate.save(restaurantDocument)
-                elasticsearchTemplate.indexOps(RestaurantDocument::class.java).refresh()
+                elasticsearchOperations.save(restaurantDocument)
+                elasticsearchOperations.indexOps(RestaurantDocument::class.java).refresh()
 
                 // when
                 val result = mockMvc.perform(
@@ -556,8 +556,8 @@ class GetRestaurantControllerTest(
                     id = restaurantEntity.id,
                     name = "목구멍 율전점"
                 )
-                elasticsearchTemplate.save(restaurantDocument)
-                elasticsearchTemplate.indexOps(RestaurantDocument::class.java).refresh()
+                elasticsearchOperations.save(restaurantDocument)
+                elasticsearchOperations.indexOps(RestaurantDocument::class.java).refresh()
 
                 restaurantLikeRepository.save(
                     RestaurantLike(
@@ -602,8 +602,8 @@ class GetRestaurantControllerTest(
                     id = restaurantEntity.id,
                     name = "목구멍 율전점"
                 )
-                elasticsearchTemplate.save(restaurantDocument)
-                elasticsearchTemplate.indexOps(RestaurantDocument::class.java).refresh()
+                elasticsearchOperations.save(restaurantDocument)
+                elasticsearchOperations.indexOps(RestaurantDocument::class.java).refresh()
 
                 restaurantLikeRepository.save(
                     RestaurantLike(
@@ -648,8 +648,8 @@ class GetRestaurantControllerTest(
                     name = "목구멍 율전점",
                     naverRatingAvg = 4.5
                 )
-                elasticsearchTemplate.save(restaurantDocument)
-                elasticsearchTemplate.indexOps(RestaurantDocument::class.java).refresh()
+                elasticsearchOperations.save(restaurantDocument)
+                elasticsearchOperations.indexOps(RestaurantDocument::class.java).refresh()
 
                 // when
                 val result = mockMvc.perform(
@@ -688,8 +688,8 @@ class GetRestaurantControllerTest(
                     name = "목구멍 율전점",
                     naverRatingAvg = 4.5
                 )
-                elasticsearchTemplate.save(restaurantDocument)
-                elasticsearchTemplate.indexOps(RestaurantDocument::class.java).refresh()
+                elasticsearchOperations.save(restaurantDocument)
+                elasticsearchOperations.indexOps(RestaurantDocument::class.java).refresh()
 
                 // when
                 val result = mockMvc.perform(
@@ -727,8 +727,8 @@ class GetRestaurantControllerTest(
                     name = "목구멍 율전점",
                     naverReviewCount = 100
                 )
-                elasticsearchTemplate.save(restaurantDocument)
-                elasticsearchTemplate.indexOps(RestaurantDocument::class.java).refresh()
+                elasticsearchOperations.save(restaurantDocument)
+                elasticsearchOperations.indexOps(RestaurantDocument::class.java).refresh()
 
                 // when
                 val result = mockMvc.perform(
@@ -767,8 +767,8 @@ class GetRestaurantControllerTest(
                     name = "목구멍 율전점",
                     naverReviewCount = 100
                 )
-                elasticsearchTemplate.save(restaurantDocument)
-                elasticsearchTemplate.indexOps(RestaurantDocument::class.java).refresh()
+                elasticsearchOperations.save(restaurantDocument)
+                elasticsearchOperations.indexOps(RestaurantDocument::class.java).refresh()
 
                 // when
                 val result = mockMvc.perform(
@@ -819,8 +819,8 @@ class GetRestaurantControllerTest(
                         )
                     )
                 )
-                elasticsearchTemplate.save(restaurantDocument)
-                elasticsearchTemplate.indexOps(RestaurantDocument::class.java).refresh()
+                elasticsearchOperations.save(restaurantDocument)
+                elasticsearchOperations.indexOps(RestaurantDocument::class.java).refresh()
 
                 // when
                 val result = mockMvc.perform(
@@ -872,8 +872,8 @@ class GetRestaurantControllerTest(
                         )
                     )
                 )
-                elasticsearchTemplate.save(restaurantDocument)
-                elasticsearchTemplate.indexOps(RestaurantDocument::class.java).refresh()
+                elasticsearchOperations.save(restaurantDocument)
+                elasticsearchOperations.indexOps(RestaurantDocument::class.java).refresh()
 
                 // when
                 val result = mockMvc.perform(
@@ -925,8 +925,8 @@ class GetRestaurantControllerTest(
                         )
                     )
                 )
-                elasticsearchTemplate.save(restaurantDocument)
-                elasticsearchTemplate.indexOps(RestaurantDocument::class.java).refresh()
+                elasticsearchOperations.save(restaurantDocument)
+                elasticsearchOperations.indexOps(RestaurantDocument::class.java).refresh()
 
                 // when
                 val result = mockMvc.perform(
@@ -977,8 +977,8 @@ class GetRestaurantControllerTest(
                         )
                     )
                 )
-                elasticsearchTemplate.save(restaurantDocument)
-                elasticsearchTemplate.indexOps(RestaurantDocument::class.java).refresh()
+                elasticsearchOperations.save(restaurantDocument)
+                elasticsearchOperations.indexOps(RestaurantDocument::class.java).refresh()
 
                 // when
                 val result = mockMvc.perform(
@@ -1030,8 +1030,8 @@ class GetRestaurantControllerTest(
                         )
                     )
                 )
-                elasticsearchTemplate.save(restaurantDocument)
-                elasticsearchTemplate.indexOps(RestaurantDocument::class.java).refresh()
+                elasticsearchOperations.save(restaurantDocument)
+                elasticsearchOperations.indexOps(RestaurantDocument::class.java).refresh()
 
                 // when
                 val result = mockMvc.perform(
@@ -1083,8 +1083,8 @@ class GetRestaurantControllerTest(
                         )
                     )
                 )
-                elasticsearchTemplate.save(restaurantDocument)
-                elasticsearchTemplate.indexOps(RestaurantDocument::class.java).refresh()
+                elasticsearchOperations.save(restaurantDocument)
+                elasticsearchOperations.indexOps(RestaurantDocument::class.java).refresh()
 
                 // when
                 val result = mockMvc.perform(
@@ -1135,8 +1135,8 @@ class GetRestaurantControllerTest(
                         )
                     )
                 )
-                elasticsearchTemplate.save(restaurantDocument)
-                elasticsearchTemplate.indexOps(RestaurantDocument::class.java).refresh()
+                elasticsearchOperations.save(restaurantDocument)
+                elasticsearchOperations.indexOps(RestaurantDocument::class.java).refresh()
 
                 // when
                 val result = mockMvc.perform(
@@ -1189,8 +1189,8 @@ class GetRestaurantControllerTest(
                         )
                     )
                 )
-                elasticsearchTemplate.save(restaurantDocument)
-                elasticsearchTemplate.indexOps(RestaurantDocument::class.java).refresh()
+                elasticsearchOperations.save(restaurantDocument)
+                elasticsearchOperations.indexOps(RestaurantDocument::class.java).refresh()
 
                 // when
                 val result = mockMvc.perform(
@@ -1228,8 +1228,8 @@ class GetRestaurantControllerTest(
                     id = restaurantEntity.id,
                     name = "목구멍 율전점"
                 )
-                elasticsearchTemplate.save(restaurantDocument)
-                elasticsearchTemplate.indexOps(RestaurantDocument::class.java).refresh()
+                elasticsearchOperations.save(restaurantDocument)
+                elasticsearchOperations.indexOps(RestaurantDocument::class.java).refresh()
 
                 // when
                 val result = mockMvc.perform(
@@ -1266,8 +1266,8 @@ class GetRestaurantControllerTest(
                     id = restaurantEntity.id,
                     name = "목구멍 율전점"
                 )
-                elasticsearchTemplate.save(restaurantDocument)
-                elasticsearchTemplate.indexOps(RestaurantDocument::class.java).refresh()
+                elasticsearchOperations.save(restaurantDocument)
+                elasticsearchOperations.indexOps(RestaurantDocument::class.java).refresh()
 
                 // when
                 val result = mockMvc.perform(
@@ -1305,8 +1305,8 @@ class GetRestaurantControllerTest(
                     name = "목구멍 율전점",
                     ratingAvg = 4.5
                 )
-                elasticsearchTemplate.save(restaurantDocument)
-                elasticsearchTemplate.indexOps(RestaurantDocument::class.java).refresh()
+                elasticsearchOperations.save(restaurantDocument)
+                elasticsearchOperations.indexOps(RestaurantDocument::class.java).refresh()
 
                 // when
                 val result = mockMvc.perform(
@@ -1346,8 +1346,8 @@ class GetRestaurantControllerTest(
                     name = "목구멍 율전점",
                     ratingAvg = 4.5
                 )
-                elasticsearchTemplate.save(restaurantDocument)
-                elasticsearchTemplate.indexOps(RestaurantDocument::class.java).refresh()
+                elasticsearchOperations.save(restaurantDocument)
+                elasticsearchOperations.indexOps(RestaurantDocument::class.java).refresh()
 
                 // when
                 val result = mockMvc.perform(
@@ -1386,8 +1386,8 @@ class GetRestaurantControllerTest(
                     name = "목구멍 율전점",
                     reviewCount = 100
                 )
-                elasticsearchTemplate.save(restaurantDocument)
-                elasticsearchTemplate.indexOps(RestaurantDocument::class.java).refresh()
+                elasticsearchOperations.save(restaurantDocument)
+                elasticsearchOperations.indexOps(RestaurantDocument::class.java).refresh()
 
                 // when
                 val result = mockMvc.perform(
@@ -1427,8 +1427,8 @@ class GetRestaurantControllerTest(
                     name = "목구멍 율전점",
                     reviewCount = 100
                 )
-                elasticsearchTemplate.save(restaurantDocument)
-                elasticsearchTemplate.indexOps(RestaurantDocument::class.java).refresh()
+                elasticsearchOperations.save(restaurantDocument)
+                elasticsearchOperations.indexOps(RestaurantDocument::class.java).refresh()
 
                 // when
                 val result = mockMvc.perform(
@@ -1504,8 +1504,8 @@ class GetRestaurantControllerTest(
                         )
                     )
                 )
-                elasticsearchTemplate.save(restaurantDocument)
-                elasticsearchTemplate.indexOps(RestaurantDocument::class.java).refresh()
+                elasticsearchOperations.save(restaurantDocument)
+                elasticsearchOperations.indexOps(RestaurantDocument::class.java).refresh()
 
                 // when
                 val result = mockMvc.perform(
@@ -1588,8 +1588,8 @@ class GetRestaurantControllerTest(
                         )
                     )
                 )
-                elasticsearchTemplate.save(restaurantDocument)
-                elasticsearchTemplate.indexOps(RestaurantDocument::class.java).refresh()
+                elasticsearchOperations.save(restaurantDocument)
+                elasticsearchOperations.indexOps(RestaurantDocument::class.java).refresh()
 
                 // when
                 val result = mockMvc.perform(
@@ -1662,8 +1662,8 @@ class GetRestaurantControllerTest(
                     id = restaurantEntity.id,
                     name = "목구멍 율전점"
                 )
-                elasticsearchTemplate.save(restaurantDocument)
-                elasticsearchTemplate.indexOps(RestaurantDocument::class.java).refresh()
+                elasticsearchOperations.save(restaurantDocument)
+                elasticsearchOperations.indexOps(RestaurantDocument::class.java).refresh()
 
                 // when
                 val result = mockMvc.perform(
@@ -1700,7 +1700,7 @@ class GetRestaurantControllerTest(
                     id = restaurantEntity1.id,
                     name = "목구멍 율전점1"
                 )
-                elasticsearchTemplate.save(restaurantDocument1)
+                elasticsearchOperations.save(restaurantDocument1)
 
                 val restaurantEntity2 = RestaurantUtil.generateRestaurantEntity(
                     name = "목구멍 율전점2"
@@ -1710,8 +1710,8 @@ class GetRestaurantControllerTest(
                     id = restaurantEntity2.id,
                     name = "목구멍 율전점2"
                 )
-                elasticsearchTemplate.save(restaurantDocument2)
-                elasticsearchTemplate.indexOps(RestaurantDocument::class.java).refresh()
+                elasticsearchOperations.save(restaurantDocument2)
+                elasticsearchOperations.indexOps(RestaurantDocument::class.java).refresh()
 
                 // when
                 val result = mockMvc.perform(
@@ -1748,7 +1748,7 @@ class GetRestaurantControllerTest(
                     id = restaurantEntity1.id,
                     name = "목구멍 율전점1"
                 )
-                elasticsearchTemplate.save(restaurantDocument1)
+                elasticsearchOperations.save(restaurantDocument1)
 
                 val restaurantEntity2 = RestaurantUtil.generateRestaurantEntity(
                     name = "목구멍 율전점2"
@@ -1758,8 +1758,8 @@ class GetRestaurantControllerTest(
                     id = restaurantEntity2.id,
                     name = "목구멍 율전점2"
                 )
-                elasticsearchTemplate.save(restaurantDocument2)
-                elasticsearchTemplate.indexOps(RestaurantDocument::class.java).refresh()
+                elasticsearchOperations.save(restaurantDocument2)
+                elasticsearchOperations.indexOps(RestaurantDocument::class.java).refresh()
 
                 // when
                 val result = mockMvc.perform(
@@ -1799,7 +1799,7 @@ class GetRestaurantControllerTest(
                     id = restaurantEntity1.id,
                     name = "목구멍 율전점1"
                 )
-                elasticsearchTemplate.save(restaurantDocument1)
+                elasticsearchOperations.save(restaurantDocument1)
 
                 val restaurantEntity2 = RestaurantUtil.generateRestaurantEntity(
                     name = "목구멍 율전점2"
@@ -1809,8 +1809,8 @@ class GetRestaurantControllerTest(
                     id = restaurantEntity2.id,
                     name = "목구멍 율전점2"
                 )
-                elasticsearchTemplate.save(restaurantDocument2)
-                elasticsearchTemplate.indexOps(RestaurantDocument::class.java).refresh()
+                elasticsearchOperations.save(restaurantDocument2)
+                elasticsearchOperations.indexOps(RestaurantDocument::class.java).refresh()
 
                 // when
                 val result = mockMvc.perform(
@@ -1851,7 +1851,7 @@ class GetRestaurantControllerTest(
                     longitude = 127.123457,
                     latitude = 37.123457
                 )
-                elasticsearchTemplate.save(restaurantDocument1)
+                elasticsearchOperations.save(restaurantDocument1)
 
                 val restaurantEntity2 = RestaurantUtil.generateRestaurantEntity(
                     name = "목구멍 율전점2",
@@ -1866,8 +1866,8 @@ class GetRestaurantControllerTest(
                     longitude = 127.123456,
                     latitude = 37.123456
                 )
-                elasticsearchTemplate.save(restaurantDocument2)
-                elasticsearchTemplate.indexOps(RestaurantDocument::class.java).refresh()
+                elasticsearchOperations.save(restaurantDocument2)
+                elasticsearchOperations.indexOps(RestaurantDocument::class.java).refresh()
 
                 // when
                 val result = mockMvc.perform(
@@ -1908,7 +1908,7 @@ class GetRestaurantControllerTest(
                     name = "목구멍 율전점1",
                     ratingAvg = 4.0
                 )
-                elasticsearchTemplate.save(restaurantDocument1)
+                elasticsearchOperations.save(restaurantDocument1)
 
                 val restaurantEntity2 = RestaurantUtil.generateRestaurantEntity(
                     name = "목구멍 율전점2",
@@ -1920,8 +1920,8 @@ class GetRestaurantControllerTest(
                     name = "목구멍 율전점2",
                     ratingAvg = 4.5
                 )
-                elasticsearchTemplate.save(restaurantDocument2)
-                elasticsearchTemplate.indexOps(RestaurantDocument::class.java).refresh()
+                elasticsearchOperations.save(restaurantDocument2)
+                elasticsearchOperations.indexOps(RestaurantDocument::class.java).refresh()
 
                 // when
                 val result = mockMvc.perform(
@@ -1960,7 +1960,7 @@ class GetRestaurantControllerTest(
                     name = "목구멍 율전점1",
                     reviewCount = 100
                 )
-                elasticsearchTemplate.save(restaurantDocument1)
+                elasticsearchOperations.save(restaurantDocument1)
 
                 val restaurantEntity2 = RestaurantUtil.generateRestaurantEntity(
                     name = "목구멍 율전점2",
@@ -1972,8 +1972,8 @@ class GetRestaurantControllerTest(
                     name = "목구멍 율전점2",
                     reviewCount = 200
                 )
-                elasticsearchTemplate.save(restaurantDocument2)
-                elasticsearchTemplate.indexOps(RestaurantDocument::class.java).refresh()
+                elasticsearchOperations.save(restaurantDocument2)
+                elasticsearchOperations.indexOps(RestaurantDocument::class.java).refresh()
 
                 // when
                 val result = mockMvc.perform(
@@ -2010,7 +2010,7 @@ class GetRestaurantControllerTest(
                     id = restaurantEntity1.id,
                     name = "목구멍 율전점1"
                 )
-                elasticsearchTemplate.save(restaurantDocument1)
+                elasticsearchOperations.save(restaurantDocument1)
 
                 val restaurantEntity2 = RestaurantUtil.generateRestaurantEntity(
                     name = "목구멍 율전점2",
@@ -2022,8 +2022,8 @@ class GetRestaurantControllerTest(
                     name = "목구멍 율전점2",
                     likeCount = 1
                 )
-                elasticsearchTemplate.save(restaurantDocument2)
-                elasticsearchTemplate.indexOps(RestaurantDocument::class.java).refresh()
+                elasticsearchOperations.save(restaurantDocument2)
+                elasticsearchOperations.indexOps(RestaurantDocument::class.java).refresh()
 
                 val user = userRepository.findByEmail("test@gmail.com")
                 restaurantLikeRepository.save(
@@ -2070,7 +2070,7 @@ class GetRestaurantControllerTest(
                     id = restaurantEntity1.id,
                     name = "목구멍 율전점1"
                 )
-                elasticsearchTemplate.save(restaurantDocument1)
+                elasticsearchOperations.save(restaurantDocument1)
 
                 val restaurantEntity2 = RestaurantUtil.generateRestaurantEntity(
                     name = "목구멍 율전점2"
@@ -2080,8 +2080,8 @@ class GetRestaurantControllerTest(
                     id = restaurantEntity2.id,
                     name = "목구멍 율전점2"
                 )
-                elasticsearchTemplate.save(restaurantDocument2)
-                elasticsearchTemplate.indexOps(RestaurantDocument::class.java).refresh()
+                elasticsearchOperations.save(restaurantDocument2)
+                elasticsearchOperations.indexOps(RestaurantDocument::class.java).refresh()
 
                 // when
                 val result = mockMvc.perform(
@@ -2144,8 +2144,8 @@ class GetRestaurantControllerTest(
                     id = restaurantEntity.id,
                     name = "목구멍 율전점"
                 )
-                elasticsearchTemplate.save(restaurantDocument)
-                elasticsearchTemplate.indexOps(RestaurantDocument::class.java).refresh()
+                elasticsearchOperations.save(restaurantDocument)
+                elasticsearchOperations.indexOps(RestaurantDocument::class.java).refresh()
 
                 // when
                 val result = mockMvc.perform(

@@ -8,6 +8,7 @@ import com.fasterxml.jackson.module.kotlin.MissingKotlinParameterException
 import com.restaurant.be.common.response.CommonResponse
 import com.restaurant.be.common.response.Error
 import com.restaurant.be.common.response.ErrorCode
+import jakarta.servlet.http.HttpServletRequest
 import kotlinx.coroutines.runBlocking
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.http.HttpStatus
@@ -21,7 +22,6 @@ import org.springframework.web.bind.support.WebExchangeBindException
 import org.springframework.web.server.ServerWebInputException
 import java.io.BufferedReader
 import java.security.SignatureException
-import javax.servlet.http.HttpServletRequest
 
 @RestControllerAdvice
 class GlobalExceptionHandler(

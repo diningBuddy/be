@@ -1,7 +1,7 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-    id("org.springframework.boot") version "2.7.5"
+    id("org.springframework.boot") version "3.2.2"
     id("io.spring.dependency-management") version "1.0.15.RELEASE"
     id("org.jlleitschuh.gradle.ktlint") version "11.3.1"
     id("org.jetbrains.dokka") version "1.7.20"
@@ -39,11 +39,15 @@ dependencies {
     implementation("io.springfox:springfox-boot-starter:3.0.0")
 
     // Query DSL
-    api("com.querydsl:querydsl-jpa:")
-    kapt(group = "com.querydsl", name = "querydsl-apt", classifier = "jpa")
+    implementation("com.querydsl:querydsl-jpa:5.0.0:jakarta")
+    implementation("com.querydsl:querydsl-apt:5.0.0:jakarta")
+    implementation("jakarta.persistence:jakarta.persistence-api")
+    implementation("jakarta.annotation:jakarta.annotation-api")
+    kapt("com.querydsl:querydsl-apt:5.0.0:jakarta")
+    kapt("org.springframework.boot:spring-boot-configuration-processor")
 
     // Mysql
-    implementation("mysql:mysql-connector-java")
+    implementation("mysql:mysql-connector-java:8.0.32")
 
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
@@ -74,7 +78,7 @@ dependencies {
     implementation("club.minnced:discord-webhooks:0.8.4")
 
     // Kotlin
-    val coroutineVersion = "1.6.3"
+    val coroutineVersion = "1.7.0"
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:$coroutineVersion")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-reactive:$coroutineVersion")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutineVersion")
@@ -103,9 +107,13 @@ dependencies {
 }
 
 allOpen {
-    annotation("javax.persistence.Entity")
-    annotation("javax.persistence.MappedSuperclass")
-    annotation("javax.persistence.Embeddable")
+    annotation("jakarta.persistence.Entity")
+    annotation("jakarta.persistence.MappedSuperclass")
+    annotation("jakarta.persistence.Embeddable")
+}
+
+kapt {
+    correctErrorTypes = true
 }
 
 // Q파일 생성 경로

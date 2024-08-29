@@ -3,9 +3,9 @@ package com.restaurant.be.common.jwt
 import io.kotest.core.spec.style.DescribeSpec
 import io.mockk.mockk
 import io.mockk.verify
+import jakarta.servlet.http.HttpServletRequest
+import jakarta.servlet.http.HttpServletResponse
 import org.springframework.security.access.AccessDeniedException
-import javax.servlet.http.HttpServletRequest
-import javax.servlet.http.HttpServletResponse
 
 class JwtAccessDeniedHandlerTest : DescribeSpec({
 

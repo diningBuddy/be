@@ -2,7 +2,7 @@ package com.restaurant.be.common.util
 
 import com.restaurant.be.restaurant.domain.entity.Menu
 import com.restaurant.be.restaurant.domain.entity.Restaurant
-import org.elasticsearch.common.geo.GeoPoint
+import org.springframework.data.elasticsearch.core.geo.GeoPoint
 
 object RestaurantUtil {
 

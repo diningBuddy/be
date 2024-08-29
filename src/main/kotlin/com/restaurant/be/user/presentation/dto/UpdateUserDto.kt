@@ -4,7 +4,7 @@ import com.restaurant.be.user.domain.entity.User
 import com.restaurant.be.user.presentation.dto.common.UserDto
 import io.swagger.annotations.ApiModelProperty
 import io.swagger.v3.oas.annotations.media.Schema
-import javax.validation.constraints.NotBlank
+import jakarta.validation.constraints.NotBlank
 
 data class UpdateUserRequest(
     @field:NotBlank(message = "닉네임을 입력해 주세요.")

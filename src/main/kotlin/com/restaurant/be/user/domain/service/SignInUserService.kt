@@ -8,9 +8,9 @@ import com.restaurant.be.common.redis.RedisRepository
 import com.restaurant.be.user.presentation.dto.SignInUserRequest
 import com.restaurant.be.user.presentation.dto.SignInUserResponse
 import com.restaurant.be.user.repository.UserRepository
+import jakarta.transaction.Transactional
 import org.springframework.stereotype.Service
 import java.util.concurrent.TimeUnit
-import javax.transaction.Transactional
 
 @Service
 class SignInUserService(

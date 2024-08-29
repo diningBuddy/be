@@ -9,9 +9,9 @@ import com.restaurant.be.user.presentation.dto.UpdateUserRequest
 import com.restaurant.be.user.presentation.dto.UpdateUserResponse
 import com.restaurant.be.user.presentation.dto.common.EmailSendType
 import com.restaurant.be.user.repository.UserRepository
+import jakarta.transaction.Transactional
 import org.springframework.stereotype.Service
 import java.util.*
-import javax.transaction.Transactional
 
 @Service
 class UpdateUserService(

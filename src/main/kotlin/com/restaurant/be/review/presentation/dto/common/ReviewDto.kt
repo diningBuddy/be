@@ -4,9 +4,9 @@ import com.restaurant.be.review.domain.entity.Review
 import com.restaurant.be.user.domain.entity.User
 import io.swagger.annotations.ApiModelProperty
 import io.swagger.v3.oas.annotations.media.Schema
+import jakarta.validation.constraints.NotBlank
+import jakarta.validation.constraints.NotNull
 import java.time.LocalDateTime
-import javax.validation.constraints.NotBlank
-import javax.validation.constraints.NotNull
 
 data class ReviewRequestDto(
     @Schema(description = "평가 점수")

@@ -5,9 +5,9 @@ import com.restaurant.be.user.domain.entity.User
 import com.restaurant.be.user.presentation.dto.common.UserDto
 import io.swagger.annotations.ApiModelProperty
 import io.swagger.v3.oas.annotations.media.Schema
-import javax.validation.constraints.Email
-import javax.validation.constraints.NotBlank
-import javax.validation.constraints.Size
+import jakarta.validation.constraints.Email
+import jakarta.validation.constraints.NotBlank
+import jakarta.validation.constraints.Size
 
 data class SignInUserRequest(
     @Email(message = "이메일 형식이 아닙니다.")
