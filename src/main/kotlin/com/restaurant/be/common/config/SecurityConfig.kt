@@ -8,14 +8,11 @@ import com.restaurant.be.common.jwt.TokenProvider
 import com.restaurant.be.common.redis.RedisRepository
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
-import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
 import org.springframework.security.config.http.SessionCreationPolicy
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.security.crypto.password.PasswordEncoder
-import org.springframework.security.web.DefaultSecurityFilterChain
 import org.springframework.security.web.SecurityFilterChain
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter
 
@@ -26,7 +23,7 @@ class SecurityConfig(
     val redisRepository: RedisRepository,
     val objectMapper: ObjectMapper,
     val tokenProvider: TokenProvider,
-    val jwtUserRepository: JwtUserRepository,
+    val jwtUserRepository: JwtUserRepository
 ) {
 
     @Bean
@@ -53,11 +50,11 @@ class SecurityConfig(
                         "/swagger-ui/**",
                         "/swagger-resources/**",
                         "/v2/api-docs",
-                        "/webjars/**",
+                        "/webjars/**"
                     ).permitAll()
                     .anyRequest().authenticated()
             }
-            .httpBasic {  }
+            .httpBasic { }
             .exceptionHandling { it.authenticationEntryPoint(jwtAuthenticationEntryPoint) }
 
         val jwtFilter = JwtFilter(tokenProvider, jwtUserRepository)

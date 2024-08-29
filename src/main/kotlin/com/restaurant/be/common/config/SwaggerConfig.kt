@@ -4,7 +4,6 @@ import com.fasterxml.classmate.TypeResolver
 import io.swagger.annotations.ApiModel
 import io.swagger.annotations.ApiModelProperty
 import org.springframework.context.annotation.Bean
-import org.springframework.context.annotation.Configuration
 import org.springframework.data.domain.Pageable
 import org.springframework.http.HttpMethod
 import springfox.documentation.builders.ApiInfoBuilder
