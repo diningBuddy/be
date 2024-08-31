@@ -27,6 +27,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPat
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 import org.springframework.transaction.annotation.Transactional
 import java.nio.charset.Charset
+import java.time.LocalDateTime
 
 @IntegrationTest
 @Transactional
@@ -382,8 +383,12 @@ class GetReviewControllerTest(
 
                 val user = userRepository.save(
                     User(
-                        email = "test@test.com",
-                        profileImageUrl = ""
+                        id = 2,
+                        email = "test2@gmail.com",
+                        nickname = "test2",
+                        createdAt = LocalDateTime.now(),
+                        phoneNumber = "01012345678",
+                        profileImageUrl = "example.jpg"
                     )
                 )
 

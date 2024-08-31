@@ -22,6 +22,7 @@ data class CertifyUserRequest(
     fun toUserEntity() = User(
         phoneNumber = phoneNumber,
         createdAt = LocalDateTime.now(),
+        profileImageUrl = ""
     )
 }
 data class CertifyUserResponse(

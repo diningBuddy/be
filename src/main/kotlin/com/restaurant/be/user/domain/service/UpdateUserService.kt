@@ -1,13 +1,8 @@
 package com.restaurant.be.user.domain.service
 
-import com.restaurant.be.common.exception.InvalidUserResetPasswordStateException
-import com.restaurant.be.common.exception.NotEqualTokenException
 import com.restaurant.be.common.exception.NotFoundUserEmailException
-import com.restaurant.be.common.redis.RedisRepository
-import com.restaurant.be.user.presentation.dto.UpdatePasswordRequest
 import com.restaurant.be.user.presentation.dto.UpdateUserRequest
 import com.restaurant.be.user.presentation.dto.UpdateUserResponse
-import com.restaurant.be.user.presentation.dto.common.EmailSendType
 import com.restaurant.be.user.repository.UserRepository
 import org.springframework.stereotype.Service
 import java.util.*

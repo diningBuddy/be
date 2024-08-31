@@ -32,7 +32,7 @@ data class SignInUserResponse(
             id = user.id ?: 0,
             email = user.email,
             nickname = user.nickname,
-            profileImageUrl = user.profileImageUrl ?: ""
+            profileImageUrl = user.profileImageUrl
         ),
         token = token
     )

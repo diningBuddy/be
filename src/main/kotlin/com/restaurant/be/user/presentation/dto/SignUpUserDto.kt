@@ -1,16 +1,12 @@
 package com.restaurant.be.user.presentation.dto
 
-import com.restaurant.be.common.jwt.Role
-import com.restaurant.be.common.password.PasswordService
 import com.restaurant.be.common.response.Token
 import com.restaurant.be.user.domain.entity.User
 import com.restaurant.be.user.presentation.dto.common.UserDto
 import io.swagger.annotations.ApiModelProperty
 import io.swagger.v3.oas.annotations.media.Schema
-import java.time.LocalDateTime
 import javax.validation.constraints.Email
 import javax.validation.constraints.NotBlank
-import javax.validation.constraints.Size
 
 data class SignUpUserRequest(
     @field:Email(message = "이메일 형식이 아닙니다.")
@@ -41,7 +37,7 @@ data class SignUpUserResponse(
             id = user.id ?: 0,
             email = user.email,
             nickname = user.nickname,
-            profileImageUrl = user.profileImageUrl ?: ""
+            profileImageUrl = user.profileImageUrl
         ),
         token = token
     )

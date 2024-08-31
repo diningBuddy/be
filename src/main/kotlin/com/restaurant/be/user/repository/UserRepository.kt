@@ -12,5 +12,4 @@ interface UserRepository : JpaRepository<User, Long> {
 
     fun findByNickname(nickname: String): User?
     fun findByPhoneNumber(phoneNumber: String): User?
-
 }

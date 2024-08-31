@@ -42,7 +42,7 @@ class Point(
         user: User,
         pointDetail: PointDetail
     ) : this (
-        user =user,
+        user = user,
         deltaPoint = pointDetail.deltaPoint,
         detail = pointDetail.detail,
         currentPoint = getLastUserPoint(user) + pointDetail.deltaPoint

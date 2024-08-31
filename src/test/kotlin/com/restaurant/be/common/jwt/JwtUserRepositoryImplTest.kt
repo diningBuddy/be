@@ -2,6 +2,7 @@ package com.restaurant.be.common.jwt
 
 import com.restaurant.be.common.exception.NotFoundUserEmailException
 import com.restaurant.be.common.exception.WithdrawalUserException
+import com.restaurant.be.user.domain.entity.QUser.user
 import com.restaurant.be.user.domain.entity.User
 import com.restaurant.be.user.repository.UserRepository
 import io.kotest.assertions.throwables.shouldThrow
@@ -9,6 +10,7 @@ import io.kotest.core.spec.style.DescribeSpec
 import io.kotest.matchers.shouldBe
 import io.mockk.every
 import io.mockk.mockk
+import java.time.LocalDateTime
 
 class JwtUserRepositoryImplTest : DescribeSpec({
 
@@ -21,7 +23,7 @@ class JwtUserRepositoryImplTest : DescribeSpec({
             it("should return true if user is found and not withdrawn") {
                 // Given
                 val email = "test@example.com"
-                val user = User(email = email, withdrawal = false, profileImageUrl = "")
+                val user = User(email = email, createdAt = LocalDateTime.now(), phoneNumber = "01012345678", profileImageUrl = "")
                 every { userRepository.findByEmail(email) } returns user
 
                 // When
@@ -46,7 +48,7 @@ class JwtUserRepositoryImplTest : DescribeSpec({
             it("should return false if user is withdrawn") {
                 // Given
                 val email = "test@example.com"
-                val user = User(email = email, withdrawal = true, profileImageUrl = "")
+                val user = User(email = email, withdrawal = true, createdAt = LocalDateTime.now(), phoneNumber = "01012345678", profileImageUrl = "")
                 every { userRepository.findByEmail(email) } returns user
 
                 // When
@@ -62,8 +64,7 @@ class JwtUserRepositoryImplTest : DescribeSpec({
                 // Given
                 val email = "test@example.com"
                 val roles = listOf("ROLE_USER", "ROLE_ADMIN")
-                val user =
-                    User(email = email, withdrawal = false, roles = roles, profileImageUrl = "")
+                val user = User(email = email, createdAt = LocalDateTime.now(), roles = roles, phoneNumber = "01012345678", profileImageUrl = "")
                 every { userRepository.findByEmail(email) } returns user
 
                 // When
@@ -87,7 +88,7 @@ class JwtUserRepositoryImplTest : DescribeSpec({
             it("should throw WithdrawalUserException if user is withdrawn") {
                 // Given
                 val email = "test@example.com"
-                val user = User(email = email, withdrawal = true, profileImageUrl = "")
+                val user = User(email = email, withdrawal = true, createdAt = LocalDateTime.now(), phoneNumber = "01012345678", profileImageUrl = "")
                 every { userRepository.findByEmail(email) } returns user
 
                 // When / Then

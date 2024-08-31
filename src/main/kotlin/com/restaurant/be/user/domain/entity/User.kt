@@ -1,7 +1,6 @@
 package com.restaurant.be.user.domain.entity
 
 import com.restaurant.be.common.converter.SeparatorConverter
-import com.restaurant.be.common.password.PasswordService
 import com.restaurant.be.point.domain.PointDetail
 import com.restaurant.be.user.domain.Gender
 import com.restaurant.be.user.presentation.dto.UpdateUserRequest
@@ -57,8 +56,8 @@ class User(
     @Convert(converter = SeparatorConverter::class)
     var roles: List<String> = listOf(),
 
-    @Column
-    var profileImageUrl: String? = null
+    @Column(nullable = false)
+    var profileImageUrl: String
 ) {
     fun updateUser(request: UpdateUserRequest) {
         this.nickname = request.nickname
