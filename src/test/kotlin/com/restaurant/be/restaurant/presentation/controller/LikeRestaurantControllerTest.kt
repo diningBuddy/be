@@ -28,6 +28,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPat
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 import org.springframework.transaction.annotation.Transactional
 import java.nio.charset.Charset
+import java.time.LocalDateTime
 
 @IntegrationTest
 @Transactional
@@ -46,7 +47,7 @@ class LikeRestaurantControllerTest(
 
     init {
         beforeEach {
-            setUpUser("test@gmail.com", userRepository)
+            setUpUser("01012345678", userRepository)
         }
 
         describe("#getMyLikeRestaurants basic test") {
@@ -76,7 +77,7 @@ class LikeRestaurantControllerTest(
 
             it("when user's like saved should return saved like") {
                 // given
-                val newUser = userRepository.findByEmail("test@gmail.com")
+                val newUser = userRepository.findByPhoneNumber("01012345678")
                 val restaurantEntity = RestaurantUtil.generateRestaurantEntity(
                     name = "목구멍 율전점"
                 )
@@ -116,10 +117,8 @@ class LikeRestaurantControllerTest(
                 // given
                 val anotherUser = userRepository.save(
                     User(
-                        id = 2,
-                        email = "test2@gmail.com",
-                        nickname = "test2",
-                        profileImageUrl = ""
+                        phoneNumber = "01099999999",
+                        createdAt = LocalDateTime.now()
                     )
                 )
                 val restaurantEntity = RestaurantUtil.generateRestaurantEntity(
@@ -159,7 +158,7 @@ class LikeRestaurantControllerTest(
         describe("#getMyLikeRestaurants pagination test") {
             it("when 1 data and set size 1 should return 1 data") {
                 // given
-                val newUser = userRepository.findByEmail("test@gmail.com")
+                val newUser = userRepository.findByPhoneNumber("01012345678")
                 val restaurantEntity = RestaurantUtil.generateRestaurantEntity(
                     name = "목구멍 율전점"
                 )
@@ -197,7 +196,7 @@ class LikeRestaurantControllerTest(
 
             it("when 2 data and set size 1 should return 1 data") {
                 // given
-                val newUser = userRepository.findByEmail("test@gmail.com")
+                val newUser = userRepository.findByPhoneNumber("01012345678")
                 val restaurantEntity1 = RestaurantUtil.generateRestaurantEntity(
                     name = "목구멍 율전점"
                 )
@@ -247,7 +246,7 @@ class LikeRestaurantControllerTest(
 
             it("when 2 data and set size 1 page 0 should return 1's restaurant") {
                 // given
-                val newUser = userRepository.findByEmail("test@gmail.com")
+                val newUser = userRepository.findByPhoneNumber("01012345678")
                 val restaurantEntity1 = RestaurantUtil.generateRestaurantEntity(
                     name = "목구멍 율전점"
                 )
@@ -297,7 +296,7 @@ class LikeRestaurantControllerTest(
 
             it("when 2 data and set size 1 page 1 should return 2's restaurant") {
                 // given
-                val newUser = userRepository.findByEmail("test@gmail.com")
+                val newUser = userRepository.findByPhoneNumber("01012345678")
                 val restaurantEntity1 = RestaurantUtil.generateRestaurantEntity(
                     name = "목구멍 율전점"
                 )
@@ -351,11 +350,11 @@ class LikeRestaurantControllerTest(
                 // given
                 val newUser = userRepository.save(
                     User(
-                        email = "test2@gmail.com",
-                        profileImageUrl = "test"
+                        phoneNumber = "01099999999",
+                        createdAt = LocalDateTime.now()
                     )
                 )
-                val originalUser = userRepository.findByEmail("test@gmail.com")!!
+                val originalUser = userRepository.findByPhoneNumber("01012345678")!!
 
                 val restaurantEntity = RestaurantUtil.generateRestaurantEntity(
                     name = "목구멍 율전점"
@@ -444,7 +443,7 @@ class LikeRestaurantControllerTest(
                     name = "목구멍 율전점"
                 )
                 restaurantRepository.save(restaurantEntity)
-                val newUser = userRepository.findByEmail("test@gmail.com")
+                val newUser = userRepository.findByPhoneNumber("01012345678")
                 restaurantLikeRepository.save(
                     RestaurantLike(
                         userId = newUser?.id ?: 0,

@@ -1,5 +1,6 @@
 package com.restaurant.be.user.domain.entity
 
+import javax.persistence.Column
 import javax.persistence.EmbeddedId
 import javax.persistence.Entity
 import javax.persistence.JoinColumn
@@ -16,6 +17,8 @@ class Account(
     @ManyToOne
     @MapsId("userId")
     @JoinColumn(name = "user_id")
-    var user: User
+    var user: User,
 
+    @Column(unique = true, nullable = false)
+    var email: String = ""
 )

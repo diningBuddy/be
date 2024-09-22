@@ -21,12 +21,14 @@ import com.restaurant.be.user.domain.entity.User
 import com.restaurant.be.user.repository.UserRepository
 import io.kotest.matchers.shouldBe
 import org.springframework.data.domain.Page
+import org.springframework.data.jpa.domain.AbstractPersistable_.id
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 import org.springframework.transaction.annotation.Transactional
 import java.nio.charset.Charset
+import java.time.LocalDateTime
 
 @IntegrationTest
 @Transactional
@@ -46,7 +48,7 @@ class GetReviewControllerTest(
 
     init {
         beforeEach {
-            setUpUser("test@gmail.com", userRepository)
+            setUpUser("01012345678", userRepository)
         }
 
         describe("#getReviews basic test") {
@@ -62,7 +64,7 @@ class GetReviewControllerTest(
                     reviewRepository.save(
                         ReviewUtil.generateReviewEntity(
                             restaurantId = restaurant.id,
-                            user = userRepository.findByEmail("test@gmail.com")
+                            user = userRepository.findByPhoneNumber("01012345678")
                                 ?: throw Exception()
                         )
                     )
@@ -110,7 +112,7 @@ class GetReviewControllerTest(
                     reviewRepository.save(
                         ReviewUtil.generateReviewEntity(
                             restaurantId = restaurant.id,
-                            user = userRepository.findByEmail("test@gmail.com")
+                            user = userRepository.findByPhoneNumber("01012345678")
                                 ?: throw Exception()
                         )
                     )
@@ -158,7 +160,7 @@ class GetReviewControllerTest(
                     reviewRepository.save(
                         ReviewUtil.generateReviewEntity(
                             restaurantId = restaurant.id,
-                            user = userRepository.findByEmail("test@gmail.com")
+                            user = userRepository.findByPhoneNumber("01012345678")
                                 ?: throw Exception()
                         )
                     )
@@ -208,7 +210,7 @@ class GetReviewControllerTest(
                     reviewRepository.save(
                         ReviewUtil.generateReviewEntity(
                             restaurantId = restaurant.id,
-                            user = userRepository.findByEmail("test@gmail.com")
+                            user = userRepository.findByPhoneNumber("01012345678")
                                 ?: throw Exception()
                         )
                     )
@@ -257,7 +259,7 @@ class GetReviewControllerTest(
                     reviewRepository.save(
                         ReviewUtil.generateReviewEntity(
                             restaurantId = restaurant.id,
-                            user = userRepository.findByEmail("test@gmail.com")
+                            user = userRepository.findByPhoneNumber("01012345678")
                                 ?: throw Exception(),
                             likeCount = i.toLong()
                         )
@@ -310,7 +312,7 @@ class GetReviewControllerTest(
                 val review = reviewRepository.save(
                     ReviewUtil.generateReviewEntity(
                         restaurantId = restaurant.id,
-                        user = userRepository.findByEmail("test@gmail.com")
+                        user = userRepository.findByPhoneNumber("01012345678")
                             ?: throw Exception()
                     )
                 )
@@ -382,8 +384,8 @@ class GetReviewControllerTest(
 
                 val user = userRepository.save(
                     User(
-                        email = "test@test.com",
-                        profileImageUrl = ""
+                        phoneNumber = "01099999999",
+                        createdAt = LocalDateTime.now()
                     )
                 )
 

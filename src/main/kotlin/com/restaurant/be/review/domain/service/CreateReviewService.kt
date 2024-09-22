@@ -1,7 +1,7 @@
 package com.restaurant.be.review.domain.service
 
 import com.restaurant.be.common.exception.NotFoundRestaurantException
-import com.restaurant.be.common.exception.NotFoundUserEmailException
+import com.restaurant.be.common.exception.NotFoundUserPhoneNumberException
 import com.restaurant.be.restaurant.repository.RestaurantRepository
 import com.restaurant.be.review.domain.entity.ReviewImage
 import com.restaurant.be.review.presentation.dto.CreateReviewResponse
@@ -25,7 +25,7 @@ class CreateReviewService(
         reviewRequest: ReviewRequestDto,
         email: String
     ): CreateReviewResponse {
-        val user = userRepository.findByEmail(email) ?: throw NotFoundUserEmailException()
+        val user = userRepository.findByPhoneNumber(email) ?: throw NotFoundUserPhoneNumberException()
 
         val review = reviewRequest.toEntity(user, restaurantId)
 

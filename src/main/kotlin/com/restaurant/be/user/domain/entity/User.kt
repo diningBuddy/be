@@ -1,11 +1,14 @@
 package com.restaurant.be.user.domain.entity
 
 import com.restaurant.be.common.converter.SeparatorConverter
-import com.restaurant.be.common.password.PasswordService
-import com.restaurant.be.user.presentation.dto.UpdateUserRequest
+import com.restaurant.be.user.domain.entity.enum.Gender
+import java.time.LocalDateTime
+import java.util.*
 import javax.persistence.Column
 import javax.persistence.Convert
 import javax.persistence.Entity
+import javax.persistence.EnumType
+import javax.persistence.Enumerated
 import javax.persistence.GeneratedValue
 import javax.persistence.GenerationType
 import javax.persistence.Id
@@ -20,34 +23,35 @@ class User(
     var id: Long? = null,
 
     @Column(unique = true)
-    var email: String = "",
-
-    @Column(unique = true)
     var nickname: String = "",
 
     @Column
-    var password: String = "",
+    @Enumerated(EnumType.STRING)
+    var gender: Gender? = null,
 
-    @Column(columnDefinition = "boolean default false")
-    var withdrawal: Boolean = false,
+    @Column(nullable = false, unique = true)
+    var phoneNumber: String,
 
+    @Column
+    var realName: String? = null,
+
+    @Column
+    var birthDay: LocalDateTime? = null,
+
+    @Column
     @Convert(converter = SeparatorConverter::class)
     var roles: List<String> = listOf(),
 
     @Column
-    var profileImageUrl: String
+    var profileImageUrl: String? = null,
+
+    @Column(nullable = false)
+    val createdAt: LocalDateTime,
+
+    @Column
+    var deletedAt: LocalDateTime? = null
 ) {
-    fun updatePassword(password: String) {
-        this.password = password.run(PasswordService::hashPassword)
-    }
-
-    fun updateUser(request: UpdateUserRequest) {
-        this.nickname = request.nickname
-        this.profileImageUrl = request.profileImageUrl
-    }
-
-    fun delete() {
-        this.withdrawal = true
-        this.email = ""
+    fun isDeleted(): Boolean {
+        return Objects.nonNull(deletedAt)
     }
 }
