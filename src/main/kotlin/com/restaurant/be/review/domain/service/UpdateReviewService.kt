@@ -10,8 +10,8 @@ import com.restaurant.be.review.presentation.dto.common.ReviewResponseDto
 import com.restaurant.be.review.repository.ReviewLikeRepository
 import com.restaurant.be.review.repository.ReviewRepository
 import com.restaurant.be.user.repository.UserRepository
+import jakarta.transaction.Transactional
 import org.springframework.stereotype.Service
-import javax.transaction.Transactional
 import kotlin.jvm.optionals.getOrNull
 
 @Service

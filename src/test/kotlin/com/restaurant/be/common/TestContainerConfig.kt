@@ -44,12 +44,13 @@ object TestContainerConfig {
             }
 
     val elasticsearchContainer: GenericContainer<*> =
-        GenericContainer<Nothing>(DockerImageName.parse("docker.elastic.co/elasticsearch/elasticsearch:7.8.1"))
+        GenericContainer<Nothing>(DockerImageName.parse("docker.elastic.co/elasticsearch/elasticsearch:8.2.0"))
             .apply {
                 withCreateContainerCmdModifier {
                     it.withPortBindings(PortBinding.parse("9201:9200"))
                 }
                 withEnv("discovery.type", "single-node")
+                withEnv("xpack.security.enabled", "false")
                 start()
             }
 

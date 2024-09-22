@@ -1,7 +1,7 @@
 package com.restaurant.be.common.converter
 
-import javax.persistence.AttributeConverter
-import javax.persistence.Converter
+import jakarta.persistence.AttributeConverter
+import jakarta.persistence.Converter
 
 @Converter
 class SeparatorConverter : AttributeConverter<List<Any>, String> {

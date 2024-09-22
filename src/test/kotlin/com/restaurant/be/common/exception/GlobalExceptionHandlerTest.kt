@@ -11,11 +11,11 @@ import io.kotest.core.spec.style.DescribeSpec
 import io.kotest.matchers.shouldBe
 import io.mockk.every
 import io.mockk.mockk
+import jakarta.servlet.http.HttpServletRequest
 import org.springframework.validation.FieldError
 import org.springframework.web.bind.support.WebExchangeBindException
 import org.springframework.web.server.ServerWebInputException
 import java.security.SignatureException
-import javax.servlet.http.HttpServletRequest
 import kotlin.reflect.KParameter
 
 class GlobalExceptionHandlerTest : DescribeSpec({

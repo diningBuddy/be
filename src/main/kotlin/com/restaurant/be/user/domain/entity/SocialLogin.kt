@@ -1,11 +1,11 @@
 package com.restaurant.be.user.domain.entity
 
 import com.restaurant.be.user.domain.entity.enum.Social
+import jakarta.persistence.Column
+import jakarta.persistence.Embeddable
+import jakarta.persistence.EnumType
+import jakarta.persistence.Enumerated
 import java.io.Serializable
-import javax.persistence.Column
-import javax.persistence.Embeddable
-import javax.persistence.EnumType
-import javax.persistence.Enumerated
 
 @Embeddable
 data class SocialLogin(

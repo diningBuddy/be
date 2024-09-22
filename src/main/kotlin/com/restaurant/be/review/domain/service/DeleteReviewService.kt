@@ -8,8 +8,8 @@ import com.restaurant.be.restaurant.repository.RestaurantRepository
 import com.restaurant.be.review.domain.entity.QReview.review
 import com.restaurant.be.review.repository.ReviewRepository
 import com.restaurant.be.user.repository.UserRepository
+import jakarta.transaction.Transactional
 import org.springframework.stereotype.Service
-import javax.transaction.Transactional
 import kotlin.jvm.optionals.getOrNull
 
 @Service

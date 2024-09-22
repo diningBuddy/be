@@ -1,11 +1,11 @@
 package com.restaurant.be.common.util
 
-import org.elasticsearch.common.geo.GeoPoint
+import jakarta.persistence.Id
 import org.springframework.data.elasticsearch.annotations.Document
 import org.springframework.data.elasticsearch.annotations.Field
 import org.springframework.data.elasticsearch.annotations.FieldType
 import org.springframework.data.elasticsearch.annotations.GeoPointField
-import javax.persistence.Id
+import org.springframework.data.elasticsearch.core.geo.GeoPoint
 
 @Document(indexName = "restaurant")
 data class RestaurantDocument(

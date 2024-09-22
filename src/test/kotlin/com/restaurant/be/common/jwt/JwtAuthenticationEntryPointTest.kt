@@ -4,10 +4,10 @@ import io.kotest.core.spec.style.DescribeSpec
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
+import jakarta.servlet.http.HttpServletRequest
+import jakarta.servlet.http.HttpServletResponse
 import org.springframework.security.core.AuthenticationException
 import org.springframework.web.servlet.HandlerExceptionResolver
-import javax.servlet.http.HttpServletRequest
-import javax.servlet.http.HttpServletResponse
 
 class JwtAuthenticationEntryPointTest : DescribeSpec({
 
