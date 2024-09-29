@@ -28,7 +28,6 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPat
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 import org.springframework.transaction.annotation.Transactional
 import java.nio.charset.Charset
-import java.time.LocalDateTime
 
 @IntegrationTest
 @Transactional
@@ -117,8 +116,7 @@ class LikeRestaurantControllerTest(
                 // given
                 val anotherUser = userRepository.save(
                     User(
-                        phoneNumber = "01099999999",
-                        createdAt = LocalDateTime.now()
+                        phoneNumber = "01099999999"
                     )
                 )
                 val restaurantEntity = RestaurantUtil.generateRestaurantEntity(
@@ -350,8 +348,7 @@ class LikeRestaurantControllerTest(
                 // given
                 val newUser = userRepository.save(
                     User(
-                        phoneNumber = "01099999999",
-                        createdAt = LocalDateTime.now()
+                        phoneNumber = "01099999999"
                     )
                 )
                 val originalUser = userRepository.findByPhoneNumber("01012345678")!!

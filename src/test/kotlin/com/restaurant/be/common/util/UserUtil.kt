@@ -6,14 +6,12 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationToken
 import java.security.Principal
-import java.time.LocalDateTime
 
 fun setUpUser(phoneNumber: String, userRepository: UserRepository): User {
     val user = User(
         phoneNumber = phoneNumber,
         profileImageUrl = "",
-        nickname = "test_nickname",
-        createdAt = LocalDateTime.now()
+        nickname = "test_nickname"
     )
     userRepository.save(user)
 

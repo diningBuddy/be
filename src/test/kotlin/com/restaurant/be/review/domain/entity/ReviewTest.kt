@@ -5,7 +5,6 @@ import com.restaurant.be.user.domain.entity.User
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.DescribeSpec
 import io.kotest.matchers.shouldBe
-import java.time.LocalDateTime
 
 class ReviewTest : DescribeSpec({
 
@@ -17,8 +16,7 @@ class ReviewTest : DescribeSpec({
                 val user = User(
                     id = 1L,
                     nickname = "testuser",
-                    phoneNumber = "01012345678",
-                    createdAt = LocalDateTime.now()
+                    phoneNumber = "01012345678"
                 )
                 val review = Review(
                     user = user,
@@ -41,8 +39,7 @@ class ReviewTest : DescribeSpec({
                 val user = User(
                     id = 1L,
                     nickname = "testuser",
-                    phoneNumber = "01012345678",
-                    createdAt = LocalDateTime.now()
+                    phoneNumber = "01012345678"
                 )
 
                 val review = Review(

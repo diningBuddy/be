@@ -28,7 +28,6 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPat
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 import org.springframework.transaction.annotation.Transactional
 import java.nio.charset.Charset
-import java.time.LocalDateTime
 
 @IntegrationTest
 @Transactional
@@ -136,7 +135,7 @@ class UpdateReviewControllerTest(
             it("when another user's review update should return NotFoundReviewException") {
                 // given
                 val user = userRepository.save(
-                    User(phoneNumber = "01099999999", createdAt = LocalDateTime.now())
+                    User(phoneNumber = "01099999999")
                 )
 
                 val restaurant = restaurantRepository.save(

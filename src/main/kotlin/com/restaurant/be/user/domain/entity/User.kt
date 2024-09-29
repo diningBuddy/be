@@ -1,6 +1,7 @@
 package com.restaurant.be.user.domain.entity
 
 import com.restaurant.be.common.converter.SeparatorConverter
+import com.restaurant.be.common.entity.LifeEntity
 import com.restaurant.be.user.domain.entity.enum.Gender
 import jakarta.persistence.Column
 import jakarta.persistence.Convert
@@ -43,14 +44,9 @@ class User(
     var roles: List<String> = listOf(),
 
     @Column
-    var profileImageUrl: String? = null,
+    var profileImageUrl: String? = null
 
-    @Column(nullable = false)
-    val createdAt: LocalDateTime,
-
-    @Column
-    var deletedAt: LocalDateTime? = null
-) {
+) : LifeEntity() {
     fun isDeleted(): Boolean {
         return Objects.nonNull(deletedAt)
     }
