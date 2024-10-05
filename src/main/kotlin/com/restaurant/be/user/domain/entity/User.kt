@@ -1,7 +1,7 @@
 package com.restaurant.be.user.domain.entity
 
 import com.restaurant.be.common.converter.SeparatorConverter
-import com.restaurant.be.common.entity.LifeEntity
+import com.restaurant.be.common.entity.BaseEntity
 import com.restaurant.be.user.domain.entity.enum.Gender
 import jakarta.persistence.Column
 import jakarta.persistence.Convert
@@ -11,6 +11,7 @@ import jakarta.persistence.Enumerated
 import jakarta.persistence.GeneratedValue
 import jakarta.persistence.GenerationType
 import jakarta.persistence.Id
+import jakarta.persistence.OneToMany
 import jakarta.persistence.Table
 import java.time.LocalDateTime
 import java.util.*
@@ -23,6 +24,9 @@ class User(
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id: Long? = null,
 
+    @OneToMany(mappedBy = "user")
+    var socialAccounts: MutableList<SocialAccount> = mutableListOf(),
+
     @Column(unique = true)
     var nickname: String = "",
 
@@ -34,7 +38,7 @@ class User(
     var phoneNumber: String,
 
     @Column
-    var realName: String? = null,
+    var name: String? = null,
 
     @Column
     var birthDay: LocalDateTime? = null,
@@ -44,10 +48,13 @@ class User(
     var roles: List<String> = listOf(),
 
     @Column
-    var profileImageUrl: String? = null
+    var profileImageUrl: String? = null,
 
-) : LifeEntity() {
-    fun isDeleted(): Boolean {
-        return Objects.nonNull(deletedAt)
+    @Column(columnDefinition = "boolean default false")
+    var withdrawal: Boolean = false
+
+) : BaseEntity() {
+    fun delete() {
+        this.withdrawal = true
     }
 }

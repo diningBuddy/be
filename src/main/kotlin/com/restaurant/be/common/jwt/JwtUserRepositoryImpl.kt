@@ -13,12 +13,12 @@ class JwtUserRepositoryImpl(
 
     override fun validTokenByPhoneNumber(phoneNumber: String): Boolean {
         val user = userRepository.findByPhoneNumber(phoneNumber) ?: return false
-        return !user.isDeleted()
+        return !user.withdrawal
     }
 
     override fun userRolesByPhoneNumber(phoneNumber: String): List<String> {
         val user = userRepository.findByPhoneNumber(phoneNumber) ?: throw NotFoundUserPhoneNumberException()
-        if (user.isDeleted()) {
+        if (user.withdrawal) {
             throw WithdrawalUserException()
         }
 
