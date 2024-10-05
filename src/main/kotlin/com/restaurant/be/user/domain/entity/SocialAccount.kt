@@ -3,6 +3,8 @@ package com.restaurant.be.user.domain.entity
 import com.restaurant.be.user.domain.entity.enum.Social
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
+import jakarta.persistence.EnumType
+import jakarta.persistence.Enumerated
 import jakarta.persistence.GeneratedValue
 import jakarta.persistence.GenerationType
 import jakarta.persistence.Id
@@ -20,10 +22,11 @@ class SocialAccount(
 
     @ManyToOne
     @JoinColumn(name = "user_id")
-    var user: User? = null,
+    var user: User,
 
+    @Enumerated(value = EnumType.STRING)
     var socialType: Social,
 
     @Column(unique = true, nullable = false)
-    var email: String = ""
+    var identifier: String = ""
 )

@@ -50,6 +50,9 @@ class User(
     @Column
     var profileImageUrl: String? = null,
 
+    @Column
+    var schoolEmail: String? = null,
+
     @Column(columnDefinition = "boolean default false")
     var withdrawal: Boolean = false
 
