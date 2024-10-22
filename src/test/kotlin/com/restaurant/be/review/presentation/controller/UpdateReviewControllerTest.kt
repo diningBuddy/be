@@ -47,7 +47,7 @@ class UpdateReviewControllerTest(
 
     init {
         beforeEach {
-            setUpUser("test@gmail.com", userRepository)
+            setUpUser("01012345678", userRepository)
         }
 
         describe("updateReview basic test") {
@@ -62,7 +62,7 @@ class UpdateReviewControllerTest(
                 val review = reviewRepository.save(
                     ReviewUtil.generateReviewEntity(
                         restaurantId = restaurant.id,
-                        user = userRepository.findByEmail("test@gmail.com")
+                        user = userRepository.findByPhoneNumber("01012345678")
                             ?: throw Exception()
                     )
                 )
@@ -135,7 +135,7 @@ class UpdateReviewControllerTest(
             it("when another user's review update should return NotFoundReviewException") {
                 // given
                 val user = userRepository.save(
-                    User(email = "test@test.com", profileImageUrl = "")
+                    User(phoneNumber = "01099999999")
                 )
 
                 val restaurant = restaurantRepository.save(

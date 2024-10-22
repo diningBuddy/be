@@ -52,7 +52,7 @@ class GetRestaurantControllerTest(
 
     init {
         beforeEach {
-            setUpUser("test@gmail.com", userRepository)
+            setUpUser("01012345678", userRepository)
             val indexOperations = elasticsearchOperations.indexOps(RestaurantDocument::class.java)
             if (indexOperations.exists()) {
                 indexOperations.delete()
@@ -422,7 +422,7 @@ class GetRestaurantControllerTest(
 
             it("when like filter should return restaurant") {
                 // given
-                val newUser = userRepository.findByEmail("test@gmail.com")
+                val newUser = userRepository.findByPhoneNumber("01012345678")
 
                 val restaurantEntity = RestaurantUtil.generateRestaurantEntity(
                     name = "목구멍 율전점"
@@ -547,7 +547,7 @@ class GetRestaurantControllerTest(
 
             it("when like filter should return empty") {
                 // given
-                val newUser = userRepository.findByEmail("test@gmail.com")
+                val newUser = userRepository.findByPhoneNumber("01012345678")
                 val restaurantEntity = RestaurantUtil.generateRestaurantEntity(
                     name = "목구멍 율전점"
                 )
@@ -593,7 +593,7 @@ class GetRestaurantControllerTest(
 
             it("when no like filter should return restaurant") {
                 // given
-                val newUser = userRepository.findByEmail("test@gmail.com")
+                val newUser = userRepository.findByPhoneNumber("01012345678")
                 val restaurantEntity = RestaurantUtil.generateRestaurantEntity(
                     name = "목구멍 율전점"
                 )
@@ -1459,7 +1459,7 @@ class GetRestaurantControllerTest(
         describe("#get restaurants composite filter test") {
             it("when all filter should return restaurant") {
                 // given
-                val user = userRepository.findByEmail("test@gmail.com")
+                val user = userRepository.findByPhoneNumber("01012345678")
                 val category = categoryRepository.save(Category(name = "한식"))
                 val restaurantEntity = RestaurantUtil.generateRestaurantEntity(
                     name = "목구멍 율전점",
@@ -1543,7 +1543,7 @@ class GetRestaurantControllerTest(
 
             it("when all filter should return empty") {
                 // given
-                val user = userRepository.findByEmail("test@gmail.com")
+                val user = userRepository.findByPhoneNumber("01012345678")
                 val category = categoryRepository.save(Category(name = "한식"))
                 val restaurantEntity = RestaurantUtil.generateRestaurantEntity(
                     name = "목구멍 율전점",
@@ -2025,7 +2025,7 @@ class GetRestaurantControllerTest(
                 elasticsearchOperations.save(restaurantDocument2)
                 elasticsearchOperations.indexOps(RestaurantDocument::class.java).refresh()
 
-                val user = userRepository.findByEmail("test@gmail.com")
+                val user = userRepository.findByPhoneNumber("01012345678")
                 restaurantLikeRepository.save(
                     RestaurantLike(
                         userId = user?.id ?: 0,
@@ -2198,7 +2198,7 @@ class GetRestaurantControllerTest(
 
             it("when liked restaurant should return liked true") {
                 // given
-                val user = userRepository.findByEmail("test@gmail.com")
+                val user = userRepository.findByPhoneNumber("01012345678")
                 val restaurantEntity = RestaurantUtil.generateRestaurantEntity(
                     name = "목구멍 율전점"
                 )

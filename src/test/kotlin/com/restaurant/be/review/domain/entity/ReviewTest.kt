@@ -16,7 +16,7 @@ class ReviewTest : DescribeSpec({
                 val user = User(
                     id = 1L,
                     nickname = "testuser",
-                    profileImageUrl = "http://example.com/profile.jpg"
+                    phoneNumber = "01012345678"
                 )
                 val review = Review(
                     user = user,
@@ -39,8 +39,9 @@ class ReviewTest : DescribeSpec({
                 val user = User(
                     id = 1L,
                     nickname = "testuser",
-                    profileImageUrl = "http://example.com/profile.jpg"
+                    phoneNumber = "01012345678"
                 )
+
                 val review = Review(
                     user = user,
                     restaurantId = 10L,

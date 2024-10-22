@@ -1,7 +1,7 @@
 package com.restaurant.be.review.domain.service
 
 import com.restaurant.be.common.exception.NotFoundReviewException
-import com.restaurant.be.common.exception.NotFoundUserEmailException
+import com.restaurant.be.common.exception.NotFoundUserPhoneNumberException
 import com.restaurant.be.common.exception.UnAuthorizedUpdateException
 import com.restaurant.be.restaurant.repository.RestaurantRepository
 import com.restaurant.be.review.presentation.dto.UpdateReviewRequest
@@ -28,7 +28,7 @@ class UpdateReviewService(
         reviewRequest: UpdateReviewRequest,
         email: String
     ): UpdateReviewResponse {
-        val user = userRepository.findByEmail(email) ?: throw NotFoundUserEmailException()
+        val user = userRepository.findByPhoneNumber(email) ?: throw NotFoundUserPhoneNumberException()
 
         val review = reviewRepository.findById(reviewId)
             .orElseThrow { NotFoundReviewException() }

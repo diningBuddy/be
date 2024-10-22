@@ -1,15 +1,20 @@
 package com.restaurant.be.user.domain.entity
 
 import com.restaurant.be.common.converter.SeparatorConverter
-import com.restaurant.be.common.password.PasswordService
-import com.restaurant.be.user.presentation.dto.UpdateUserRequest
+import com.restaurant.be.common.entity.BaseEntity
+import com.restaurant.be.user.domain.entity.enum.Gender
 import jakarta.persistence.Column
 import jakarta.persistence.Convert
 import jakarta.persistence.Entity
+import jakarta.persistence.EnumType
+import jakarta.persistence.Enumerated
 import jakarta.persistence.GeneratedValue
 import jakarta.persistence.GenerationType
 import jakarta.persistence.Id
+import jakarta.persistence.OneToMany
 import jakarta.persistence.Table
+import java.time.LocalDateTime
+import java.util.*
 
 @Entity
 @Table(name = "users")
@@ -19,35 +24,40 @@ class User(
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id: Long? = null,
 
-    @Column(unique = true)
-    var email: String = "",
+    @OneToMany(mappedBy = "user")
+    var socialAccounts: MutableList<SocialAccount> = mutableListOf(),
 
     @Column(unique = true)
     var nickname: String = "",
 
     @Column
-    var password: String = "",
+    @Enumerated(EnumType.STRING)
+    var gender: Gender? = null,
 
-    @Column(columnDefinition = "boolean default false")
-    var withdrawal: Boolean = false,
+    @Column(nullable = false, unique = true)
+    var phoneNumber: String,
 
+    @Column
+    var name: String? = null,
+
+    @Column
+    var birthDay: LocalDateTime? = null,
+
+    @Column
     @Convert(converter = SeparatorConverter::class)
     var roles: List<String> = listOf(),
 
     @Column
-    var profileImageUrl: String
-) {
-    fun updatePassword(password: String) {
-        this.password = password.run(PasswordService::hashPassword)
-    }
+    var profileImageUrl: String? = null,
 
-    fun updateUser(request: UpdateUserRequest) {
-        this.nickname = request.nickname
-        this.profileImageUrl = request.profileImageUrl
-    }
+    @Column
+    var schoolEmail: String? = null,
 
+    @Column(columnDefinition = "boolean default false")
+    var withdrawal: Boolean = false
+
+) : BaseEntity() {
     fun delete() {
         this.withdrawal = true
-        this.email = ""
     }
 }

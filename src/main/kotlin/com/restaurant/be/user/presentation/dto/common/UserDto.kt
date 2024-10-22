@@ -6,9 +6,6 @@ data class UserDto(
     @ApiModelProperty(value = "유저 아이디", example = "1", required = true)
     val id: Long,
 
-    @ApiModelProperty(value = "이메일 아이디", example = "test@gmail.com", required = true)
-    val email: String,
-
     @ApiModelProperty(value = "닉네임", example = "닉네임", required = true)
     val nickname: String,
 
