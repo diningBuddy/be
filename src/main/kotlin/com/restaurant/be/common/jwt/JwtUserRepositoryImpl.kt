@@ -9,7 +9,6 @@ import org.springframework.stereotype.Repository
 class JwtUserRepositoryImpl(
     private val userRepository: UserRepository
 ) : JwtUserRepository {
-
     override fun validTokenByPhoneNumber(phoneNumber: String): Boolean {
         val user = userRepository.findByPhoneNumber(phoneNumber) ?: return false
         return !user.isDeleted

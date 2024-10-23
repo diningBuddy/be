@@ -14,8 +14,8 @@ class JwtFilter(
     private val tokenProvider: TokenProvider,
     private val jwtUserRepository: JwtUserRepository
 ) : OncePerRequestFilter() {
-
     private val log = KotlinLogging.logger {}
+
     public override fun doFilterInternal(
         request: HttpServletRequest,
         response: HttpServletResponse,

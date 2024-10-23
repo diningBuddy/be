@@ -11,7 +11,6 @@ import org.springframework.context.ApplicationContextException
 class BeApplicationTest(
     context: org.springframework.context.ApplicationContext
 ) : CustomDescribeSpec() {
-
     init {
         describe("BeApplication") {
             it("should load Spring context successfully") {
