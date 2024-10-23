@@ -43,7 +43,7 @@ class DeleteReviewControllerTest(
 
     init {
         beforeEach {
-            setUpUser("test@gmail.com", userRepository)
+            setUpUser("01012345678", userRepository)
         }
 
         describe("#deleteReview basic test") {
@@ -57,7 +57,7 @@ class DeleteReviewControllerTest(
                 val review = reviewRepository.save(
                     ReviewUtil.generateReviewEntity(
                         restaurantId = restaurant.id,
-                        user = userRepository.findByEmail("test@gmail.com") ?: throw Exception()
+                        user = userRepository.findByPhoneNumber("01012345678") ?: throw Exception()
                     )
                 )
 
@@ -121,7 +121,7 @@ class DeleteReviewControllerTest(
                 // given
                 val review = reviewRepository.save(
                     ReviewUtil.generateReviewEntity(
-                        user = userRepository.findByEmail("test@gmail.com") ?: throw Exception(),
+                        user = userRepository.findByPhoneNumber("01012345678") ?: throw Exception(),
                         restaurantId = 12345
                     )
                 )

@@ -36,13 +36,13 @@ class GetUserControllerTest(
 
     init {
         beforeEach {
-            setUpUser("test@gmail.com", userRepository)
+            setUpUser("01012345678", userRepository)
         }
 
         describe("#getUser basic test") {
             it("when existed user should return user info") {
                 // given
-                val user = userRepository.findByEmail("test@gmail.com") ?: throw Exception("User not found")
+                val user = userRepository.findByPhoneNumber("01012345678") ?: throw Exception("User not found")
 
                 // when
                 val result = mockMvc.perform(
@@ -64,7 +64,6 @@ class GetUserControllerTest(
 
                 // then
                 actualResult.data!!.userDto.id shouldBe user.id
-                actualResult.data!!.userDto.email shouldBe user.email
                 actualResult.data!!.userDto.nickname shouldBe user.nickname
                 actualResult.data!!.userDto.profileImageUrl shouldBe user.profileImageUrl
             }

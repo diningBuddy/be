@@ -44,7 +44,7 @@ class GetMyReviewControllerTest(
 
     init {
         beforeEach {
-            setUpUser("test@gmail.com", userRepository)
+            setUpUser("01012345678", userRepository)
         }
 
         describe("#getMyReview basic test") {
@@ -60,7 +60,7 @@ class GetMyReviewControllerTest(
                     reviewRepository.save(
                         ReviewUtil.generateReviewEntity(
                             restaurantId = restaurant.id,
-                            user = userRepository.findByEmail("test@gmail.com")
+                            user = userRepository.findByPhoneNumber("01012345678")
                                 ?: throw Exception()
                         )
                     )
@@ -108,7 +108,7 @@ class GetMyReviewControllerTest(
                     reviewRepository.save(
                         ReviewUtil.generateReviewEntity(
                             restaurantId = restaurant.id,
-                            user = userRepository.findByEmail("test@gmail.com")
+                            user = userRepository.findByPhoneNumber("01012345678")
                                 ?: throw Exception()
                         )
                     )
@@ -156,7 +156,7 @@ class GetMyReviewControllerTest(
                     reviewRepository.save(
                         ReviewUtil.generateReviewEntity(
                             restaurantId = restaurant.id,
-                            user = userRepository.findByEmail("test@gmail.com")
+                            user = userRepository.findByPhoneNumber("01012345678")
                                 ?: throw Exception()
                         )
                     )
@@ -206,7 +206,7 @@ class GetMyReviewControllerTest(
                     reviewRepository.save(
                         ReviewUtil.generateReviewEntity(
                             restaurantId = restaurant.id,
-                            user = userRepository.findByEmail("test@gmail.com")
+                            user = userRepository.findByPhoneNumber("01012345678")
                                 ?: throw Exception()
                         )
                     )
@@ -255,7 +255,7 @@ class GetMyReviewControllerTest(
                     reviewRepository.save(
                         ReviewUtil.generateReviewEntity(
                             restaurantId = restaurant.id,
-                            user = userRepository.findByEmail("test@gmail.com")
+                            user = userRepository.findByPhoneNumber("01012345678")
                                 ?: throw Exception(),
                             likeCount = 5 - i.toLong() + 1
                         )
@@ -307,7 +307,7 @@ class GetMyReviewControllerTest(
                     reviewRepository.save(
                         ReviewUtil.generateReviewEntity(
                             restaurantId = restaurant.id,
-                            user = userRepository.findByEmail("test@gmail.com")
+                            user = userRepository.findByPhoneNumber("01012345678")
                                 ?: throw Exception(),
                             likeCount = i.toLong()
                         )

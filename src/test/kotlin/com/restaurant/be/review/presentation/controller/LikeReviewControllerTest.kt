@@ -46,7 +46,7 @@ class LikeReviewControllerTest(
 
     init {
         beforeEach {
-            setUpUser("test@gmail.com", userRepository)
+            setUpUser("01012345678", userRepository)
         }
 
         describe("#likeReview basic test") {
@@ -61,7 +61,7 @@ class LikeReviewControllerTest(
                 val review = reviewRepository.save(
                     ReviewUtil.generateReviewEntity(
                         restaurantId = restaurant.id,
-                        user = userRepository.findByEmail("test@gmail.com")
+                        user = userRepository.findByPhoneNumber("01012345678")
                             ?: throw Exception()
                     )
                 )
@@ -133,7 +133,7 @@ class LikeReviewControllerTest(
                 val review = reviewRepository.save(
                     ReviewUtil.generateReviewEntity(
                         restaurantId = restaurant.id,
-                        user = userRepository.findByEmail("test@gmail.com")
+                        user = userRepository.findByPhoneNumber("01012345678")
                             ?: throw Exception()
                     )
                 )
@@ -141,7 +141,7 @@ class LikeReviewControllerTest(
                 reviewLikeRepository.save(
                     ReviewLike(
                         reviewId = review.id ?: 0,
-                        userId = userRepository.findByEmail("test@gmail.com")?.id ?: 0
+                        userId = userRepository.findByPhoneNumber("01012345678")?.id ?: 0
                     )
                 )
 
@@ -192,7 +192,7 @@ class LikeReviewControllerTest(
                 val review = reviewRepository.save(
                     ReviewUtil.generateReviewEntity(
                         restaurantId = restaurant.id,
-                        user = userRepository.findByEmail("test@gmail.com")
+                        user = userRepository.findByPhoneNumber("01012345678")
                             ?: throw Exception(),
                         likeCount = 1
                     )
@@ -201,7 +201,7 @@ class LikeReviewControllerTest(
                 reviewLikeRepository.save(
                     ReviewLike(
                         reviewId = review.id ?: 0,
-                        userId = userRepository.findByEmail("test@gmail.com")
+                        userId = userRepository.findByPhoneNumber("01012345678")
                             ?.id ?: 0
                     )
                 )
@@ -252,7 +252,7 @@ class LikeReviewControllerTest(
                 val review = reviewRepository.save(
                     ReviewUtil.generateReviewEntity(
                         restaurantId = restaurant.id,
-                        user = userRepository.findByEmail("test@gmail.com")
+                        user = userRepository.findByPhoneNumber("01012345678")
                             ?: throw Exception()
                     )
                 )

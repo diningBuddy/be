@@ -36,7 +36,7 @@ class CheckNicknameControllerTest(
 
     init {
         beforeEach {
-            setUpUser("test@gmail.com", userRepository)
+            setUpUser("01012345678", userRepository)
         }
 
         describe("#checkNickname basic test") {
@@ -69,7 +69,7 @@ class CheckNicknameControllerTest(
 
             it("when nickname is used should throw DuplicateUserNicknameException") {
                 // given
-                val existedUserNickname = userRepository.findByEmail("test@gmail.com")?.nickname ?: ""
+                val existedUserNickname = userRepository.findByPhoneNumber("01012345678")?.nickname ?: ""
 
                 // when
                 val result = mockMvc.perform(

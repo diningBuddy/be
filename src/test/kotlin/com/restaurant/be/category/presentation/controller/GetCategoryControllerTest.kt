@@ -38,7 +38,7 @@ class GetCategoryControllerTest(
 
     init {
         beforeEach {
-            setUpUser("test@gmail.com", userRepository)
+            setUpUser("01012345678", userRepository)
         }
 
         describe("#getCategories basic test") {

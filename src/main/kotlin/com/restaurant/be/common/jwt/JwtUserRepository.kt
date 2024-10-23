@@ -2,6 +2,6 @@ package com.restaurant.be.common.jwt
 
 interface JwtUserRepository {
 
-    fun validTokenByEmail(email: String): Boolean
-    fun userRolesByEmail(email: String): List<String>
+    fun validTokenByPhoneNumber(phoneNumber: String): Boolean
+    fun userRolesByPhoneNumber(phoneNumber: String): List<String>
 }

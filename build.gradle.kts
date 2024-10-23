@@ -117,8 +117,10 @@ kapt {
 }
 
 // Q파일 생성 경로
-sourceSets["main"].withConvention(org.jetbrains.kotlin.gradle.plugin.KotlinSourceSet::class) {
-    kotlin.srcDir("$buildDir/generated/source/kapt/main")
+sourceSets {
+    main {
+        kotlin.srcDir("${layout.buildDirectory.get()}/generated/source/kapt/main")
+    }
 }
 
 tasks {

@@ -13,16 +13,17 @@ data class ReviewRequestDto(
     @field:NotNull(message = "평가 점수를 입력해주세요")
     @ApiModelProperty(value = "별점", example = "5", required = true)
     val rating: Double,
-
     @Schema(description = "리뷰 내용")
     @field:NotBlank(message = "리뷰 내용을 작성해주세요")
     @ApiModelProperty(value = "리뷰 내용", example = "사장님이 친절해요", required = true)
     val content: String,
-
     @Schema(description = "이미지 url 리스트")
     val imageUrls: List<String>
 ) {
-    fun toEntity(user: User, restaurantId: Long) = Review(
+    fun toEntity(
+        user: User,
+        restaurantId: Long
+    ) = Review(
         user = user,
         rating = rating,
         content = content,
@@ -59,12 +60,15 @@ data class ReviewResponseDto(
     val modifiedAt: LocalDateTime
 ) {
     companion object {
-        fun toDto(review: Review, isLikedByUser: Boolean): ReviewResponseDto {
-            return ReviewResponseDto(
+        fun toDto(
+            review: Review,
+            isLikedByUser: Boolean
+        ): ReviewResponseDto =
+            ReviewResponseDto(
                 id = review.id ?: 0,
                 userId = review.user.id ?: 0,
                 username = review.user.nickname,
-                profileImageUrl = review.user.profileImageUrl,
+                profileImageUrl = review.user.profileImageUrl ?: "",
                 restaurantId = review.restaurantId,
                 rating = review.rating,
                 content = review.content,
@@ -75,6 +79,5 @@ data class ReviewResponseDto(
                 createdAt = review.createdAt,
                 modifiedAt = review.modifiedAt
             )
-        }
     }
 }

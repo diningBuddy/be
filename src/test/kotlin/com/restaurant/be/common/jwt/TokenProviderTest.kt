@@ -36,37 +36,37 @@ class TokenProviderTest : DescribeSpec({
         describe("getAllClaimsFromToken") {
             it("should return claims from a valid token") {
                 // Given
-                val email = "test@example.com"
-                val token = tokenProvider.createTokens(email, listOf("ROLE_USER")).accessToken
+                val phoneNumber = "01012345678"
+                val token = tokenProvider.createTokens(phoneNumber, listOf("ROLE_USER")).accessToken
 
                 // When
                 val claims = tokenProvider.getAllClaimsFromToken(token)
 
                 // Then
-                claims.subject shouldBe email
+                claims.subject shouldBe phoneNumber
             }
         }
 
-        describe("getEmailFromToken") {
-            it("should return email from token") {
+        describe("getphoneNumberFromToken") {
+            it("should return phoneNumber from token") {
                 // Given
-                val email = "test@example.com"
-                val token = tokenProvider.createTokens(email, listOf("ROLE_USER")).accessToken
+                val phoneNumber = "01012345678"
+                val token = tokenProvider.createTokens(phoneNumber, listOf("ROLE_USER")).accessToken
 
                 // When
-                val extractedEmail = tokenProvider.getEmailFromToken(token)
+                val extractedPhoneNumber = tokenProvider.getPhoneNumberFromToken(token)
 
                 // Then
-                extractedEmail shouldBe email
+                extractedPhoneNumber shouldBe phoneNumber
             }
         }
 
         describe("getRolesFromToken") {
             it("should return roles from token") {
                 // Given
-                val email = "test@example.com"
+                val phoneNumber = "01012345678"
                 val roles = "ROLE_USER,ROLE_ADMIN"
-                val token = tokenProvider.createAccessToken(email, roles)
+                val token = tokenProvider.createAccessToken(phoneNumber, roles)
 
                 // When
                 val extractedRoles = tokenProvider.getRolesFromToken(token)
@@ -79,8 +79,8 @@ class TokenProviderTest : DescribeSpec({
         describe("getAuthentication") {
             it("should return authentication from token") {
                 // Given
-                val email = "test@example.com"
-                val token = tokenProvider.createTokens(email, listOf("ROLE_USER")).accessToken
+                val phoneNumber = "01012345678"
+                val token = tokenProvider.createTokens(phoneNumber, listOf("ROLE_USER")).accessToken
 
                 // When
                 val authentication = tokenProvider.getAuthentication(token)
@@ -131,13 +131,13 @@ class TokenProviderTest : DescribeSpec({
         describe("tokenReissue") {
             it("should reissue a new access token if refresh token is valid") {
                 // Given
-                val email = "test@example.com"
+                val phoneNumber = "01012345678"
                 val roles = listOf("ROLE_USER")
-                val tokens = tokenProvider.createTokens(email, roles)
+                val tokens = tokenProvider.createTokens(phoneNumber, roles)
                 val accessToken = tokens.accessToken
                 val refreshToken = tokens.refreshToken
 
-                every { redisRepository.getValue("RT:$email") } returns refreshToken
+                every { redisRepository.getValue("RT:$phoneNumber") } returns refreshToken
 
                 // When
                 val newTokens = tokenProvider.tokenReissue(accessToken, refreshToken)
@@ -150,13 +150,13 @@ class TokenProviderTest : DescribeSpec({
 
             it("should throw InvalidTokenException if refresh token is invalid") {
                 // Given
-                val email = "test@example.com"
+                val phoneNumber = "01012345678"
                 val roles = listOf("ROLE_USER")
-                val tokens = tokenProvider.createTokens(email, roles)
+                val tokens = tokenProvider.createTokens(phoneNumber, roles)
                 val accessToken = tokens.accessToken
                 val refreshToken = "invalidRefreshToken"
 
-                every { redisRepository.getValue("RT:$email") } returns refreshToken
+                every { redisRepository.getValue("RT:$phoneNumber") } returns refreshToken
 
                 // When / Then
                 shouldThrow<InvalidTokenException> {
@@ -264,16 +264,16 @@ class TokenProviderTest : DescribeSpec({
         describe("createAccessToken") {
             it("should create a valid access token") {
                 // Given
-                val email = "test@example.com"
+                val phoneNumber = "01012345678"
                 val roles = "ROLE_USER"
 
                 // When
-                val token = tokenProvider.createAccessToken(email, roles)
+                val token = tokenProvider.createAccessToken(phoneNumber, roles)
 
                 // Then
                 token shouldNotBe null
                 val claims = tokenProvider.getAllClaimsFromToken(token)
-                claims.subject shouldBe email
+                claims.subject shouldBe phoneNumber
             }
         }
     }

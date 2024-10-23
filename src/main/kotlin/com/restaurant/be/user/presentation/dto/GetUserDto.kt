@@ -13,9 +13,8 @@ data class GetUserResponse(
     constructor(user: User) : this(
         userDto = UserDto(
             id = user.id ?: 0,
-            email = user.email,
             nickname = user.nickname,
-            profileImageUrl = user.profileImageUrl
+            profileImageUrl = user.profileImageUrl ?: ""
         )
     )
 }

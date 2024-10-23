@@ -7,9 +7,8 @@ import com.restaurant.be.hello.domain.entity.QHello
 class HelloRepositoryCustomImpl(
     private val queryFactory: JPAQueryFactory
 ) : HelloRepositoryCustom {
-    override fun findHellos(): List<Hello> {
-        return queryFactory
+    override fun findHellos(): List<Hello> =
+        queryFactory
             .selectFrom(QHello.hello)
             .fetch()
-    }
 }

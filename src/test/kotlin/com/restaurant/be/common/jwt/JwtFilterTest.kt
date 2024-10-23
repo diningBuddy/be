@@ -67,8 +67,8 @@ class JwtFilterTest : DescribeSpec({
             every { tokenProvider.resolveToken(accessToken) } returns accessToken
             every { tokenProvider.resolveToken(refreshToken) } returns refreshToken
             every { tokenProvider.validateToken(accessToken) } returns true
-            every { tokenProvider.getEmailFromToken(accessToken) } returns "test@test.com"
-            every { jwtUserRepository.validTokenByEmail(any()) } returns true
+            every { tokenProvider.getPhoneNumberFromToken(accessToken) } returns "test@test.com"
+            every { jwtUserRepository.validTokenByPhoneNumber(any()) } returns true
             val authentication = mockk<Authentication>()
             every { tokenProvider.getAuthentication(accessToken) } returns authentication
 

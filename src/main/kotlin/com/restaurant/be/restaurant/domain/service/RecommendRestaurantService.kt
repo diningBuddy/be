@@ -17,7 +17,7 @@ class RecommendRestaurantService(
 
     @Transactional(readOnly = true)
     fun recommendRestaurants(email: String): RecommendRestaurantResponse {
-        val userId = userRepository.findByEmail(email)?.id ?: throw NotFoundUserException()
+        val userId = userRepository.findByPhoneNumber(email)?.id ?: throw NotFoundUserException()
 
         val restaurantIds = redisRepository.getRecommendation(userId)
 

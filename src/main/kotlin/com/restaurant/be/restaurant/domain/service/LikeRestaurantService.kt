@@ -1,8 +1,8 @@
 package com.restaurant.be.restaurant.domain.service
 
 import com.restaurant.be.common.exception.NotFoundRestaurantException
-import com.restaurant.be.common.exception.NotFoundUserEmailException
 import com.restaurant.be.common.exception.NotFoundUserException
+import com.restaurant.be.common.exception.NotFoundUserPhoneNumberException
 import com.restaurant.be.restaurant.domain.entity.RestaurantLike
 import com.restaurant.be.restaurant.presentation.controller.dto.GetLikeRestaurantsResponse
 import com.restaurant.be.restaurant.presentation.controller.dto.LikeRestaurantResponse
@@ -21,7 +21,7 @@ class LikeRestaurantService(
 ) {
     @Transactional
     fun likeRestaurant(email: String, restaurantId: Long, isLike: Boolean): LikeRestaurantResponse {
-        val userId: Long = userRepository.findByEmail(email)?.id ?: throw NotFoundUserException()
+        val userId: Long = userRepository.findByPhoneNumber(email)?.id ?: throw NotFoundUserException()
 
         val restaurantDto = restaurantRepository.findDtoById(restaurantId, userId)
             ?: throw NotFoundRestaurantException()
@@ -52,7 +52,7 @@ class LikeRestaurantService(
 
     @Transactional(readOnly = true)
     fun getMyLikeRestaurant(pageable: Pageable, email: String): GetLikeRestaurantsResponse {
-        val userId = userRepository.findByEmail(email)?.id ?: throw NotFoundUserEmailException()
+        val userId = userRepository.findByPhoneNumber(email)?.id ?: throw NotFoundUserPhoneNumberException()
 
         return GetLikeRestaurantsResponse(
             restaurantRepository.findMyLikeRestaurants(userId, pageable)

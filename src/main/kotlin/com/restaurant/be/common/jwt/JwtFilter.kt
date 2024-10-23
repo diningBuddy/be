@@ -14,8 +14,8 @@ class JwtFilter(
     private val tokenProvider: TokenProvider,
     private val jwtUserRepository: JwtUserRepository
 ) : OncePerRequestFilter() {
-
     private val log = KotlinLogging.logger {}
+
     public override fun doFilterInternal(
         request: HttpServletRequest,
         response: HttpServletResponse,
@@ -28,7 +28,7 @@ class JwtFilter(
 
         if (refreshToken == null) {
             if (StringUtils.hasText(accessToken) && tokenProvider.validateToken(accessToken)) { // 토큰의 유효성이 검증됐을 경우,
-                if (jwtUserRepository.validTokenByEmail(tokenProvider.getEmailFromToken(accessToken!!))) {
+                if (jwtUserRepository.validTokenByPhoneNumber(tokenProvider.getPhoneNumberFromToken(accessToken!!))) {
                     val authentication: Authentication =
                         tokenProvider.getAuthentication(accessToken)
                     SecurityContextHolder.getContext().authentication = authentication
