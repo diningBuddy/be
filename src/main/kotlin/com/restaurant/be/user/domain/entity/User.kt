@@ -40,7 +40,7 @@ class User(
     @Column
     var profileImageUrl: String? = null,
     @OneToMany(mappedBy = "user", fetch = LAZY)
-    var socialUserList: MutableList<SocialUser> = mutableListOf()
+    var socialUsers: MutableList<SocialUser> = mutableListOf(),
 ) : BaseEntity() {
     fun delete() {
         this.isDeleted = true
