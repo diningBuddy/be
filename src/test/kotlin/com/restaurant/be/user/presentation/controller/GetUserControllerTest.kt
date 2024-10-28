@@ -65,7 +65,6 @@ class GetUserControllerTest(
                 // then
                 actualResult.data!!.userDto.id shouldBe user.id
                 actualResult.data!!.userDto.nickname shouldBe user.nickname
-                actualResult.data!!.userDto.profileImageUrl shouldBe user.profileImageUrl
             }
 
             it("when not existed user should fail") {

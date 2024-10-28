@@ -16,6 +16,7 @@ import com.restaurant.be.restaurant.presentation.controller.dto.LikeRestaurantRe
 import com.restaurant.be.restaurant.presentation.controller.dto.common.RestaurantDto
 import com.restaurant.be.restaurant.repository.RestaurantLikeRepository
 import com.restaurant.be.restaurant.repository.RestaurantRepository
+import com.restaurant.be.user.domain.constant.Gender
 import com.restaurant.be.user.domain.entity.User
 import com.restaurant.be.user.repository.UserRepository
 import io.kotest.matchers.nulls.shouldNotBeNull
@@ -28,6 +29,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPat
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 import org.springframework.transaction.annotation.Transactional
 import java.nio.charset.Charset
+import java.time.LocalDate
 
 @IntegrationTest
 @Transactional
@@ -129,7 +131,12 @@ class LikeRestaurantControllerTest(
                 val anotherUser =
                     userRepository.save(
                         User(
-                            phoneNumber = "01099999999"
+                            phoneNumber = "01099999999",
+                            nickname = "test_like_nickname",
+                            name = "test_name",
+                            gender = Gender.MAN,
+                            birthday = LocalDate.now(),
+                            isTermsAgreed = true
                         )
                     )
                 val restaurantEntity =
@@ -401,7 +408,12 @@ class LikeRestaurantControllerTest(
                 val newUser =
                     userRepository.save(
                         User(
-                            phoneNumber = "01099999999"
+                            phoneNumber = "01099999999",
+                            nickname = "test_like_nickname",
+                            name = "test_name",
+                            gender = Gender.MAN,
+                            birthday = LocalDate.now(),
+                            isTermsAgreed = true
                         )
                     )
                 val originalUser = userRepository.findByPhoneNumber("01012345678")!!

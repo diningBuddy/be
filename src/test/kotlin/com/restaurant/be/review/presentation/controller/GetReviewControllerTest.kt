@@ -17,17 +17,18 @@ import com.restaurant.be.review.presentation.dto.GetReviewResponse
 import com.restaurant.be.review.presentation.dto.GetReviewsResponse
 import com.restaurant.be.review.presentation.dto.common.ReviewResponseDto
 import com.restaurant.be.review.repository.ReviewRepository
+import com.restaurant.be.user.domain.constant.Gender
 import com.restaurant.be.user.domain.entity.User
 import com.restaurant.be.user.repository.UserRepository
 import io.kotest.matchers.shouldBe
 import org.springframework.data.domain.Page
-import org.springframework.data.jpa.domain.AbstractPersistable_.id
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 import org.springframework.transaction.annotation.Transactional
 import java.nio.charset.Charset
+import java.time.LocalDate
 
 @IntegrationTest
 @Transactional
@@ -383,7 +384,12 @@ class GetReviewControllerTest(
 
                 val user = userRepository.save(
                     User(
-                        phoneNumber = "01099999999"
+                        phoneNumber = "01099999999",
+                        nickname = "test_review_nickname",
+                        name = "test_name",
+                        gender = Gender.MAN,
+                        birthday = LocalDate.now(),
+                        isTermsAgreed = true
                     )
                 )
 
