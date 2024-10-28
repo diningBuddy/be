@@ -22,15 +22,15 @@ class User(
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id: Long? = null,
     @Column(unique = true)
-    var phoneNumber: String = "",
+    var phoneNumber: String,
     @Column(unique = true)
-    var nickname: String = "",
+    var nickname: String,
     @Column
-    var name: String = "",
+    var name: String,
     @Column
-    var birthday: LocalDate = LocalDate.now(),
+    var birthday: LocalDate,
     @Column
-    var gender: Gender = Gender.MAN,
+    var gender: Gender,
     @Column(columnDefinition = "boolean default false")
     var isTermsAgreed: Boolean = false,
     @Column(columnDefinition = "boolean default false")

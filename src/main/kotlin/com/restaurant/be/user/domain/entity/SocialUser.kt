@@ -22,9 +22,9 @@ class SocialUser(
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id: Long? = null,
     @Column
-    var socialType: SocialType = SocialType.KAKAO,
+    var socialType: SocialType,
     @Column(unique = true)
-    var socialKey: String = "",
+    var socialKey: String,
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "user_id", nullable = false, foreignKey = ForeignKey(ConstraintMode.NO_CONSTRAINT))
     val user: User
