@@ -1,5 +1,5 @@
 server:
-  port: 8080
+  port: 8081
 
 spring:
   elasticsearch:
@@ -49,3 +49,9 @@ es:
 
 discord:
   monitor: ${DISCORD_MONITOR:https:test}
+
+aligo:
+  key: ${ALIGO_API_KEY:zg2xg4apjbunl3okizg4zcdrlfryjs5q}
+  user-id: ${ALIGO_USER_ID:ting70ok}
+  sender: ${ALIGO_SENDER_PHONE:01041805905}
+  test-mode: ${ALIGO_TEST_MODE:Y}

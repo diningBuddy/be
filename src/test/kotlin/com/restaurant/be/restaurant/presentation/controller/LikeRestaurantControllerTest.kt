@@ -410,9 +410,7 @@ class LikeRestaurantControllerTest(
                     post("$baseUrl/${restaurantEntity.id}/like")
                         .content(
                             objectMapper.writeValueAsString(
-                                mapOf(
-                                    "isLike" to true
-                                )
+                                mapOf("isLike" to true)
                             )
                         )
                         .contentType("application/json")

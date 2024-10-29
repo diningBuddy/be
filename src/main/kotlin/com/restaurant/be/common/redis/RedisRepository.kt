@@ -12,6 +12,7 @@ class RedisRepository(
         private const val SEARCH_PREFIX = "SR:" // 검색어를 저장할 때 사용할 키 접두사
         private const val MAX_HISTORY = 5 // 저장할 최대 검색어 수
         private const val RECOMMENDATION_PREFIX = "RECOMMENDATION:"
+        private const val CERTIFICATION_PREFIX = "CERTIFICATION:"
     }
 
     // 사용자별 추천 식당을 조회하는 메서드
@@ -68,6 +69,11 @@ class RedisRepository(
                 println("No instance of '$queryToRemove' found in the list.")
             }
         }
+    }
+
+    fun saveCertificationNumber(phoneNumber: String, certificationNumber: Int) {
+        val key = "$CERTIFICATION_PREFIX$phoneNumber"
+        setValue(key, certificationNumber.toString(), 3, TimeUnit.MINUTES)
     }
 
     fun setValue(key: String, value: String, timeout: Long, unit: TimeUnit) {

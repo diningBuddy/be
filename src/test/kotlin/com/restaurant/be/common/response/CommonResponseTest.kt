@@ -12,7 +12,7 @@ class CommonResponseTest : DescribeSpec({
             val data = "testData"
 
             // When
-            val response = CommonResponse.success(data)
+            val response = CommonResponse.success<String>(data)
 
             // Then
             response.result shouldBe CommonResponse.Result.SUCCESS
@@ -22,6 +22,20 @@ class CommonResponseTest : DescribeSpec({
         }
 
         it("should create a success response without data") {
+            // Given
+            val message = "testMessage"
+
+            // When
+            val response = CommonResponse.success(message)
+
+            // Then
+            response.result shouldBe CommonResponse.Result.SUCCESS
+            response.data shouldBe null
+            response.message shouldBe "testMessage"
+            response.errorCode shouldBe null
+        }
+
+        it("should create a success response without data and message") {
             // When
             val response = CommonResponse.success<Any>()
 
