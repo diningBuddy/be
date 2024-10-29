@@ -31,8 +31,8 @@ class User(
     var birthday: LocalDate,
     @Column
     var gender: Gender,
-    @Column(columnDefinition = "boolean default false")
-    var isTermsAgreed: Boolean = false,
+    @Column
+    var isTermsAgreed: Boolean,
     @Column(columnDefinition = "boolean default false")
     var isDeleted: Boolean = false,
     @Convert(converter = SeparatorConverter::class)
