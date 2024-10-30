@@ -21,7 +21,7 @@ import java.nio.charset.Charset
 @IntegrationTest
 @Transactional
 class SendCertificationSmsControllerTest(
-    private val mockMvc: MockMvc,
+    private val mockMvc: MockMvc
 ) : CustomDescribeSpec() {
     private val baseUrl = "/v1/sms"
     private val objectMapper: ObjectMapper = ObjectMapper().registerModule(KotlinModule()).apply {
