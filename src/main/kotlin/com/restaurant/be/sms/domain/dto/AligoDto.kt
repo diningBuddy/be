@@ -35,25 +35,6 @@ data class AligoSendSmsRequest(
 
     val testmode_yn: String?
 ) {
-    companion object {
-        fun createSendCertificationSmsRequest(
-            key: String,
-            user_id: String,
-            sender: String,
-            testmode_yn: String,
-            receiver: String,
-            certificationNumber: Int
-        ) = AligoSendSmsRequest(
-            key = key,
-            user_id = user_id,
-            sender = sender,
-            testmode_yn = testmode_yn,
-            receiver = receiver,
-            msg = """[다이닝버디]
-            ${"인증번호 : $certificationNumber"}"""
-        ).toMultipartData()
-    }
-
     fun toMultipartData(): MultiValueMap<String, String> =
         LinkedMultiValueMap<String, String>().apply {
             this@AligoSendSmsRequest::class.memberProperties.forEach { prop ->

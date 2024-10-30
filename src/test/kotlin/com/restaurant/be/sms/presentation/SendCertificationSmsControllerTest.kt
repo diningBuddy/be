@@ -9,7 +9,6 @@ import com.restaurant.be.common.IntegrationTest
 import com.restaurant.be.common.PageDeserializer
 import com.restaurant.be.common.response.CommonResponse
 import com.restaurant.be.restaurant.presentation.controller.dto.common.RestaurantDto
-import com.restaurant.be.user.repository.UserRepository
 import io.kotest.matchers.shouldBe
 import org.springframework.data.domain.Page
 import org.springframework.test.web.servlet.MockMvc
@@ -23,7 +22,6 @@ import java.nio.charset.Charset
 @Transactional
 class SendCertificationSmsControllerTest(
     private val mockMvc: MockMvc,
-    private val userRepository: UserRepository
 ) : CustomDescribeSpec() {
     private val baseUrl = "/v1/sms"
     private val objectMapper: ObjectMapper = ObjectMapper().registerModule(KotlinModule()).apply {

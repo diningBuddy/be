@@ -2,10 +2,6 @@ server:
   port: 8080
 
 spring:
-  profiles:
-    active: local
-  web:
-    mvc
   application:
     name: be
   datasource:
