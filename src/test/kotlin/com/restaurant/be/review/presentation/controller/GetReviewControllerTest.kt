@@ -17,6 +17,7 @@ import com.restaurant.be.review.presentation.dto.GetReviewResponse
 import com.restaurant.be.review.presentation.dto.GetReviewsResponse
 import com.restaurant.be.review.presentation.dto.common.ReviewResponseDto
 import com.restaurant.be.review.repository.ReviewRepository
+import com.restaurant.be.user.domain.constant.Gender
 import com.restaurant.be.user.domain.entity.User
 import com.restaurant.be.user.repository.UserRepository
 import io.kotest.matchers.shouldBe
@@ -27,6 +28,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPat
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 import org.springframework.transaction.annotation.Transactional
 import java.nio.charset.Charset
+import java.time.LocalDate
 
 @IntegrationTest
 @Transactional
@@ -46,7 +48,7 @@ class GetReviewControllerTest(
 
     init {
         beforeEach {
-            setUpUser("test@gmail.com", userRepository)
+            setUpUser("01012345678", userRepository)
         }
 
         describe("#getReviews basic test") {
@@ -62,7 +64,7 @@ class GetReviewControllerTest(
                     reviewRepository.save(
                         ReviewUtil.generateReviewEntity(
                             restaurantId = restaurant.id,
-                            user = userRepository.findByEmail("test@gmail.com")
+                            user = userRepository.findByPhoneNumber("01012345678")
                                 ?: throw Exception()
                         )
                     )
@@ -110,7 +112,7 @@ class GetReviewControllerTest(
                     reviewRepository.save(
                         ReviewUtil.generateReviewEntity(
                             restaurantId = restaurant.id,
-                            user = userRepository.findByEmail("test@gmail.com")
+                            user = userRepository.findByPhoneNumber("01012345678")
                                 ?: throw Exception()
                         )
                     )
@@ -158,7 +160,7 @@ class GetReviewControllerTest(
                     reviewRepository.save(
                         ReviewUtil.generateReviewEntity(
                             restaurantId = restaurant.id,
-                            user = userRepository.findByEmail("test@gmail.com")
+                            user = userRepository.findByPhoneNumber("01012345678")
                                 ?: throw Exception()
                         )
                     )
@@ -208,7 +210,7 @@ class GetReviewControllerTest(
                     reviewRepository.save(
                         ReviewUtil.generateReviewEntity(
                             restaurantId = restaurant.id,
-                            user = userRepository.findByEmail("test@gmail.com")
+                            user = userRepository.findByPhoneNumber("01012345678")
                                 ?: throw Exception()
                         )
                     )
@@ -257,7 +259,7 @@ class GetReviewControllerTest(
                     reviewRepository.save(
                         ReviewUtil.generateReviewEntity(
                             restaurantId = restaurant.id,
-                            user = userRepository.findByEmail("test@gmail.com")
+                            user = userRepository.findByPhoneNumber("01012345678")
                                 ?: throw Exception(),
                             likeCount = i.toLong()
                         )
@@ -310,7 +312,7 @@ class GetReviewControllerTest(
                 val review = reviewRepository.save(
                     ReviewUtil.generateReviewEntity(
                         restaurantId = restaurant.id,
-                        user = userRepository.findByEmail("test@gmail.com")
+                        user = userRepository.findByPhoneNumber("01012345678")
                             ?: throw Exception()
                     )
                 )
@@ -382,8 +384,12 @@ class GetReviewControllerTest(
 
                 val user = userRepository.save(
                     User(
-                        email = "test@test.com",
-                        profileImageUrl = ""
+                        phoneNumber = "01099999999",
+                        nickname = "test_review_nickname",
+                        name = "test_name",
+                        gender = Gender.MAN,
+                        birthday = LocalDate.now(),
+                        isTermsAgreed = true
                     )
                 )
 

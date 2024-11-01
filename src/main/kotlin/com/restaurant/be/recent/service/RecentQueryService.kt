@@ -1,6 +1,6 @@
 package com.restaurant.be.recent.service
 
-import com.restaurant.be.common.exception.NotFoundUserEmailException
+import com.restaurant.be.common.exception.NotFoundUserPhoneNumberException
 import com.restaurant.be.common.redis.RedisRepository
 import com.restaurant.be.recent.presentation.dto.DeleteRecentQueriesRequest
 import com.restaurant.be.recent.presentation.dto.RecentQueriesDto
@@ -14,8 +14,8 @@ class RecentQueryService(
     private val userRepository: UserRepository
 ) {
 
-    fun getRecentQueries(email: String): RecentQueriesResponse {
-        val userId = userRepository.findByEmail(email)?.id ?: throw NotFoundUserEmailException()
+    fun getRecentQueries(phoneNumber: String): RecentQueriesResponse {
+        val userId = userRepository.findByPhoneNumber(phoneNumber)?.id ?: throw NotFoundUserPhoneNumberException()
 
         val queries = redisRepository.getSearchQueries(userId)
 
@@ -28,7 +28,7 @@ class RecentQueryService(
         email: String,
         request: DeleteRecentQueriesRequest
     ): RecentQueriesResponse {
-        val userId = userRepository.findByEmail(email)?.id ?: throw NotFoundUserEmailException()
+        val userId = userRepository.findByPhoneNumber(email)?.id ?: throw NotFoundUserPhoneNumberException()
 
         if (request.query == null) {
             redisRepository.deleteSearchQueries(userId)

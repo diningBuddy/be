@@ -1,10 +1,12 @@
 package com.restaurant.be.review.domain.entity
 
 import com.restaurant.be.common.exception.InvalidLikeCountException
+import com.restaurant.be.user.domain.constant.Gender
 import com.restaurant.be.user.domain.entity.User
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.DescribeSpec
 import io.kotest.matchers.shouldBe
+import java.time.LocalDate
 
 class ReviewTest : DescribeSpec({
 
@@ -15,9 +17,14 @@ class ReviewTest : DescribeSpec({
                 // Given
                 val user = User(
                     id = 1L,
-                    nickname = "testuser",
-                    profileImageUrl = "http://example.com/profile.jpg"
+                    nickname = "test_review_nickname",
+                    phoneNumber = "01012345678",
+                    name = "test_name",
+                    gender = Gender.MAN,
+                    birthday = LocalDate.now(),
+                    isTermsAgreed = true
                 )
+
                 val review = Review(
                     user = user,
                     restaurantId = 10L,
@@ -38,9 +45,14 @@ class ReviewTest : DescribeSpec({
                 // Given
                 val user = User(
                     id = 1L,
-                    nickname = "testuser",
-                    profileImageUrl = "http://example.com/profile.jpg"
+                    nickname = "test_review_nickname",
+                    phoneNumber = "01012345678",
+                    name = "test_name",
+                    gender = Gender.MAN,
+                    birthday = LocalDate.now(),
+                    isTermsAgreed = true
                 )
+
                 val review = Review(
                     user = user,
                     restaurantId = 10L,

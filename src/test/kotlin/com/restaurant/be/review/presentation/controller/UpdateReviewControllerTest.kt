@@ -18,6 +18,7 @@ import com.restaurant.be.review.presentation.dto.UpdateReviewResponse
 import com.restaurant.be.review.presentation.dto.common.ReviewRequestDto
 import com.restaurant.be.review.presentation.dto.common.ReviewResponseDto
 import com.restaurant.be.review.repository.ReviewRepository
+import com.restaurant.be.user.domain.constant.Gender
 import com.restaurant.be.user.domain.entity.User
 import com.restaurant.be.user.repository.UserRepository
 import io.kotest.matchers.shouldBe
@@ -28,6 +29,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPat
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 import org.springframework.transaction.annotation.Transactional
 import java.nio.charset.Charset
+import java.time.LocalDate
 
 @IntegrationTest
 @Transactional
@@ -47,7 +49,7 @@ class UpdateReviewControllerTest(
 
     init {
         beforeEach {
-            setUpUser("test@gmail.com", userRepository)
+            setUpUser("01012345678", userRepository)
         }
 
         describe("updateReview basic test") {
@@ -62,7 +64,7 @@ class UpdateReviewControllerTest(
                 val review = reviewRepository.save(
                     ReviewUtil.generateReviewEntity(
                         restaurantId = restaurant.id,
-                        user = userRepository.findByEmail("test@gmail.com")
+                        user = userRepository.findByPhoneNumber("01012345678")
                             ?: throw Exception()
                     )
                 )
@@ -135,7 +137,14 @@ class UpdateReviewControllerTest(
             it("when another user's review update should return NotFoundReviewException") {
                 // given
                 val user = userRepository.save(
-                    User(email = "test@test.com", profileImageUrl = "")
+                    User(
+                        phoneNumber = "01099999999",
+                        nickname = "test_review_nickname",
+                        name = "test_name",
+                        gender = Gender.MAN,
+                        birthday = LocalDate.now(),
+                        isTermsAgreed = true
+                    )
                 )
 
                 val restaurant = restaurantRepository.save(

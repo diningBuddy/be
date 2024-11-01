@@ -25,11 +25,8 @@ class SecurityConfig(
     val tokenProvider: TokenProvider,
     val jwtUserRepository: JwtUserRepository
 ) {
-
     @Bean
-    fun passwordEncoder(): PasswordEncoder {
-        return BCryptPasswordEncoder()
-    }
+    fun passwordEncoder(): PasswordEncoder = BCryptPasswordEncoder()
 
     @Bean
     fun filterChain(http: HttpSecurity): SecurityFilterChain {
@@ -52,9 +49,9 @@ class SecurityConfig(
                         "/v2/api-docs",
                         "/webjars/**"
                     ).permitAll()
-                    .anyRequest().authenticated()
-            }
-            .httpBasic { }
+                    .anyRequest()
+                    .authenticated()
+            }.httpBasic { }
             .exceptionHandling { it.authenticationEntryPoint(jwtAuthenticationEntryPoint) }
 
         val jwtFilter = JwtFilter(tokenProvider, jwtUserRepository)

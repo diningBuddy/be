@@ -40,7 +40,7 @@ class RecommendRestaurantControllerTest(
 
     init {
         beforeEach {
-            setUpUser("test@gmail.com", userRepository)
+            setUpUser("01012345678", userRepository)
         }
 
         afterEach {
@@ -50,7 +50,7 @@ class RecommendRestaurantControllerTest(
         describe("#getRecommendRestaurants") {
             it("when 5 restaurant saved should return recommended 5 restaurants") {
                 // given
-                val userId = userRepository.findByEmail("test@gmail.com")?.id ?: 0
+                val userId = userRepository.findByPhoneNumber("01012345678")?.id ?: 0
 
                 val restaurantIds = (1..5).map { i ->
                     val restaurant = restaurantRepository.save(
@@ -90,7 +90,7 @@ class RecommendRestaurantControllerTest(
 
             it("when 7 restaurant saved should return recommended 5 restaurants") {
                 // given
-                val userId = userRepository.findByEmail("test@gmail.com")?.id ?: 0
+                val userId = userRepository.findByPhoneNumber("01012345678")?.id ?: 0
                 val restaurantIds = (1..7).map { i ->
                     val restaurant = restaurantRepository.save(
                         RestaurantUtil.generateRestaurantEntity(
@@ -129,7 +129,7 @@ class RecommendRestaurantControllerTest(
 
             it("when 3 restaurant saved should return recommended 3 restaurants") {
                 // given
-                val userId = userRepository.findByEmail("test@gmail.com")?.id ?: 0
+                val userId = userRepository.findByPhoneNumber("01012345678")?.id ?: 0
                 val restaurantIds = (1..3).map { i ->
                     val restaurant = restaurantRepository.save(
                         RestaurantUtil.generateRestaurantEntity(

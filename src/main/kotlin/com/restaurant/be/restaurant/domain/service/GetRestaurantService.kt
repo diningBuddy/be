@@ -1,7 +1,7 @@
 package com.restaurant.be.restaurant.domain.service
 
 import com.restaurant.be.common.exception.NotFoundRestaurantException
-import com.restaurant.be.common.exception.NotFoundUserEmailException
+import com.restaurant.be.common.exception.NotFoundUserPhoneNumberException
 import com.restaurant.be.common.redis.RedisRepository
 import com.restaurant.be.restaurant.presentation.controller.dto.GetRestaurantResponse
 import com.restaurant.be.restaurant.presentation.controller.dto.GetRestaurantsRequest
@@ -30,7 +30,7 @@ class GetRestaurantService(
         pageable: Pageable,
         email: String
     ): GetRestaurantsResponse {
-        val userId = userRepository.findByEmail(email)?.id ?: throw NotFoundUserEmailException()
+        val userId = userRepository.findByPhoneNumber(email)?.id ?: throw NotFoundUserPhoneNumberException()
         val restaurantIds =
             if (request.like != null) {
                 restaurantLikeRepository.findAllByUserId(userId)
@@ -70,7 +70,7 @@ class GetRestaurantService(
 
     @Transactional(readOnly = true)
     fun getRestaurant(restaurantId: Long, email: String): GetRestaurantResponse {
-        val userId = userRepository.findByEmail(email)?.id ?: throw NotFoundUserEmailException()
+        val userId = userRepository.findByPhoneNumber(email)?.id ?: throw NotFoundUserPhoneNumberException()
         val restaurant = restaurantRepository.findDtoById(restaurantId, userId)
             ?: throw NotFoundRestaurantException()
         return GetRestaurantResponse(restaurant.toDto())
