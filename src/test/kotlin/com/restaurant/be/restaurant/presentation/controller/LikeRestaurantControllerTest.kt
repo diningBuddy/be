@@ -486,7 +486,7 @@ class LikeRestaurantControllerTest(
                     .andExpect(status().isOk)
                     .andExpect(jsonPath("$.result").value("SUCCESS"))
                     .andReturn()
-                    
+
                 val responseContent = result.response.getContentAsString(Charset.forName("UTF-8"))
                 val responseType =
                     object : TypeReference<CommonResponse<LikeRestaurantResponse>>() {}
