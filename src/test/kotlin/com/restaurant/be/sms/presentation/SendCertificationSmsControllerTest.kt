@@ -38,7 +38,7 @@ class SendCertificationSmsControllerTest(
 
                 // when
                 val result = mockMvc.perform(
-                    post("$baseUrl/certification")
+                    post("$baseUrl/send-certification-number")
                         .content(
                             objectMapper.writeValueAsString(
                                 mapOf(

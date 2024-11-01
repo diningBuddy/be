@@ -1,4 +1,4 @@
-package com.restaurant.be.sms.domain.service
+package com.restaurant.be.sms.repository
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.restaurant.be.common.exception.AligoSendSmsException
@@ -12,7 +12,7 @@ import org.springframework.web.client.RestClient
 
 @Service
 @Transactional(readOnly = true)
-class SmsService(
+class SmsRepository(
     @Value("\${aligo.key}") private val key: String,
     @Value("\${aligo.user-id}") private val userId: String,
     @Value("\${aligo.sender}") private val sender: String,

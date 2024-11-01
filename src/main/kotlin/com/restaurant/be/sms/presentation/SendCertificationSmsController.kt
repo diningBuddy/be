@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RestController
 class SendCertificationSmsController(
     private val sendCertificationSmsService: SendCertificationSmsService
 ) {
-    @PostMapping("/certification")
+    @PostMapping("/send-certification-number")
     @ApiOperation(value = "인증 문자 발송 API")
     @ApiResponse(
         responseCode = "200",
