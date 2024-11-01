@@ -23,30 +23,22 @@ class Review(
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long? = null,
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
     val user: User,
-
     @Column(nullable = false)
     val restaurantId: Long,
-
     @Column(nullable = false)
     var content: String,
-
     @Column(nullable = false)
     var rating: Double,
-
     @Column(name = "like_count", nullable = false)
     var likeCount: Long = 0,
-
     @Column(name = "view_count", nullable = false)
     var viewCount: Long = 0,
-
     @OneToMany(cascade = [CascadeType.ALL], orphanRemoval = true)
     @JoinColumn(name = "review_id")
     var images: MutableList<ReviewImage> = mutableListOf()
-
 ) : BaseEntity() {
     fun addImage(reviewImage: ReviewImage) {
         images.add(reviewImage)

@@ -2,7 +2,7 @@ package com.restaurant.be.review.domain.service
 
 import com.restaurant.be.common.exception.NotFoundRestaurantException
 import com.restaurant.be.common.exception.NotFoundReviewException
-import com.restaurant.be.common.exception.NotFoundUserEmailException
+import com.restaurant.be.common.exception.NotFoundUserPhoneNumberException
 import com.restaurant.be.common.exception.UnAuthorizedDeleteException
 import com.restaurant.be.restaurant.repository.RestaurantRepository
 import com.restaurant.be.review.domain.entity.QReview.review
@@ -20,7 +20,7 @@ class DeleteReviewService(
 ) {
     @Transactional
     fun deleteReview(reviewId: Long, email: String) {
-        val user = userRepository.findByEmail(email) ?: throw NotFoundUserEmailException()
+        val user = userRepository.findByPhoneNumber(email) ?: throw NotFoundUserPhoneNumberException()
 
         val review = reviewRepository.findById(reviewId).getOrNull() ?: throw NotFoundReviewException()
 

@@ -38,7 +38,7 @@ class RecentQueryControllerTest(
 
     init {
         beforeEach {
-            setUpUser("test@gmail.com", userRepository)
+            setUpUser("01012345678", userRepository)
         }
 
         afterEach {
@@ -48,7 +48,7 @@ class RecentQueryControllerTest(
         describe("#getRecentQueries basic test") {
             it("when 5 recent queries saved should return 5 recent queries") {
                 // given
-                val userId = userRepository.findByEmail("test@gmail.com")?.id ?: 0
+                val userId = userRepository.findByPhoneNumber("01012345678")?.id ?: 0
                 redisTemplate.opsForList()
                     .rightPushAll(
                         "SR:$userId",
@@ -108,7 +108,7 @@ class RecentQueryControllerTest(
 
             it("when 7 recent queries saved should return 5 recent queries") {
                 // given
-                val userId = userRepository.findByEmail("test@gmail.com")?.id ?: 0
+                val userId = userRepository.findByPhoneNumber("01012345678")?.id ?: 0
                 redisTemplate.opsForList()
                     .rightPushAll(
                         "SR:$userId",
@@ -148,7 +148,7 @@ class RecentQueryControllerTest(
         describe("#deleteRecentQueries basic test") {
             it("when 5 recent queries saved should delete all recent queries") {
                 // given
-                val userId = userRepository.findByEmail("test@gmail.com")?.id ?: 0
+                val userId = userRepository.findByPhoneNumber("01012345678")?.id ?: 0
                 redisTemplate.opsForList()
                     .rightPushAll(
                         "SR:$userId",
@@ -192,7 +192,7 @@ class RecentQueryControllerTest(
 
             it("when 5 recent queries saved should delete specific recent query") {
                 // given
-                val userId = userRepository.findByEmail("test@gmail.com")?.id ?: 0
+                val userId = userRepository.findByPhoneNumber("01012345678")?.id ?: 0
                 redisTemplate.opsForList()
                     .rightPushAll(
                         "SR:$userId",

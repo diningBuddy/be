@@ -1,15 +1,18 @@
 package com.restaurant.be.user.domain.entity
 
 import com.restaurant.be.common.converter.SeparatorConverter
-import com.restaurant.be.common.password.PasswordService
-import com.restaurant.be.user.presentation.dto.UpdateUserRequest
+import com.restaurant.be.common.entity.BaseEntity
+import com.restaurant.be.user.domain.constant.Gender
 import jakarta.persistence.Column
 import jakarta.persistence.Convert
 import jakarta.persistence.Entity
+import jakarta.persistence.FetchType.LAZY
 import jakarta.persistence.GeneratedValue
 import jakarta.persistence.GenerationType
 import jakarta.persistence.Id
+import jakarta.persistence.OneToMany
 import jakarta.persistence.Table
+import java.time.LocalDate
 
 @Entity
 @Table(name = "users")
@@ -18,36 +21,28 @@ class User(
     @Column
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id: Long? = null,
-
     @Column(unique = true)
-    var email: String = "",
-
+    var phoneNumber: String,
     @Column(unique = true)
-    var nickname: String = "",
-
+    var nickname: String,
     @Column
-    var password: String = "",
-
+    var name: String,
+    @Column
+    var birthday: LocalDate,
+    @Column
+    var gender: Gender,
+    @Column
+    var isTermsAgreed: Boolean,
     @Column(columnDefinition = "boolean default false")
-    var withdrawal: Boolean = false,
-
+    var isDeleted: Boolean = false,
     @Convert(converter = SeparatorConverter::class)
     var roles: List<String> = listOf(),
-
     @Column
-    var profileImageUrl: String
-) {
-    fun updatePassword(password: String) {
-        this.password = password.run(PasswordService::hashPassword)
-    }
-
-    fun updateUser(request: UpdateUserRequest) {
-        this.nickname = request.nickname
-        this.profileImageUrl = request.profileImageUrl
-    }
-
+    var profileImageUrl: String? = null,
+    @OneToMany(mappedBy = "user", fetch = LAZY)
+    var socialUsers: MutableList<SocialUser> = mutableListOf()
+) : BaseEntity() {
     fun delete() {
-        this.withdrawal = true
-        this.email = ""
+        this.isDeleted = true
     }
 }
