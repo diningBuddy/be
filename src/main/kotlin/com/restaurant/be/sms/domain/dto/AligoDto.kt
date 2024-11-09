@@ -42,14 +42,14 @@ data class AligoSendSmsResponse(
     val message: String,
 
     // 메시지 고유 ID
-    val msg_id: Int? = null,
+    val msg_id: Int?,
 
     // 요청성공 건수
-    val success_cnt: Int? = null,
+    val success_cnt: Int?,
 
     // 요청실패 건수
-    val error_cnt: Int? = null,
+    val error_cnt: Int?,
 
     // 메시지 타입 (1. SMS, 2.LMS, 3. MMS)
-    val msg_type: String? = null
+    val msg_type: String?,
 )
