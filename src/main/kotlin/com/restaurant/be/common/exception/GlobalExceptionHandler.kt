@@ -10,6 +10,7 @@ import com.restaurant.be.common.response.Error
 import com.restaurant.be.common.response.ErrorCode
 import jakarta.servlet.http.HttpServletRequest
 import kotlinx.coroutines.runBlocking
+import mu.KotlinLogging
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
@@ -27,6 +28,7 @@ import java.security.SignatureException
 class GlobalExceptionHandler(
     @Qualifier("MonitorWebhook") private val webhookClient: WebhookClient
 ) {
+    val log = KotlinLogging.logger {}
 
     @ExceptionHandler(value = [ServerException::class])
     fun handleServerException(
@@ -165,6 +167,7 @@ class GlobalExceptionHandler(
     fun exception(
         e: Exception
     ): CommonResponse<String?> {
+        log.error { e.printStackTrace() }
         val errorResponse = CommonResponse.fail(e.message, e::class.java.simpleName)
         return errorResponse
     }

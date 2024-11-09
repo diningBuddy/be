@@ -148,9 +148,7 @@ class UpdateReviewControllerTest(
                 )
 
                 val restaurant = restaurantRepository.save(
-                    RestaurantUtil.generateRestaurantEntity(
-                        name = "restaurant"
-                    )
+                    RestaurantUtil.generateRestaurantEntity(name = "restaurant")
                 )
 
                 val review = reviewRepository.save(

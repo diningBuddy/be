@@ -19,7 +19,17 @@ data class CommonResponse<T>(
             )
         }
 
-        // status 200 + success (data가 없을 경우)
+        // status 200 + success (data 가 없을 경우)
+        fun success(message: String): CommonResponse<Void> {
+            return CommonResponse(
+                result = Result.SUCCESS,
+                data = null,
+                message = message,
+                errorCode = null
+            )
+        }
+
+        // status 200 + success (data, message 가 없을 경우)
         fun <T> success(): CommonResponse<T> {
             return CommonResponse(
                 result = Result.SUCCESS,

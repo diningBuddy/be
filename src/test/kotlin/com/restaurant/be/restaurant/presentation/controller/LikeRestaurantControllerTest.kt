@@ -472,22 +472,20 @@ class LikeRestaurantControllerTest(
                 restaurantRepository.save(restaurantEntity)
 
                 // when
-                val result =
-                    mockMvc
-                        .perform(
-                            post("$baseUrl/${restaurantEntity.id}/like")
-                                .content(
-                                    objectMapper.writeValueAsString(
-                                        mapOf(
-                                            "isLike" to true
-                                        )
-                                    )
-                                ).contentType("application/json")
-                        ).also {
-                            println(it.andReturn().response.contentAsString)
-                        }.andExpect(status().isOk)
-                        .andExpect(jsonPath("$.result").value("SUCCESS"))
-                        .andReturn()
+                val result = mockMvc.perform(
+                    post("$baseUrl/${restaurantEntity.id}/like")
+                        .content(
+                            objectMapper.writeValueAsString(
+                                mapOf("isLike" to true)
+                            )
+                        )
+                        .contentType("application/json")
+                ).also {
+                    println(it.andReturn().response.contentAsString)
+                }
+                    .andExpect(status().isOk)
+                    .andExpect(jsonPath("$.result").value("SUCCESS"))
+                    .andReturn()
 
                 val responseContent = result.response.getContentAsString(Charset.forName("UTF-8"))
                 val responseType =

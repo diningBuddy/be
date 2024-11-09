@@ -1,5 +1,5 @@
 server:
-  port: 8080
+  port: 8081
 
 spring:
   elasticsearch:
@@ -49,3 +49,9 @@ es:
 
 discord:
   monitor: ${DISCORD_MONITOR:https:test}
+
+aligo:
+  key: test
+  user-id: test
+  sender: test
+  test-mode: Y
