@@ -51,5 +51,5 @@ data class AligoSendSmsResponse(
     val error_cnt: Int?,
 
     // 메시지 타입 (1. SMS, 2.LMS, 3. MMS)
-    val msg_type: String?,
+    val msg_type: String?
 )
