@@ -20,7 +20,7 @@ data class CommonResponse<T>(
         }
 
         // status 200 + success (data 가 없을 경우)
-        fun success(message: String): CommonResponse<Void> {
+        fun success(message: String): CommonResponse<Unit> {
             return CommonResponse(
                 result = Result.SUCCESS,
                 data = null,

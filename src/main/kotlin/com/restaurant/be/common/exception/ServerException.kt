@@ -29,6 +29,10 @@ data class DuplicateUserEmailException(
     override val message: String = "이미 존재 하는 이메일 입니다."
 ) : ServerException(400, message)
 
+data class DuplicateUserPhoneNumberException(
+    override val message: String = "이미 가입된 핸드폰번호 입니다."
+) : ServerException(400, message)
+
 data class DuplicateUserNicknameException(
     override val message: String = "이미 존재 하는 닉네임 입니다."
 ) : ServerException(400, message)

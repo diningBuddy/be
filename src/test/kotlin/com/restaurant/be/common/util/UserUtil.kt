@@ -29,3 +29,24 @@ fun setUpUser(phoneNumber: String, userRepository: UserRepository): User {
 
     return user
 }
+
+fun setUpUser(phoneNumber: String, nickName: String, userRepository: UserRepository): User {
+    val user = User(
+        phoneNumber = phoneNumber,
+        nickname = nickName,
+        name = "test_name",
+        gender = Gender.MAN,
+        birthday = LocalDate.now(),
+        isTermsAgreed = true
+    )
+    userRepository.save(user)
+
+    SecurityContextHolder.getContext().authentication =
+        PreAuthenticatedAuthenticationToken(
+            Principal { phoneNumber },
+            null,
+            listOf(SimpleGrantedAuthority("ROLE_USER"))
+        )
+
+    return user
+}

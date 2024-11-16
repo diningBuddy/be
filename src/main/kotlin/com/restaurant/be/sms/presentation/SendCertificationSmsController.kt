@@ -30,7 +30,7 @@ class SendCertificationSmsController(
     fun checkNickname(
         @RequestBody @Valid
         request: SendCertificationSmsRequest
-    ): CommonResponse<Void> {
+    ): CommonResponse<Unit> {
         sendCertificationSmsService.sendCertification(request)
         return CommonResponse.success("인증 문자 발송 되었습니다.")
     }
