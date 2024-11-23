@@ -1,19 +1,23 @@
 package com.restaurant.be.common.redis
 
 import com.restaurant.be.common.exception.ExpiredCertificationNumberException
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.data.redis.core.RedisTemplate
 import org.springframework.stereotype.Component
 import java.util.concurrent.TimeUnit
 
 @Component
 class RedisRepository(
-    val redisTemplate: RedisTemplate<String, String>
+    private val redisTemplate: RedisTemplate<String, String>,
+    @Value("\${jwt.refresh-token-validity-in-seconds}")
+    private val refreshTokenValidityInSeconds: Long
 ) {
     companion object {
         private const val SEARCH_PREFIX = "SR:" // 검색어를 저장할 때 사용할 키 접두사
         private const val MAX_HISTORY = 5 // 저장할 최대 검색어 수
         private const val RECOMMENDATION_PREFIX = "RECOMMENDATION:"
         const val CERTIFICATION_PREFIX = "CERTIFICATION:"
+        const val REFRESH_TOKEN_PREFIX = "REFRESH_TOKEN:"
     }
 
     // 사용자별 추천 식당을 조회하는 메서드
@@ -80,6 +84,11 @@ class RedisRepository(
     fun getCertificationNumber(phoneNumber: String): String {
         val key = "$CERTIFICATION_PREFIX$phoneNumber"
         return getValue(key) ?: throw ExpiredCertificationNumberException()
+    }
+
+    fun saveRefreshToken(phoneNumber: String, refreshToken: String) {
+        val key = "$REFRESH_TOKEN_PREFIX$phoneNumber"
+        setValue(key, refreshToken, refreshTokenValidityInSeconds, TimeUnit.SECONDS)
     }
 
     fun setValue(key: String, value: String, timeout: Long, unit: TimeUnit) {
