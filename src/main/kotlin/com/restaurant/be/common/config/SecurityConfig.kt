@@ -38,7 +38,7 @@ class SecurityConfig(
                 auth
                     .requestMatchers(
                         "/v1/users/sign-up",
-                        "/v1/users/email/sign-in",
+                        "/v1/users/sign-in",
                         "/v1/users/email/send",
                         "/v1/users/email/validate",
                         "/v1/users/password",

@@ -12,7 +12,7 @@ class RedisRepositoryTest : DescribeSpec({
 
     val redisTemplate = mockk<RedisTemplate<String, String>>()
     val listOperations = mockk<ListOperations<String, String>>()
-    val redisRepository = RedisRepository(redisTemplate)
+    val redisRepository = RedisRepository(redisTemplate, 1209600)
 
     describe("RedisRepository") {
 
