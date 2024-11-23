@@ -10,7 +10,7 @@ import java.util.concurrent.TimeUnit
 class RedisRepository(
     private val redisTemplate: RedisTemplate<String, String>,
     @Value("\${jwt.refresh-token-validity-in-seconds}")
-    private val refreshTokenValidityInSeconds: Long,
+    private val refreshTokenValidityInSeconds: Long
 ) {
     companion object {
         private const val SEARCH_PREFIX = "SR:" // 검색어를 저장할 때 사용할 키 접두사

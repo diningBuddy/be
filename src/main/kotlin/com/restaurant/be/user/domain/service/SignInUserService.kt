@@ -27,5 +27,4 @@ class SignInUserService(
         servletResponse.setHeader("Authorization", "Bearer ${token.accessToken}")
         servletResponse.setHeader("RefreshToken", token.refreshToken)
     }
-
 }

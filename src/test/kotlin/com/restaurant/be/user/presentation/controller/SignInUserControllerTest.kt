@@ -32,7 +32,7 @@ import java.nio.charset.Charset
 class SignInUserControllerTest(
     private val mockMvc: MockMvc,
     private val redisRepository: RedisRepository,
-    private val userRepository: UserRepository,
+    private val userRepository: UserRepository
 ) : CustomDescribeSpec() {
     private val baseUrl = "/v1/users"
     private val objectMapper: ObjectMapper = ObjectMapper().registerModule(KotlinModule()).apply {
@@ -124,6 +124,4 @@ class SignInUserControllerTest(
             }
         }
     }
-
 }
-
