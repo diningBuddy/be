@@ -34,7 +34,9 @@ class SignInUserController(
         request: SignInUserRequest,
         servletResponse: HttpServletResponse
     ): CommonResponse<Unit> {
-        signInUserService.signIn(request, servletResponse)
+        val token = signInUserService.signIn(request)
+        servletResponse.setHeader("Authorization", "Bearer ${token.accessToken}")
+        servletResponse.setHeader("RefreshToken", token.refreshToken)
         return CommonResponse.success("로그인 되었습니다.")
     }
 }
