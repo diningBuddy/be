@@ -7,4 +7,6 @@ interface UserRepository : JpaRepository<User, Long> {
     fun findByPhoneNumber(phoneNumber: String): User?
 
     fun findByNickname(nickname: String): User?
+
+    fun findByNicknameStartingWith(nickname: String): List<User>
 }
