@@ -5,6 +5,8 @@ import com.restaurant.be.user.domain.constant.SocialType
 import jakarta.persistence.Column
 import jakarta.persistence.ConstraintMode
 import jakarta.persistence.Entity
+import jakarta.persistence.EnumType
+import jakarta.persistence.Enumerated
 import jakarta.persistence.FetchType.LAZY
 import jakarta.persistence.ForeignKey
 import jakarta.persistence.GeneratedValue
@@ -22,6 +24,7 @@ class SocialUser(
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id: Long? = null,
     @Column
+    @Enumerated(EnumType.STRING)
     var socialType: SocialType,
     @Column(unique = true)
     var socialKey: String,

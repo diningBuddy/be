@@ -43,6 +43,7 @@ class SecurityConfig(
                         "/v1/users/email/validate",
                         "/v1/users/password",
                         "/v1/sms/send-certification-number",
+                        "/v1/sms/verify-certification-number",
                         "/hello",
                         "/profile",
                         "/swagger-ui/**",

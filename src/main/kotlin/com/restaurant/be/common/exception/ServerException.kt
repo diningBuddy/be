@@ -92,3 +92,11 @@ data class NotFoundRestaurantException(
 data class AligoSendSmsException(
     override val message: String = "알리고 문자 전송 실패 했습니다."
 ) : ServerException(500, message)
+
+data class ExpiredCertificationNumberException(
+    override val message: String = "인증번호가 만료되었습니다."
+) : ServerException(400, message)
+
+data class InvalidCertificationNumberException(
+    override val message: String = "일치하지 않는 인증번호 입니다."
+) : ServerException(400, message)
