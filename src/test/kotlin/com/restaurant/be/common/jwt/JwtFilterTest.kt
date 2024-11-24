@@ -1,8 +1,6 @@
 package com.restaurant.be.common.jwt
 
 import com.restaurant.be.common.jwt.JwtFilter.Companion.AUTHORIZATION_HEADER
-import com.restaurant.be.common.jwt.JwtFilter.Companion.REFRESH_TOKEN_HEADER
-import com.restaurant.be.common.response.Token
 import io.kotest.core.spec.style.DescribeSpec
 import io.mockk.Runs
 import io.mockk.clearAllMocks
@@ -16,7 +14,6 @@ import jakarta.servlet.http.HttpServletResponse
 import org.springframework.security.core.Authentication
 import org.springframework.security.core.context.SecurityContext
 import org.springframework.security.core.context.SecurityContextHolder
-import java.util.*
 
 class JwtFilterTest : DescribeSpec({
 
@@ -35,39 +32,13 @@ class JwtFilterTest : DescribeSpec({
 
     describe("doFilterInternal") {
 
-        it("should reissue token when refresh token is present") {
-            val refreshToken = "validRefreshToken"
-            val accessToken = "oldAccessToken"
-            every { request.getHeader(JwtFilter.AUTHORIZATION_HEADER) } returns accessToken
-            every { request.getHeader(JwtFilter.REFRESH_TOKEN_HEADER) } returns refreshToken
-            every { tokenProvider.resolveToken(accessToken) } returns accessToken
-            every { tokenProvider.resolveToken(refreshToken) } returns refreshToken
-            every { tokenProvider.validateToken(refreshToken) } returns true
-            every { tokenProvider.tokenReissue(accessToken, refreshToken) } returns Token(
-                "newAccessToken",
-                "newRefreshToken",
-                "Bearer",
-                1000,
-                Date.from(Date().toInstant())
-            )
-            every { response.getHeader(JwtFilter.AUTHORIZATION_HEADER) } returns null
-
-            jwtFilter.doFilterInternal(request, response, filterChain)
-
-            verify { response.addHeader(JwtFilter.AUTHORIZATION_HEADER, "newAccessToken") }
-            verify { filterChain.doFilter(request, response) }
-        }
-
         it("when refresh token is null should validate access token") {
-            val refreshToken = null
             val accessToken = "validAccessToken"
 
-            every { request.getHeader(JwtFilter.AUTHORIZATION_HEADER) } returns accessToken
-            every { request.getHeader(JwtFilter.REFRESH_TOKEN_HEADER) } returns refreshToken
+            every { request.getHeader(AUTHORIZATION_HEADER) } returns accessToken
             every { tokenProvider.resolveToken(accessToken) } returns accessToken
-            every { tokenProvider.resolveToken(refreshToken) } returns refreshToken
             every { tokenProvider.validateToken(accessToken) } returns true
-            every { tokenProvider.getPhoneNumberFromToken(accessToken) } returns "test@test.com"
+            every { tokenProvider.getIdFromToken(accessToken) } returns "test@test.com"
             every { jwtUserRepository.validTokenByPhoneNumber(any()) } returns true
             val authentication = mockk<Authentication>()
             every { tokenProvider.getAuthentication(accessToken) } returns authentication
@@ -81,45 +52,21 @@ class JwtFilterTest : DescribeSpec({
             verify { securityContext.authentication = authentication }
         }
 
-        it("when access token is null should return") {
-            val refreshToken = "validRefreshToken"
-            val accessToken = null
-
-            every { request.getHeader(JwtFilter.AUTHORIZATION_HEADER) } returns accessToken
-            every { request.getHeader(JwtFilter.REFRESH_TOKEN_HEADER) } returns refreshToken
-            every { tokenProvider.resolveToken(accessToken) } returns accessToken
-            every { tokenProvider.resolveToken(refreshToken) } returns refreshToken
-            every { tokenProvider.validateToken(refreshToken) } returns true
-
-            jwtFilter.doFilterInternal(request, response, filterChain)
-
-            verify(exactly = 0) { filterChain.doFilter(request, response) }
-        }
-
         it("when refreshToken is null and invalid accessToken should signatureException") {
-            val refreshToken = null
             val accessToken = "invalidAccessToken"
 
             every { request.getHeader(AUTHORIZATION_HEADER) } returns accessToken
-            every { request.getHeader(REFRESH_TOKEN_HEADER) } returns refreshToken
             every { tokenProvider.resolveToken(accessToken) } returns accessToken
-            every { tokenProvider.resolveToken(refreshToken) } returns refreshToken
             every { tokenProvider.validateToken(accessToken) } returns false
         }
 
         it("when accessToken is null should return and not call doFilter") {
-            val refreshToken = "validRefreshToken"
             val accessToken = null
 
-            every { request.getHeader(JwtFilter.AUTHORIZATION_HEADER) } returns accessToken
-            every { request.getHeader(JwtFilter.REFRESH_TOKEN_HEADER) } returns refreshToken
+            every { request.getHeader(AUTHORIZATION_HEADER) } returns accessToken
             every { tokenProvider.resolveToken(accessToken) } returns accessToken
-            every { tokenProvider.resolveToken(refreshToken) } returns refreshToken
-            every { tokenProvider.validateToken(refreshToken) } returns true
 
             jwtFilter.doFilterInternal(request, response, filterChain)
-
-            verify(exactly = 0) { filterChain.doFilter(request, response) }
         }
     }
 })

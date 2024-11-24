@@ -24,33 +24,16 @@ class JwtFilter(
         val requestURI = request.requestURI
 
         val accessToken = tokenProvider.resolveToken(request.getHeader(AUTHORIZATION_HEADER))
-        val refreshToken = tokenProvider.resolveToken(request.getHeader(REFRESH_TOKEN_HEADER))
 
-        if (refreshToken == null) {
-            if (StringUtils.hasText(accessToken) && tokenProvider.validateToken(accessToken)) { // 토큰의 유효성이 검증됐을 경우,
-                if (jwtUserRepository.validTokenByPhoneNumber(tokenProvider.getPhoneNumberFromToken(accessToken!!))) {
-                    val authentication: Authentication =
-                        tokenProvider.getAuthentication(accessToken)
-                    SecurityContextHolder.getContext().authentication = authentication
-                }
-            } else {
-                log.debug("유효한 JWT 토큰이 없습니다, uri: {}", requestURI)
-                request.setAttribute("exception", SignatureException())
+        if (StringUtils.hasText(accessToken) && tokenProvider.validateToken(accessToken)) { // 토큰의 유효성이 검증됐을 경우,
+            if (jwtUserRepository.validTokenByPhoneNumber(tokenProvider.getIdFromToken(accessToken!!))) {
+                val authentication: Authentication =
+                    tokenProvider.getAuthentication(accessToken)
+                SecurityContextHolder.getContext().authentication = authentication
             }
         } else {
-            tokenProvider.validateToken(refreshToken)
-
-            if (accessToken == null) {
-                log.debug("accessToken 이 존재하지 않습니다., uri: {}", requestURI)
-                return
-            }
-
-            val newAccessToken = tokenProvider.tokenReissue(accessToken, refreshToken)
-
-            val header = response.getHeader(AUTHORIZATION_HEADER)
-            if (header == null || "" == header) {
-                response.addHeader(AUTHORIZATION_HEADER, newAccessToken.accessToken)
-            }
+            log.debug("유효한 JWT 토큰이 없습니다, uri: {}", requestURI)
+            request.setAttribute("exception", SignatureException())
         }
 
         filterChain.doFilter(request, response)
@@ -58,6 +41,5 @@ class JwtFilter(
 
     companion object {
         const val AUTHORIZATION_HEADER = "Authorization"
-        const val REFRESH_TOKEN_HEADER = "Refresh-Token"
     }
 }

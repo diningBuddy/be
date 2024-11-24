@@ -1,6 +1,7 @@
 package com.restaurant.be.common.redis
 
 import com.restaurant.be.common.exception.ExpiredCertificationNumberException
+import com.restaurant.be.common.exception.InvalidTokenException
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.data.redis.core.RedisTemplate
 import org.springframework.stereotype.Component
@@ -86,9 +87,14 @@ class RedisRepository(
         return getValue(key) ?: throw ExpiredCertificationNumberException()
     }
 
-    fun saveRefreshToken(phoneNumber: String, refreshToken: String) {
-        val key = "$REFRESH_TOKEN_PREFIX$phoneNumber"
+    fun saveRefreshToken(id: Long, refreshToken: String) {
+        val key = "$REFRESH_TOKEN_PREFIX$id"
         setValue(key, refreshToken, refreshTokenValidityInSeconds, TimeUnit.SECONDS)
+    }
+
+    fun getRefreshToken(id: String): String {
+        val key = "$REFRESH_TOKEN_PREFIX$id"
+        return getValue(key) ?: throw InvalidTokenException()
     }
 
     fun setValue(key: String, value: String, timeout: Long, unit: TimeUnit) {
