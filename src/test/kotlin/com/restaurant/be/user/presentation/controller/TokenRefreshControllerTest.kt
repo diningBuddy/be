@@ -85,7 +85,7 @@ class TokenRefreshControllerTest(
             it("엑세스 토큰 재발급 실패 테스트") {
                 // given
                 val testUser = setUpUser("01012341234", userRepository)
-                val failTokens = tokenProvider.createTokens("1", testUser.roles)
+                val failTokens = tokenProvider.createTokens(testUser.id.toString(), listOf("ROLE_FAIL"))
                 val tokens = tokenProvider.createTokens(testUser.id.toString(), testUser.roles)
                 redisRepository.saveRefreshToken(testUser.id!!, tokens.refreshToken)
 
@@ -161,7 +161,7 @@ class TokenRefreshControllerTest(
             it("리프래시 토큰 재발급 실패 테스트") {
                 // given
                 val testUser = setUpUser("01012341234", userRepository)
-                val failTokens = tokenProvider.createTokens("1", testUser.roles)
+                val failTokens = tokenProvider.createTokens(testUser.id.toString(), listOf("ROLE_FAIL"))
                 val tokens = tokenProvider.createTokens(testUser.id.toString(), testUser.roles)
                 redisRepository.saveRefreshToken(testUser.id!!, tokens.refreshToken)
 
