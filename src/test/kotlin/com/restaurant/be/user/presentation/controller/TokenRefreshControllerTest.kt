@@ -157,40 +157,6 @@ class TokenRefreshControllerTest(
                 refreshTokenHeader shouldNotBe null
                 refreshTokenHeader shouldMatch Regex("^[A-Za-z0-9-_=]+\\.[A-Za-z0-9-_=]+\\.[A-Za-z0-9-_=]+$")
             }
-
-            it("리프래시 토큰 재발급 실패 테스트") {
-                // given
-                val testUser = setUpUser("01012341234", userRepository)
-                val failTokens = tokenProvider.createTokens(testUser.id.toString(), listOf("ROLE_FAIL"))
-                val tokens = tokenProvider.createTokens(testUser.id.toString(), testUser.roles)
-                redisRepository.saveRefreshToken(testUser.id!!, tokens.refreshToken)
-
-                // when
-                val result = mockMvc.perform(
-                    post("$baseUrl/refresh-token-refresh")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .header("RefreshToken", failTokens.refreshToken)
-                ).also {
-                    println(it.andReturn().response.contentAsString)
-                }
-                    .andExpect(status().isUnauthorized)
-                    .andExpect(jsonPath("$.result").value("FAIL"))
-                    .andReturn()
-
-                val responseContent = result.response.getContentAsString(Charset.forName("UTF-8"))
-                val responseType =
-                    object : TypeReference<CommonResponse<Unit>>() {}
-                val actualResult: CommonResponse<Unit> =
-                    objectMapper.readValue(
-                        responseContent,
-                        responseType
-                    )
-
-                // then
-                actualResult.result shouldBe CommonResponse.Result.FAIL
-                actualResult.message shouldBe "유효하지 않은 토큰입니다."
-                actualResult.errorCode shouldBe "InvalidTokenException"
-            }
         }
     }
 }

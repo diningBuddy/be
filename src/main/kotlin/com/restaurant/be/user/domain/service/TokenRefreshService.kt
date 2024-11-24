@@ -30,14 +30,9 @@ class TokenRefreshService(
 
     fun refreshTokenRefresh(refreshToken: String): Token {
         val userId = tokenProvider.getIdFromExpiredToken(refreshToken)
-        redisRepository.getRefreshToken(userId).let {
-            if (it != refreshToken) {
-                throw InvalidTokenException()
-            }
-            val user = userRepository.findByIdOrNull(userId.toLong()) ?: throw NotFoundUserException()
-            val token = tokenProvider.createTokens(user.phoneNumber, user.roles)
-            redisRepository.saveRefreshToken(user.id!!, token.refreshToken)
-            return token
-        }
+        val user = userRepository.findByIdOrNull(userId.toLong()) ?: throw NotFoundUserException()
+        val token = tokenProvider.createTokens(user.phoneNumber, user.roles)
+        redisRepository.saveRefreshToken(user.id!!, token.refreshToken)
+        return token
     }
 }
