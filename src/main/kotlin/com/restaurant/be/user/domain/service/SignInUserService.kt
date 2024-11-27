@@ -22,8 +22,8 @@ class SignInUserService(
     fun signIn(request: SignInUserRequest): Token {
         val user = userRepository.findByPhoneNumber(request.id) ?: throw NotFoundUserException()
         certificationSmsService.verifyCertificationNumber(VerifyCertificationSmsRequest(request.id, request.certificationNumber))
-        val token = tokenProvider.createTokens(user.id.toString(), user.roles)
-        redisRepository.saveRefreshToken(user.id!!, token.refreshToken)
+        val token = tokenProvider.createTokens(user.getId().toString(), user.roles)
+        redisRepository.saveRefreshToken(user.getId(), token.refreshToken)
         return token
     }
 }

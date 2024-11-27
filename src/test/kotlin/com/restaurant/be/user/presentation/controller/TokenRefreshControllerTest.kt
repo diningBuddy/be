@@ -50,11 +50,11 @@ class TokenRefreshControllerTest(
                 // given
                 val testUser = setUpUser("01012341234", userRepository)
                 val tokens = tokenProvider.createTokens(testUser.id.toString(), testUser.roles)
-                redisRepository.saveRefreshToken(testUser.id!!, tokens.refreshToken)
+                redisRepository.saveRefreshToken(testUser.getId(), tokens.refreshToken)
 
                 // when
                 val result = mockMvc.perform(
-                    post("$baseUrl/token-refresh")
+                    post("$baseUrl/token-reissue")
                         .contentType(MediaType.APPLICATION_JSON)
                         .header("RefreshToken", tokens.refreshToken)
                 ).also {
@@ -87,11 +87,11 @@ class TokenRefreshControllerTest(
                 val testUser = setUpUser("01012341234", userRepository)
                 val failTokens = tokenProvider.createTokens(testUser.id.toString(), listOf("ROLE_FAIL"))
                 val tokens = tokenProvider.createTokens(testUser.id.toString(), testUser.roles)
-                redisRepository.saveRefreshToken(testUser.id!!, tokens.refreshToken)
+                redisRepository.saveRefreshToken(testUser.getId(), tokens.refreshToken)
 
                 // when
                 val result = mockMvc.perform(
-                    post("$baseUrl/token-refresh")
+                    post("$baseUrl/token-reissue")
                         .contentType(MediaType.APPLICATION_JSON)
                         .header("RefreshToken", failTokens.refreshToken)
                 ).also {
@@ -122,11 +122,11 @@ class TokenRefreshControllerTest(
                 // given
                 val testUser = setUpUser("01012341234", userRepository)
                 val tokens = tokenProvider.createTokens(testUser.id.toString(), testUser.roles)
-                redisRepository.saveRefreshToken(testUser.id!!, tokens.refreshToken)
+                redisRepository.saveRefreshToken(testUser.getId(), tokens.refreshToken)
 
                 // when
                 val result = mockMvc.perform(
-                    post("$baseUrl/refresh-token-refresh")
+                    post("$baseUrl/refresh-token-reissue")
                         .contentType(MediaType.APPLICATION_JSON)
                         .header("RefreshToken", tokens.refreshToken)
                 ).also {

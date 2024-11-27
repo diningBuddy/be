@@ -20,7 +20,7 @@ class TokenRefreshController(
     private val tokenRefreshService: TokenRefreshService
 ) {
 
-    @PostMapping("/token-refresh")
+    @PostMapping("/token-reissue")
     @ApiOperation(value = "토큰 재발급 API")
     @ApiResponse(
         responseCode = "200",
@@ -36,7 +36,7 @@ class TokenRefreshController(
         return CommonResponse.success("토큰 재발급 되었습니다.")
     }
 
-    @PostMapping("/refresh-token-refresh")
+    @PostMapping("/refresh-token-reissue")
     @ApiOperation(value = "리프래시 토큰 재발급 API")
     @ApiResponse(
         responseCode = "200",
