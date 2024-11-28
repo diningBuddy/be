@@ -39,6 +39,8 @@ class SecurityConfig(
                     .requestMatchers(
                         "/v1/users/sign-up",
                         "/v1/users/sign-in",
+                        "/v1/users/token-reissue",
+                        "/v1/users/refresh-token-reissue",
                         "/v1/users/email/send",
                         "/v1/users/email/validate",
                         "/v1/users/password",

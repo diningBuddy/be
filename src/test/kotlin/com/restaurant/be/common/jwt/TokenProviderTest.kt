@@ -54,10 +54,36 @@ class TokenProviderTest : DescribeSpec({
                 val token = tokenProvider.createTokens(phoneNumber, listOf("ROLE_USER")).accessToken
 
                 // When
-                val extractedPhoneNumber = tokenProvider.getPhoneNumberFromToken(token)
+                val extractedPhoneNumber = tokenProvider.getIdFromToken(token)
 
                 // Then
                 extractedPhoneNumber shouldBe phoneNumber
+            }
+        }
+
+        describe("getIdFromExpiredToken") {
+            it("정상 토큰으로 ID 추출") {
+                // Given
+                val id = "1"
+                val token = tokenProvider.createTokens(id, listOf("ROLE_USER")).accessToken
+
+                // When
+                val extractedPhoneNumber = tokenProvider.getIdFromExpiredToken(token)
+
+                // Then
+                extractedPhoneNumber shouldBe id
+            }
+
+            it("만료된 토큰으로 ID 추출") {
+                // Given
+                val id = "1"
+                val token = tokenProvider.createToken(HashMap(), id, Date(Date().time - 1000))
+
+                // When
+                val extractedPhoneNumber = tokenProvider.getIdFromExpiredToken(token)
+
+                // Then
+                extractedPhoneNumber shouldBe id
             }
         }
 
@@ -66,7 +92,7 @@ class TokenProviderTest : DescribeSpec({
                 // Given
                 val phoneNumber = "01012345678"
                 val roles = "ROLE_USER,ROLE_ADMIN"
-                val token = tokenProvider.createAccessToken(phoneNumber, roles)
+                val token = tokenProvider.createAccessToken(phoneNumber, listOf("ROLE_USER", "ROLE_ADMIN"))
 
                 // When
                 val extractedRoles = tokenProvider.getRolesFromToken(token)
@@ -268,7 +294,7 @@ class TokenProviderTest : DescribeSpec({
                 val roles = "ROLE_USER"
 
                 // When
-                val token = tokenProvider.createAccessToken(phoneNumber, roles)
+                val token = tokenProvider.createAccessToken(phoneNumber, listOf(roles))
 
                 // Then
                 token shouldNotBe null

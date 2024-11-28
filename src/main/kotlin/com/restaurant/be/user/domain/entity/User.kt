@@ -2,6 +2,7 @@ package com.restaurant.be.user.domain.entity
 
 import com.restaurant.be.common.converter.SeparatorConverter
 import com.restaurant.be.common.entity.BaseEntity
+import com.restaurant.be.common.exception.NotFoundUserException
 import com.restaurant.be.user.domain.constant.Gender
 import com.restaurant.be.user.presentation.dto.SignUpUserRequest
 import jakarta.persistence.Column
@@ -54,6 +55,10 @@ class User(
                 isTermsAgreed = true
             )
         }
+    }
+
+    fun getId(): Long {
+        return id ?: throw NotFoundUserException()
     }
 
     fun delete() {
