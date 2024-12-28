@@ -28,9 +28,9 @@ class GetRestaurantService(
     fun getRestaurants(
         request: GetRestaurantsRequest,
         pageable: Pageable,
-        email: String
+        phoneNumber: String
     ): GetRestaurantsResponse {
-        val userId = userRepository.findByPhoneNumber(email)?.id ?: throw NotFoundUserPhoneNumberException()
+        val userId = userRepository.findByPhoneNumber(phoneNumber)?.id ?: throw NotFoundUserPhoneNumberException()
         val restaurantIds =
             if (request.like != null) {
                 restaurantLikeRepository.findAllByUserId(userId)
