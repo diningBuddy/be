@@ -18,7 +18,6 @@ import java.security.Principal
 class DeleteReviewController(
     val deleteReviewService: DeleteReviewService
 ) {
-
     @DeleteMapping("/reviews/{reviewId}")
     @PreAuthorize("hasRole('USER')")
     @ApiOperation(value = "리뷰 삭제 API")
@@ -30,7 +29,7 @@ class DeleteReviewController(
         principal: Principal,
         @PathVariable reviewId: Long
     ): CommonResponse<Void> {
-        deleteReviewService.deleteReview(reviewId, principal.name)
+        deleteReviewService.deleteReview(reviewId, principal.name.toLong())
         return CommonResponse.success()
     }
 }

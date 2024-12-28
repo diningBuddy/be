@@ -17,10 +17,6 @@ data class NotFoundUserEmailException(
     override val message: String = "존재 하지 않는 유저 이메일 입니다."
 ) : ServerException(400, message)
 
-data class NotFoundUserPhoneNumberException(
-    override val message: String = "존재 하지 않는 유저 핸드폰 번호 입니다."
-) : ServerException(400, message)
-
 data class WithdrawalUserException(
     override val message: String = "탈퇴한 유저 입니다."
 ) : ServerException(400, message)

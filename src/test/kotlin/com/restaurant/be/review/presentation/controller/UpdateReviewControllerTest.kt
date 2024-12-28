@@ -40,12 +40,13 @@ class UpdateReviewControllerTest(
     private val reviewRepository: ReviewRepository
 ) : CustomDescribeSpec() {
     private val baseUrl = "/v1/restaurants"
-    private val objectMapper: ObjectMapper = ObjectMapper().registerModule(KotlinModule()).apply {
-        val module = SimpleModule()
-        module.addDeserializer(Page::class.java, PageDeserializer(ReviewResponseDto::class.java))
-        this.registerModule(module)
-        this.registerModule(JavaTimeModule())
-    }
+    private val objectMapper: ObjectMapper =
+        ObjectMapper().registerModule(KotlinModule()).apply {
+            val module = SimpleModule()
+            module.addDeserializer(Page::class.java, PageDeserializer(ReviewResponseDto::class.java))
+            this.registerModule(module)
+            this.registerModule(JavaTimeModule())
+        }
 
     init {
         beforeEach {
@@ -55,47 +56,54 @@ class UpdateReviewControllerTest(
         describe("updateReview basic test") {
             it("should return 200") {
                 // given
-                val restaurant = restaurantRepository.save(
-                    RestaurantUtil.generateRestaurantEntity(
-                        name = "restaurant"
+                val restaurant =
+                    restaurantRepository.save(
+                        RestaurantUtil.generateRestaurantEntity(
+                            name = "restaurant"
+                        )
                     )
-                )
 
-                val review = reviewRepository.save(
-                    ReviewUtil.generateReviewEntity(
-                        restaurantId = restaurant.id,
-                        user = userRepository.findByPhoneNumber("01012345678")
-                            ?: throw Exception()
+                val review =
+                    reviewRepository.save(
+                        ReviewUtil.generateReviewEntity(
+                            restaurantId = restaurant.id,
+                            user =
+                            userRepository.findByPhoneNumber("01012345678")
+                                ?: throw Exception()
+                        )
                     )
-                )
 
-                val req = ReviewRequestDto(
-                    rating = 5.0,
-                    content = "사장님이 친절해요",
-                    imageUrls = listOf("https://image.com")
-                )
+                val req =
+                    ReviewRequestDto(
+                        rating = 5.0,
+                        content = "사장님이 친절해요",
+                        imageUrls = listOf("https://image.com")
+                    )
 
-                val request = UpdateReviewRequest(
-                    review = req
-                )
+                val request =
+                    UpdateReviewRequest(
+                        review = req
+                    )
 
                 // when
-                val result = mockMvc.perform(
-                    patch("$baseUrl/reviews/${restaurant.id}/reviews/${review.id}")
-                        .contentType("application/json")
-                        .content(objectMapper.writeValueAsString(request))
-                ).also {
-                    println(it.andReturn().response.contentAsString)
-                }
-                    .andExpect(status().isOk)
-                    .andExpect(jsonPath("$.result").value("SUCCESS"))
-                    .andReturn()
+                val result =
+                    mockMvc.perform(
+                        patch("$baseUrl/reviews/${restaurant.id}/reviews/${review.id}")
+                            .contentType("application/json")
+                            .content(objectMapper.writeValueAsString(request))
+                    ).also {
+                        println(it.andReturn().response.contentAsString)
+                    }
+                        .andExpect(status().isOk)
+                        .andExpect(jsonPath("$.result").value("SUCCESS"))
+                        .andReturn()
 
-                val responseContent = result.response.getContentAsString(
-                    Charset.forName(
-                        "UTF-8"
+                val responseContent =
+                    result.response.getContentAsString(
+                        Charset.forName(
+                            "UTF-8"
+                        )
                     )
-                )
                 val responseType =
                     object : TypeReference<CommonResponse<UpdateReviewResponse>>() {}
                 val actualResult: CommonResponse<UpdateReviewResponse> =
@@ -112,78 +120,88 @@ class UpdateReviewControllerTest(
 
             it("when not existed restaurant's review update should return 404") {
                 // given
-                val req = ReviewRequestDto(
-                    rating = 5.0,
-                    content = "사장님이 친절해요",
-                    imageUrls = listOf("https://image.com")
-                )
-                val request = UpdateReviewRequest(
-                    review = req
-                )
+                val req =
+                    ReviewRequestDto(
+                        rating = 5.0,
+                        content = "사장님이 친절해요",
+                        imageUrls = listOf("https://image.com")
+                    )
+                val request =
+                    UpdateReviewRequest(
+                        review = req
+                    )
 
                 // when
-                val result = mockMvc.perform(
-                    patch("$baseUrl/reviews/1/reviews/1")
-                        .contentType("application/json")
-                        .content(objectMapper.writeValueAsString(request))
-                ).also {
-                    println(it.andReturn().response.contentAsString)
-                }
-                    .andExpect(status().isBadRequest)
-                    .andExpect(jsonPath("$.result").value("FAIL"))
-                    .andReturn()
+                val result =
+                    mockMvc.perform(
+                        patch("$baseUrl/reviews/1/reviews/1")
+                            .contentType("application/json")
+                            .content(objectMapper.writeValueAsString(request))
+                    ).also {
+                        println(it.andReturn().response.contentAsString)
+                    }
+                        .andExpect(status().isBadRequest)
+                        .andExpect(jsonPath("$.result").value("FAIL"))
+                        .andReturn()
             }
 
             it("when another user's review update should return NotFoundReviewException") {
                 // given
-                val user = userRepository.save(
-                    User(
-                        phoneNumber = "01099999999",
-                        nickname = "test_review_nickname",
-                        name = "test_name",
-                        gender = Gender.MAN,
-                        birthday = LocalDate.now(),
-                        isTermsAgreed = true
+                val user =
+                    userRepository.save(
+                        User(
+                            phoneNumber = "01099999999",
+                            nickname = "test_review_nickname",
+                            name = "test_name",
+                            gender = Gender.MAN,
+                            birthday = LocalDate.now(),
+                            isTermsAgreed = true
+                        )
                     )
-                )
 
-                val restaurant = restaurantRepository.save(
-                    RestaurantUtil.generateRestaurantEntity(name = "restaurant")
-                )
-
-                val review = reviewRepository.save(
-                    ReviewUtil.generateReviewEntity(
-                        restaurantId = restaurant.id,
-                        user = user
+                val restaurant =
+                    restaurantRepository.save(
+                        RestaurantUtil.generateRestaurantEntity(name = "restaurant")
                     )
-                )
 
-                val req = ReviewRequestDto(
-                    rating = 5.0,
-                    content = "사장님이 친절해요",
-                    imageUrls = listOf("https://image.com")
-                )
-                val request = UpdateReviewRequest(
-                    review = req
-                )
+                val review =
+                    reviewRepository.save(
+                        ReviewUtil.generateReviewEntity(
+                            restaurantId = restaurant.id,
+                            user = user
+                        )
+                    )
+
+                val req =
+                    ReviewRequestDto(
+                        rating = 5.0,
+                        content = "사장님이 친절해요",
+                        imageUrls = listOf("https://image.com")
+                    )
+                val request =
+                    UpdateReviewRequest(
+                        review = req
+                    )
 
                 // when
-                val result = mockMvc.perform(
-                    patch("$baseUrl/reviews/${restaurant.id}/reviews/${review.id}")
-                        .contentType("application/json")
-                        .content(objectMapper.writeValueAsString(request))
-                ).also {
-                    println(it.andReturn().response.contentAsString)
-                }
-                    .andExpect(status().isUnauthorized)
-                    .andExpect(jsonPath("$.result").value("FAIL"))
-                    .andReturn()
+                val result =
+                    mockMvc.perform(
+                        patch("$baseUrl/reviews/${restaurant.id}/reviews/${review.id}")
+                            .contentType("application/json")
+                            .content(objectMapper.writeValueAsString(request))
+                    ).also {
+                        println(it.andReturn().response.contentAsString)
+                    }
+                        .andExpect(status().isUnauthorized)
+                        .andExpect(jsonPath("$.result").value("FAIL"))
+                        .andReturn()
 
-                val responseContent = result.response.getContentAsString(
-                    Charset.forName(
-                        "UTF-8"
+                val responseContent =
+                    result.response.getContentAsString(
+                        Charset.forName(
+                            "UTF-8"
+                        )
                     )
-                )
                 val responseType =
                     object : TypeReference<CommonResponse<UpdateReviewResponse>>() {}
                 val actualResult: CommonResponse<UpdateReviewResponse> =

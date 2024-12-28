@@ -40,7 +40,10 @@ class RedisRepository(
     }
 
     // 사용자별 검색어를 추가하는 메서드
-    fun addSearchQuery(userId: Long, query: String) {
+    fun addSearchQuery(
+        userId: Long,
+        query: String
+    ) {
         val key = "$SEARCH_PREFIX$userId" // 사용자별 고유 키 생성
         val existingQueries = getSearchQueries(userId) ?: emptyList()
 
@@ -64,7 +67,10 @@ class RedisRepository(
     }
 
     // 특정 검색어만 삭제하는 메서드
-    fun deleteSpecificQuery(userId: Long, queryToRemove: String) {
+    fun deleteSpecificQuery(
+        userId: Long,
+        queryToRemove: String
+    ) {
         val key = "$SEARCH_PREFIX$userId"
         val listOperations = redisTemplate.opsForList()
         val count = listOperations.remove(key, 0, queryToRemove) // 지정된 요소를 리스트에서 모두 제거
@@ -77,7 +83,10 @@ class RedisRepository(
         }
     }
 
-    fun saveCertificationNumber(phoneNumber: String, certificationNumber: Int) {
+    fun saveCertificationNumber(
+        phoneNumber: String,
+        certificationNumber: Int
+    ) {
         val key = "$CERTIFICATION_PREFIX$phoneNumber"
         setValue(key, certificationNumber.toString(), 3, TimeUnit.MINUTES)
     }
@@ -87,17 +96,25 @@ class RedisRepository(
         return getValue(key) ?: throw ExpiredCertificationNumberException()
     }
 
-    fun saveRefreshToken(id: Long, refreshToken: String) {
-        val key = "$REFRESH_TOKEN_PREFIX$id"
+    fun saveRefreshToken(
+        userId: Long,
+        refreshToken: String
+    ) {
+        val key = "$REFRESH_TOKEN_PREFIX$userId"
         setValue(key, refreshToken, refreshTokenValidityInSeconds, TimeUnit.SECONDS)
     }
 
-    fun getRefreshToken(id: String): String {
-        val key = "$REFRESH_TOKEN_PREFIX$id"
+    fun getRefreshToken(userId: Long): String {
+        val key = "$REFRESH_TOKEN_PREFIX$userId"
         return getValue(key) ?: throw InvalidTokenException()
     }
 
-    fun setValue(key: String, value: String, timeout: Long, unit: TimeUnit) {
+    fun setValue(
+        key: String,
+        value: String,
+        timeout: Long,
+        unit: TimeUnit
+    ) {
         val values = redisTemplate.opsForValue()
         values.set(key, value, timeout, unit)
     }

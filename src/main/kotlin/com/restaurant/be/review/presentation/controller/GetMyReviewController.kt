@@ -21,7 +21,6 @@ import java.security.Principal
 class GetMyReviewController(
     val getReviewService: GetReviewService
 ) {
-
     @GetMapping
     @PreAuthorize("hasRole('USER')")
     @ApiOperation(value = "내가 작성한 리뷰 리스트 조회 API")
@@ -34,7 +33,7 @@ class GetMyReviewController(
         principal: Principal,
         pageable: Pageable
     ): CommonResponse<GetMyReviewsResponse> {
-        val response = getReviewService.getMyReviews(pageable, principal.name)
+        val response = getReviewService.getMyReviews(pageable, principal.name.toLong())
         return CommonResponse.success(response)
     }
 }

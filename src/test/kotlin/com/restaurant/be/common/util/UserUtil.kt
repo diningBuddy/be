@@ -9,20 +9,24 @@ import org.springframework.security.web.authentication.preauth.PreAuthenticatedA
 import java.security.Principal
 import java.time.LocalDate
 
-fun setUpUser(phoneNumber: String, userRepository: UserRepository): User {
-    val user = User(
-        phoneNumber = phoneNumber,
-        nickname = "test_nickname",
-        name = "test_name",
-        gender = Gender.MAN,
-        birthday = LocalDate.now(),
-        isTermsAgreed = true
-    )
+fun setUpUser(
+    phoneNumber: String,
+    userRepository: UserRepository
+): User {
+    val user =
+        User(
+            phoneNumber = phoneNumber,
+            nickname = "test_nickname",
+            name = "test_name",
+            gender = Gender.MAN,
+            birthday = LocalDate.now(),
+            isTermsAgreed = true
+        )
     userRepository.save(user)
 
     SecurityContextHolder.getContext().authentication =
         PreAuthenticatedAuthenticationToken(
-            Principal { phoneNumber },
+            Principal { user.id.toString() },
             null,
             listOf(SimpleGrantedAuthority("ROLE_USER"))
         )
@@ -30,15 +34,20 @@ fun setUpUser(phoneNumber: String, userRepository: UserRepository): User {
     return user
 }
 
-fun setUpUser(phoneNumber: String, nickName: String, userRepository: UserRepository): User {
-    val user = User(
-        phoneNumber = phoneNumber,
-        nickname = nickName,
-        name = "test_name",
-        gender = Gender.MAN,
-        birthday = LocalDate.now(),
-        isTermsAgreed = true
-    )
+fun setUpUser(
+    phoneNumber: String,
+    nickName: String,
+    userRepository: UserRepository
+): User {
+    val user =
+        User(
+            phoneNumber = phoneNumber,
+            nickname = nickName,
+            name = "test_name",
+            gender = Gender.MAN,
+            birthday = LocalDate.now(),
+            isTermsAgreed = true
+        )
     userRepository.save(user)
 
     SecurityContextHolder.getContext().authentication =

@@ -18,21 +18,21 @@ class TokenRefreshService(
     private val redisRepository: RedisRepository
 ) {
     fun tokenRefresh(refreshToken: String): String {
-        val id = tokenProvider.getIdFromToken(refreshToken)
-        return redisRepository.getRefreshToken(id).let {
+        val userId = tokenProvider.getUserIdFromToken(refreshToken)
+        return redisRepository.getRefreshToken(userId).let {
             if (it != refreshToken) {
                 throw InvalidTokenException()
             }
-            val user = userRepository.findByIdOrNull(id.toLong()) ?: throw NotFoundUserException()
-            tokenProvider.createAccessToken(user.getId().toString(), user.roles)
+            val user = userRepository.findByIdOrNull(userId) ?: throw NotFoundUserException()
+            tokenProvider.createAccessToken(user.getId(), user.roles)
         }
     }
 
     fun refreshTokenRefresh(refreshToken: String): Token {
         val userId = tokenProvider.getIdFromExpiredToken(refreshToken)
-        val user = userRepository.findByIdOrNull(userId.toLong()) ?: throw NotFoundUserException()
-        val token = tokenProvider.createTokens(user.phoneNumber, user.roles)
-        redisRepository.saveRefreshToken(user.getId(), token.refreshToken)
+        val user = userRepository.findByIdOrNull(userId) ?: throw NotFoundUserException()
+        val token = tokenProvider.createTokens(userId, user.roles)
+        redisRepository.saveRefreshToken(userId, token.refreshToken)
         return token
     }
 }

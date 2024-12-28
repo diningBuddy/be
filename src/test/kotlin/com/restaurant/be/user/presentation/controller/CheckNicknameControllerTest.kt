@@ -28,11 +28,12 @@ class CheckNicknameControllerTest(
     private val userRepository: UserRepository
 ) : CustomDescribeSpec() {
     private val baseUrl = "/v1/users"
-    private val objectMapper: ObjectMapper = ObjectMapper().registerModule(KotlinModule()).apply {
-        val module = SimpleModule()
-        module.addDeserializer(Page::class.java, PageDeserializer(RestaurantDto::class.java))
-        this.registerModule(module)
-    }
+    private val objectMapper: ObjectMapper =
+        ObjectMapper().registerModule(KotlinModule()).apply {
+            val module = SimpleModule()
+            module.addDeserializer(Page::class.java, PageDeserializer(RestaurantDto::class.java))
+            this.registerModule(module)
+        }
 
     init {
         beforeEach {
@@ -45,23 +46,25 @@ class CheckNicknameControllerTest(
                 val nickname = "test"
 
                 // when
-                val result = mockMvc.perform(
-                    get("$baseUrl/check-nickname")
-                        .param("nickname", nickname)
-                ).also {
-                    println(it.andReturn().response.contentAsString)
-                }
-                    .andExpect(status().isOk)
-                    .andExpect(jsonPath("$.result").value("SUCCESS"))
-                    .andReturn()
+                val result =
+                    mockMvc
+                        .perform(
+                            get("$baseUrl/check-nickname")
+                                .param("nickname", nickname)
+                        ).also {
+                            println(it.andReturn().response.contentAsString)
+                        }.andExpect(status().isOk)
+                        .andExpect(jsonPath("$.result").value("SUCCESS"))
+                        .andReturn()
 
                 val responseContent = result.response.getContentAsString(Charset.forName("UTF-8"))
                 val responseType =
                     object : TypeReference<CommonResponse<CheckNicknameResponse>>() {}
-                val actualResult: CommonResponse<CheckNicknameResponse> = objectMapper.readValue(
-                    responseContent,
-                    responseType
-                )
+                val actualResult: CommonResponse<CheckNicknameResponse> =
+                    objectMapper.readValue(
+                        responseContent,
+                        responseType
+                    )
 
                 // then
                 actualResult.data!!.isDuplicate shouldBe false
@@ -72,23 +75,25 @@ class CheckNicknameControllerTest(
                 val existedUserNickname = userRepository.findByPhoneNumber("01012345678")?.nickname ?: ""
 
                 // when
-                val result = mockMvc.perform(
-                    get("$baseUrl/check-nickname")
-                        .param("nickname", existedUserNickname)
-                ).also {
-                    println(it.andReturn().response.contentAsString)
-                }
-                    .andExpect(status().isBadRequest)
-                    .andExpect(jsonPath("$.result").value("FAIL"))
-                    .andReturn()
+                val result =
+                    mockMvc
+                        .perform(
+                            get("$baseUrl/check-nickname")
+                                .param("nickname", existedUserNickname)
+                        ).also {
+                            println(it.andReturn().response.contentAsString)
+                        }.andExpect(status().isBadRequest)
+                        .andExpect(jsonPath("$.result").value("FAIL"))
+                        .andReturn()
 
                 val responseContent = result.response.getContentAsString(Charset.forName("UTF-8"))
                 val responseType =
                     object : TypeReference<CommonResponse<CheckNicknameResponse>>() {}
-                val actualResult: CommonResponse<CheckNicknameResponse> = objectMapper.readValue(
-                    responseContent,
-                    responseType
-                )
+                val actualResult: CommonResponse<CheckNicknameResponse> =
+                    objectMapper.readValue(
+                        responseContent,
+                        responseType
+                    )
 
                 // then
                 actualResult.message shouldBe "이미 존재 하는 닉네임 입니다."

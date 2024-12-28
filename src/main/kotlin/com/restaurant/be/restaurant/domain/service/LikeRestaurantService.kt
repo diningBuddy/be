@@ -1,14 +1,11 @@
 package com.restaurant.be.restaurant.domain.service
 
 import com.restaurant.be.common.exception.NotFoundRestaurantException
-import com.restaurant.be.common.exception.NotFoundUserException
-import com.restaurant.be.common.exception.NotFoundUserPhoneNumberException
 import com.restaurant.be.restaurant.domain.entity.RestaurantLike
 import com.restaurant.be.restaurant.presentation.controller.dto.GetLikeRestaurantsResponse
 import com.restaurant.be.restaurant.presentation.controller.dto.LikeRestaurantResponse
 import com.restaurant.be.restaurant.repository.RestaurantLikeRepository
 import com.restaurant.be.restaurant.repository.RestaurantRepository
-import com.restaurant.be.user.repository.UserRepository
 import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -16,18 +13,22 @@ import org.springframework.transaction.annotation.Transactional
 @Service
 class LikeRestaurantService(
     private val restaurantRepository: RestaurantRepository,
-    private val restaurantLikeRepository: RestaurantLikeRepository,
-    private val userRepository: UserRepository
+    private val restaurantLikeRepository: RestaurantLikeRepository
 ) {
     @Transactional
-    fun likeRestaurant(email: String, restaurantId: Long, isLike: Boolean): LikeRestaurantResponse {
-        val userId: Long = userRepository.findByPhoneNumber(email)?.id ?: throw NotFoundUserException()
+    fun likeRestaurant(
+        userId: Long,
+        restaurantId: Long,
+        isLike: Boolean
+    ): LikeRestaurantResponse {
+        val restaurantDto =
+            restaurantRepository.findDtoById(restaurantId, userId)
+                ?: throw NotFoundRestaurantException()
 
-        val restaurantDto = restaurantRepository.findDtoById(restaurantId, userId)
-            ?: throw NotFoundRestaurantException()
-
-        val restaurant = restaurantRepository.findById(restaurantId)
-            .orElseThrow { NotFoundRestaurantException() }
+        val restaurant =
+            restaurantRepository
+                .findById(restaurantId)
+                .orElseThrow { NotFoundRestaurantException() }
 
         if (isLike) {
             if (!restaurantDto.isLike) {
@@ -51,12 +52,13 @@ class LikeRestaurantService(
     }
 
     @Transactional(readOnly = true)
-    fun getMyLikeRestaurant(pageable: Pageable, email: String): GetLikeRestaurantsResponse {
-        val userId = userRepository.findByPhoneNumber(email)?.id ?: throw NotFoundUserPhoneNumberException()
-
-        return GetLikeRestaurantsResponse(
-            restaurantRepository.findMyLikeRestaurants(userId, pageable)
+    fun getMyLikeRestaurant(
+        pageable: Pageable,
+        userId: Long
+    ): GetLikeRestaurantsResponse =
+        GetLikeRestaurantsResponse(
+            restaurantRepository
+                .findMyLikeRestaurants(userId, pageable)
                 .map { it.toDto() }
         )
-    }
 }

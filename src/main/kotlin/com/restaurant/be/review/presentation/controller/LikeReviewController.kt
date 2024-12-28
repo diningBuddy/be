@@ -24,7 +24,6 @@ import java.security.Principal
 class LikeReviewController(
     val likeReviewService: LikeReviewService
 ) {
-
     @PostMapping("/reviews/{reviewId}/like")
     @PreAuthorize("hasRole('USER')")
     @ApiOperation(value = "리뷰 좋아요 API")
@@ -39,7 +38,7 @@ class LikeReviewController(
         @RequestBody @Valid
         request: LikeReviewRequest
     ): CommonResponse<LikeReviewResponse> {
-        val response = likeReviewService.likeReview(reviewId, request, principal.name)
+        val response = likeReviewService.likeReview(reviewId, request, principal.name.toLong())
         return CommonResponse.success(response)
     }
 }

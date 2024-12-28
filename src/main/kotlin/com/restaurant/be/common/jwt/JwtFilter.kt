@@ -26,7 +26,7 @@ class JwtFilter(
         val accessToken = tokenProvider.resolveToken(request.getHeader(AUTHORIZATION_HEADER))
 
         if (StringUtils.hasText(accessToken) && tokenProvider.validateToken(accessToken)) { // 토큰의 유효성이 검증됐을 경우,
-            if (jwtUserRepository.validTokenById(tokenProvider.getIdFromToken(accessToken!!))) {
+            if (jwtUserRepository.validTokenById(tokenProvider.getUserIdFromToken(accessToken!!))) {
                 val authentication: Authentication =
                     tokenProvider.getAuthentication(accessToken)
                 SecurityContextHolder.getContext().authentication = authentication

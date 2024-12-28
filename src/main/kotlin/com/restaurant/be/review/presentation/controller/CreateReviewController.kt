@@ -24,7 +24,6 @@ import java.security.Principal
 class CreateReviewController(
     private val createReviewService: CreateReviewService
 ) {
-
     @PostMapping("/{restaurantId}/reviews")
     @PreAuthorize("hasRole('USER')")
     @ApiOperation(value = "리뷰 작성 API")
@@ -39,7 +38,8 @@ class CreateReviewController(
         @Valid @RequestBody
         request: ReviewRequestDto
     ): CommonResponse<CreateReviewResponse> {
-        val response = createReviewService.createReview(restaurantId, request, principal.name)
+        val response =
+            createReviewService.createReview(restaurantId, request, principal.name.toLong())
         return CommonResponse.success(response)
     }
 }

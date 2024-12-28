@@ -30,11 +30,12 @@ class GetCategoryControllerTest(
     private val categoryRepository: CategoryRepository
 ) : CustomDescribeSpec() {
     private val baseUrl = "/v1/restaurants/category"
-    private val objectMapper: ObjectMapper = ObjectMapper().registerModule(KotlinModule()).apply {
-        val module = SimpleModule()
-        module.addDeserializer(Page::class.java, PageDeserializer(RestaurantDto::class.java))
-        this.registerModule(module)
-    }
+    private val objectMapper: ObjectMapper =
+        ObjectMapper().registerModule(KotlinModule()).apply {
+            val module = SimpleModule()
+            module.addDeserializer(Page::class.java, PageDeserializer(RestaurantDto::class.java))
+            this.registerModule(module)
+        }
 
     init {
         beforeEach {
@@ -55,22 +56,24 @@ class GetCategoryControllerTest(
                 )
 
                 // when
-                val result = mockMvc.perform(
-                    get(baseUrl)
-                ).also {
-                    println(it.andReturn().response.contentAsString)
-                }
-                    .andExpect(MockMvcResultMatchers.status().isOk)
-                    .andExpect(MockMvcResultMatchers.jsonPath("$.result").value("SUCCESS"))
-                    .andReturn()
+                val result =
+                    mockMvc.perform(
+                        get(baseUrl)
+                    ).also {
+                        println(it.andReturn().response.contentAsString)
+                    }
+                        .andExpect(MockMvcResultMatchers.status().isOk)
+                        .andExpect(MockMvcResultMatchers.jsonPath("$.result").value("SUCCESS"))
+                        .andReturn()
 
                 val responseContent = result.response.getContentAsString(Charset.forName("UTF-8"))
                 val responseType =
                     object : TypeReference<CommonResponse<GetCategoriesResponse>>() {}
-                val actualResult: CommonResponse<GetCategoriesResponse> = objectMapper.readValue(
-                    responseContent,
-                    responseType
-                )
+                val actualResult: CommonResponse<GetCategoriesResponse> =
+                    objectMapper.readValue(
+                        responseContent,
+                        responseType
+                    )
 
                 // then
                 actualResult.data!!.categories.size shouldBe 5

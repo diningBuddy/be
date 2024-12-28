@@ -37,34 +37,36 @@ class TokenRefreshControllerTest(
     private val tokenProvider: TokenProvider
 ) : CustomDescribeSpec() {
     private val baseUrl = "/v1/users"
-    private val objectMapper: ObjectMapper = ObjectMapper().registerModule(KotlinModule()).apply {
-        val module = SimpleModule()
-        module.addDeserializer(Page::class.java, PageDeserializer(RestaurantDto::class.java))
-        this.registerModule(module)
-        this.registerModule(JavaTimeModule())
-    }
+    private val objectMapper: ObjectMapper =
+        ObjectMapper().registerModule(KotlinModule()).apply {
+            val module = SimpleModule()
+            module.addDeserializer(Page::class.java, PageDeserializer(RestaurantDto::class.java))
+            this.registerModule(module)
+            this.registerModule(JavaTimeModule())
+        }
 
     init {
         describe("엑세스 토큰 재발급 테스트") {
             it("엑세스 토큰 재발급 성공 테스트") {
                 // given
                 val testUser = setUpUser("01012341234", userRepository)
-                val tokens = tokenProvider.createTokens(testUser.id.toString(), testUser.roles)
+                val tokens = tokenProvider.createTokens(testUser.id ?: 0, testUser.roles)
                 redisRepository.saveRefreshToken(testUser.getId(), tokens.refreshToken)
 
                 // when
-                val result = mockMvc.perform(
-                    post("$baseUrl/token-reissue")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .header("RefreshToken", tokens.refreshToken)
-                ).also {
-                    println(it.andReturn().response.contentAsString)
-                }
-                    .andExpect(status().isOk)
-                    .andExpect(jsonPath("$.result").value("SUCCESS"))
-                    .andExpect(header().exists("Authorization"))
-                    .andExpect(header().string("Authorization", Matchers.startsWith("Bearer ")))
-                    .andReturn()
+                val result =
+                    mockMvc
+                        .perform(
+                            post("$baseUrl/token-reissue")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .header("RefreshToken", tokens.refreshToken)
+                        ).also {
+                            println(it.andReturn().response.contentAsString)
+                        }.andExpect(status().isOk)
+                        .andExpect(jsonPath("$.result").value("SUCCESS"))
+                        .andExpect(header().exists("Authorization"))
+                        .andExpect(header().string("Authorization", Matchers.startsWith("Bearer ")))
+                        .andReturn()
 
                 val responseContent = result.response.getContentAsString(Charset.forName("UTF-8"))
                 val responseType =
@@ -85,21 +87,22 @@ class TokenRefreshControllerTest(
             it("엑세스 토큰 재발급 실패 테스트") {
                 // given
                 val testUser = setUpUser("01012341234", userRepository)
-                val failTokens = tokenProvider.createTokens(testUser.id.toString(), listOf("ROLE_FAIL"))
-                val tokens = tokenProvider.createTokens(testUser.id.toString(), testUser.roles)
+                val failTokens = tokenProvider.createTokens(testUser.id ?: 0, listOf("ROLE_FAIL"))
+                val tokens = tokenProvider.createTokens(testUser.id ?: 0, testUser.roles)
                 redisRepository.saveRefreshToken(testUser.getId(), tokens.refreshToken)
 
                 // when
-                val result = mockMvc.perform(
-                    post("$baseUrl/token-reissue")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .header("RefreshToken", failTokens.refreshToken)
-                ).also {
-                    println(it.andReturn().response.contentAsString)
-                }
-                    .andExpect(status().isUnauthorized)
-                    .andExpect(jsonPath("$.result").value("FAIL"))
-                    .andReturn()
+                val result =
+                    mockMvc
+                        .perform(
+                            post("$baseUrl/token-reissue")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .header("RefreshToken", failTokens.refreshToken)
+                        ).also {
+                            println(it.andReturn().response.contentAsString)
+                        }.andExpect(status().isUnauthorized)
+                        .andExpect(jsonPath("$.result").value("FAIL"))
+                        .andReturn()
 
                 val responseContent = result.response.getContentAsString(Charset.forName("UTF-8"))
                 val responseType =
@@ -121,23 +124,24 @@ class TokenRefreshControllerTest(
             it("리프레시 토큰 재발급 성공 테스트") {
                 // given
                 val testUser = setUpUser("01012341234", userRepository)
-                val tokens = tokenProvider.createTokens(testUser.id.toString(), testUser.roles)
+                val tokens = tokenProvider.createTokens(testUser.id ?: 0, testUser.roles)
                 redisRepository.saveRefreshToken(testUser.getId(), tokens.refreshToken)
 
                 // when
-                val result = mockMvc.perform(
-                    post("$baseUrl/refresh-token-reissue")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .header("RefreshToken", tokens.refreshToken)
-                ).also {
-                    println(it.andReturn().response.contentAsString)
-                }
-                    .andExpect(status().isOk)
-                    .andExpect(jsonPath("$.result").value("SUCCESS"))
-                    .andExpect(header().exists("Authorization"))
-                    .andExpect(header().string("Authorization", Matchers.startsWith("Bearer ")))
-                    .andExpect(header().exists("RefreshToken"))
-                    .andReturn()
+                val result =
+                    mockMvc
+                        .perform(
+                            post("$baseUrl/refresh-token-reissue")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .header("RefreshToken", tokens.refreshToken)
+                        ).also {
+                            println(it.andReturn().response.contentAsString)
+                        }.andExpect(status().isOk)
+                        .andExpect(jsonPath("$.result").value("SUCCESS"))
+                        .andExpect(header().exists("Authorization"))
+                        .andExpect(header().string("Authorization", Matchers.startsWith("Bearer ")))
+                        .andExpect(header().exists("RefreshToken"))
+                        .andReturn()
 
                 val responseContent = result.response.getContentAsString(Charset.forName("UTF-8"))
                 val responseType =

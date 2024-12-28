@@ -24,7 +24,6 @@ import java.security.Principal
 class UpdateReviewController(
     val updateReviewService: UpdateReviewService
 ) {
-
     @PatchMapping("/{restaurantId}/reviews/{reviewId}")
     @PreAuthorize("hasRole('USER')")
     @ApiOperation(value = "리뷰 수정 API")
@@ -40,7 +39,7 @@ class UpdateReviewController(
         @RequestBody @Valid
         request: UpdateReviewRequest
     ): CommonResponse<UpdateReviewResponse> {
-        val response = updateReviewService.updateReview(restaurantId, reviewId, request, principal.name)
+        val response = updateReviewService.updateReview(restaurantId, reviewId, request, principal.name.toLong())
         return CommonResponse.success(response)
     }
 }

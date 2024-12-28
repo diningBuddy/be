@@ -13,7 +13,6 @@ import org.springframework.transaction.annotation.Transactional
 class SignUpUserService(
     private val userRepository: UserRepository
 ) {
-
     @Transactional
     fun signUp(request: SignUpUserRequest) {
         if (userRepository.findByPhoneNumber(request.phoneNumber) != null) {
@@ -34,10 +33,11 @@ class SignUpUserService(
             return nickname
         }
 
-        val lastNumber = duplicateNicknameUsers
-            .mapNotNull { duplicateNicknameUser ->
-                duplicateNicknameUser.nickname.replace(nickname, "").toIntOrNull()
-            }.maxOrNull() ?: 0
+        val lastNumber =
+            duplicateNicknameUsers
+                .mapNotNull { duplicateNicknameUser ->
+                    duplicateNicknameUser.nickname.replace(nickname, "").toIntOrNull()
+                }.maxOrNull() ?: 0
 
         return "$nickname${lastNumber + 1}"
     }
