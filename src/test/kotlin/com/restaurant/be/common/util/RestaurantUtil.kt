@@ -2,6 +2,9 @@ package com.restaurant.be.common.util
 
 import com.restaurant.be.restaurant.domain.entity.Menu
 import com.restaurant.be.restaurant.domain.entity.Restaurant
+import com.restaurant.be.restaurant.domain.entity.enums.FacilityInfos
+import com.restaurant.be.restaurant.domain.entity.enums.OperationInfos
+import com.restaurant.be.restaurant.domain.entity.enums.OperationTimes
 import org.springframework.data.elasticsearch.core.geo.GeoPoint
 
 object RestaurantUtil {
@@ -15,7 +18,7 @@ object RestaurantUtil {
         naverRatingAvg: Double = 0.0,
         reviewCount: Long = 0,
         ratingAvg: Double = 0.0,
-        likeCount: Long = 0,
+        bookmarkCount: Long = 0,
         number: String = "default_number",
         imageUrl: String = "default_image_url",
         category: String = "default_category",
@@ -33,7 +36,7 @@ object RestaurantUtil {
             naverRatingAvg = naverRatingAvg,
             reviewCount = reviewCount,
             ratingAvg = ratingAvg,
-            likeCount = likeCount,
+            bookmarkCount = bookmarkCount,
             number = number,
             imageUrl = imageUrl,
             category = category,
@@ -48,7 +51,7 @@ object RestaurantUtil {
         name: String = "default_name",
         originalCategories: String = "default_category",
         reviewCount: Long = 0,
-        likeCount: Long = 0,
+        bookmarkCount: Long = 0,
         address: String = "default_address",
         contactNumber: String = "default_number",
         ratingAvg: Double = 0.0,
@@ -57,14 +60,20 @@ object RestaurantUtil {
         discountContent: String? = null,
         menus: MutableList<Menu> = mutableListOf(),
         longitude: Double = 0.0,
-        latitude: Double = 0.0
+        latitude: Double = 0.0,
+        facilityInfos: FacilityInfos = FacilityInfos.WIFI,
+        operationInfos: OperationInfos = OperationInfos.APPOINTMENT,
+        operationTimes: OperationTimes = OperationTimes.OPERATION_TIMES,
+        kakaoRatingAvg: Double = 0.0,
+        kakaoRatingCount: Long = 0,
+        ratingCount: Long = 0,
     ): Restaurant {
         return Restaurant(
             id = id,
             name = name,
             originalCategories = originalCategories,
             reviewCount = reviewCount,
-            likeCount = likeCount,
+            bookmarkCount = bookmarkCount,
             address = address,
             contactNumber = contactNumber,
             ratingAvg = ratingAvg,
@@ -74,8 +83,14 @@ object RestaurantUtil {
             menus = menus,
             longitude = longitude,
             latitude = latitude,
+            facilityInfos = facilityInfos,
+            operationInfos = operationInfos,
+            operationTimes = operationTimes,
             naverRatingAvg = 0.0,
-            naverReviewCount = 0
+            naverReviewCount = 0,
+            kakaoRatingAvg = 0.0,
+            kakaoRatingCount = 0,
+            ratingCount = 0,
         )
     }
 

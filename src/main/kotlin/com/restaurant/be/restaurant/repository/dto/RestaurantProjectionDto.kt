@@ -20,8 +20,12 @@ data class RestaurantProjectionDto(
             representativeImageUrl = restaurant.representativeImageUrl,
             name = restaurant.name,
             ratingAvg = restaurant.ratingAvg,
+            ratingCount = restaurant.ratingCount,
+            facilityInfos = restaurant.facilityInfos,
+            operationInfos = restaurant.operationInfos,
+            operationTimes = restaurant.operationTimes,
             reviewCount = restaurant.reviewCount,
-            likeCount = restaurant.likeCount,
+            likeCount = restaurant.bookmarkCount,
             categories = categories.map { it.name },
             representativeMenu = menus.firstOrNull()?.toDto(),
             representativeReviewContent = review?.content,
@@ -35,7 +39,9 @@ data class RestaurantProjectionDto(
                 contactNumber = restaurant.contactNumber,
                 address = restaurant.address,
                 menus = menus.map { it.toDto() }
-            )
+            ),
+            kakaoRatingAvg=restaurant.kakaoRatingAvg,
+            kakaoRatingCount = restaurant.kakaoRatingCount,
         )
     }
 }

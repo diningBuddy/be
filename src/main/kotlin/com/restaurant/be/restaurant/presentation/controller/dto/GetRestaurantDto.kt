@@ -1,5 +1,8 @@
 package com.restaurant.be.restaurant.presentation.controller.dto
 
+import com.restaurant.be.restaurant.domain.entity.enums.FacilityInfos
+import com.restaurant.be.restaurant.domain.entity.enums.OperationInfos
+import com.restaurant.be.restaurant.domain.entity.enums.OperationTimes
 import com.restaurant.be.restaurant.presentation.controller.dto.common.RestaurantDto
 import io.swagger.annotations.ApiModelProperty
 import io.swagger.v3.oas.annotations.media.Schema
@@ -27,6 +30,20 @@ data class GetRestaurantsRequest(
     val naverRatingAvg: Double?,
     @ApiModelProperty(value = "네이버 리뷰 개수 필터", example = "100", required = false)
     val naverReviewCount: Int?,
+
+    @ApiModelProperty(value = "식당 평점 개수 필터", example = "100", required = false)
+    var ratingCount: Long?,
+    @ApiModelProperty(value = "식당 편의 정보 필터", example = "WIFI", required = false)
+    var facilityInfos: FacilityInfos?,
+    @ApiModelProperty(value = "식당 운영 정보 필터", example = "APPOINTMENT", required = false)
+    var operationInfos: OperationInfos?,
+    //??
+    @ApiModelProperty(value = "식당 운영 시간 필터", example = "잠깐 뭔가 JSON형태여야하는데..?", required = false)
+    var operationTimes: OperationTimes?,
+    @ApiModelProperty(value = "카카오 평점 필터", example = "4.5", required = false)
+    val kakaoRatingAvg: Double?,
+    @ApiModelProperty(value = "카카오 평점 개수 필터", example = "100", required = false)
+    val kakaoRatingCount: Int?,
 
     @ApiModelProperty(value = "찜 필터", example = "false", required = false)
     val like: Boolean?,

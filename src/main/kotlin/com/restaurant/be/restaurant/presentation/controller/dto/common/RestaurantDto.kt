@@ -1,5 +1,8 @@
 package com.restaurant.be.restaurant.presentation.controller.dto.common
 
+import com.restaurant.be.restaurant.domain.entity.enums.FacilityInfos
+import com.restaurant.be.restaurant.domain.entity.enums.OperationInfos
+import com.restaurant.be.restaurant.domain.entity.enums.OperationTimes
 import io.swagger.v3.oas.annotations.media.Schema
 
 data class RestaurantDto(
@@ -11,6 +14,14 @@ data class RestaurantDto(
     val name: String,
     @Schema(description = "식당 평점 평균")
     val ratingAvg: Double,
+    @Schema(description = "식당 평점 개수")
+    var ratingCount: Long,
+    @Schema(description = "식당 편의 정보")
+    var facilityInfos: FacilityInfos,
+    @Schema(description = "식당 운영 정보(예약,배달,포장)")
+    var operationInfos: OperationInfos,
+    @Schema(description = "식당 운영 시간")
+    var operationTimes: OperationTimes,
     @Schema(description = "식당 리뷰 수")
     val reviewCount: Long,
     @Schema(description = "식당 좋아요 수")
@@ -34,6 +45,11 @@ data class RestaurantDto(
     val naverRatingAvg: Double,
     @Schema(description = "네이버 리뷰 수")
     val naverReviewCount: Int,
+
+    @Schema(description = "카카오 평점 평균")
+    var kakaoRatingAvg: Double,
+    @Schema(description = "카카오 평점 개수")
+    var kakaoRatingCount: Long,
 
     @Schema(description = "식당 상세 정보")
     val detailInfo: RestaurantDetailDto
