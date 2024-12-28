@@ -3,7 +3,7 @@ package com.restaurant.be.review.domain.service
 import com.restaurant.be.common.exception.DuplicateLikeException
 import com.restaurant.be.common.exception.NotFoundLikeException
 import com.restaurant.be.common.exception.NotFoundReviewException
-import com.restaurant.be.common.exception.NotFoundUserPhoneNumberException
+import com.restaurant.be.common.exception.NotFoundUserException
 import com.restaurant.be.review.presentation.dto.LikeReviewRequest
 import com.restaurant.be.review.presentation.dto.LikeReviewResponse
 import com.restaurant.be.review.presentation.dto.ReviewWithLikesDto
@@ -28,7 +28,7 @@ class LikeReviewService(
         request: LikeReviewRequest,
         userId: Long
     ): LikeReviewResponse {
-        val user = userRepository.findByIdOrNull(userId) ?: throw NotFoundUserPhoneNumberException()
+        val user = userRepository.findByIdOrNull(userId) ?: throw NotFoundUserException()
 
         likeReviewWhetherAlreadyLikeOrNot(request, reviewId, user, userId)
 

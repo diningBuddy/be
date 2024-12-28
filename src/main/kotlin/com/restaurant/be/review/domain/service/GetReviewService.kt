@@ -1,7 +1,7 @@
 package com.restaurant.be.review.domain.service
 
 import com.restaurant.be.common.exception.NotFoundReviewException
-import com.restaurant.be.common.exception.NotFoundUserPhoneNumberException
+import com.restaurant.be.common.exception.NotFoundUserException
 import com.restaurant.be.review.presentation.dto.GetMyReviewsResponse
 import com.restaurant.be.review.presentation.dto.GetReviewResponse
 import com.restaurant.be.review.presentation.dto.GetReviewsResponse
@@ -24,7 +24,7 @@ class GetReviewService(
         restaurantId: Long,
         userId: Long
     ): GetReviewsResponse {
-        val user = userRepository.findByIdOrNull(userId) ?: throw NotFoundUserPhoneNumberException()
+        val user = userRepository.findByIdOrNull(userId) ?: throw NotFoundUserException()
 
         val reviewsWithLikes = reviewRepository.findReviews(user, restaurantId, pageable)
 
@@ -43,7 +43,7 @@ class GetReviewService(
         reviewId: Long,
         userId: Long
     ): GetReviewResponse {
-        val user = userRepository.findByIdOrNull(userId) ?: throw NotFoundUserPhoneNumberException()
+        val user = userRepository.findByIdOrNull(userId) ?: throw NotFoundUserException()
 
         val reviewWithLikes =
             reviewRepository.findReview(user, reviewId)
@@ -67,7 +67,7 @@ class GetReviewService(
         pageable: Pageable,
         userId: Long
     ): GetMyReviewsResponse {
-        val user = userRepository.findByIdOrNull(userId) ?: throw NotFoundUserPhoneNumberException()
+        val user = userRepository.findByIdOrNull(userId) ?: throw NotFoundUserException()
 
         val reviewsWithLikes = reviewRepository.findMyReviews(user, pageable)
 
