@@ -52,7 +52,8 @@ class User(
                 name = request.name,
                 birthday = request.birthday,
                 gender = request.gender,
-                isTermsAgreed = true
+                isTermsAgreed = true,
+                roles = listOf("ROLE_USER")
             )
         }
     }
