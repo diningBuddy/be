@@ -14,7 +14,7 @@ import com.restaurant.be.common.util.RestaurantDocument
 import com.restaurant.be.common.util.RestaurantUtil
 import com.restaurant.be.common.util.setUpUser
 import com.restaurant.be.restaurant.domain.entity.RestaurantCategory
-import com.restaurant.be.restaurant.domain.entity.RestaurantLike
+import com.restaurant.be.restaurant.domain.entity.RestaurantBookmark
 import com.restaurant.be.restaurant.presentation.controller.dto.GetRestaurantResponse
 import com.restaurant.be.restaurant.presentation.controller.dto.GetRestaurantsResponse
 import com.restaurant.be.restaurant.presentation.controller.dto.common.RestaurantDto
@@ -436,7 +436,7 @@ class GetRestaurantControllerTest(
                 elasticsearchOperations.indexOps(RestaurantDocument::class.java).refresh()
 
                 restaurantLikeRepository.save(
-                    RestaurantLike(
+                    RestaurantBookmark(
                         userId = newUser?.id ?: 0,
                         restaurantId = restaurantEntity.id
                     )
@@ -560,7 +560,7 @@ class GetRestaurantControllerTest(
                 elasticsearchOperations.indexOps(RestaurantDocument::class.java).refresh()
 
                 restaurantLikeRepository.save(
-                    RestaurantLike(
+                    RestaurantBookmark(
                         userId = newUser?.id ?: 0,
                         restaurantId = restaurantEntity.id
                     )
@@ -606,7 +606,7 @@ class GetRestaurantControllerTest(
                 elasticsearchOperations.indexOps(RestaurantDocument::class.java).refresh()
 
                 restaurantLikeRepository.save(
-                    RestaurantLike(
+                    RestaurantBookmark(
                         userId = newUser?.id ?: 0,
                         restaurantId = restaurantEntity.id
                     )
@@ -1479,7 +1479,7 @@ class GetRestaurantControllerTest(
                     )
                 )
                 restaurantLikeRepository.save(
-                    RestaurantLike(
+                    RestaurantBookmark(
                         userId = user?.id ?: 0,
                         restaurantId = restaurantEntity.id
                     )
@@ -1563,7 +1563,7 @@ class GetRestaurantControllerTest(
                     )
                 )
                 restaurantLikeRepository.save(
-                    RestaurantLike(
+                    RestaurantBookmark(
                         userId = user?.id ?: 0,
                         restaurantId = restaurantEntity.id
                     )
@@ -2014,20 +2014,20 @@ class GetRestaurantControllerTest(
 
                 val restaurantEntity2 = RestaurantUtil.generateRestaurantEntity(
                     name = "목구멍 율전점2",
-                    likeCount = 1
+                    bookmarkCount = 1
                 )
                 restaurantRepository.save(restaurantEntity2)
                 val restaurantDocument2 = RestaurantUtil.generateRestaurantDocument(
                     id = restaurantEntity2.id,
                     name = "목구멍 율전점2",
-                    likeCount = 1
+                    bookmarkCount = 1
                 )
                 elasticsearchOperations.save(restaurantDocument2)
                 elasticsearchOperations.indexOps(RestaurantDocument::class.java).refresh()
 
                 val user = userRepository.findByPhoneNumber("01012345678")
                 restaurantLikeRepository.save(
-                    RestaurantLike(
+                    RestaurantBookmark(
                         userId = user?.id ?: 0,
                         restaurantId = restaurantEntity2.id
                     )
@@ -2204,7 +2204,7 @@ class GetRestaurantControllerTest(
                 )
                 restaurantRepository.save(restaurantEntity)
                 restaurantLikeRepository.save(
-                    RestaurantLike(
+                    RestaurantBookmark(
                         userId = user?.id ?: 0,
                         restaurantId = restaurantEntity.id
                     )

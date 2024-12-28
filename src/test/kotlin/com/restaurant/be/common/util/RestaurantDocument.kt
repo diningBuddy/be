@@ -34,8 +34,8 @@ data class RestaurantDocument(
     @Field(type = FieldType.Double, name = "rating_avg")
     val ratingAvg: Double,
 
-    @Field(type = FieldType.Long, name = "like_count")
-    val likeCount: Long,
+    @Field(type = FieldType.Long, name = "bookmark_count")
+    val bookmarkCount: Long,
 
     @Field(type = FieldType.Text, name = "number")
     val number: String,

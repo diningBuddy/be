@@ -10,7 +10,7 @@ import com.restaurant.be.common.PageDeserializer
 import com.restaurant.be.common.response.CommonResponse
 import com.restaurant.be.common.util.RestaurantUtil
 import com.restaurant.be.common.util.setUpUser
-import com.restaurant.be.restaurant.domain.entity.RestaurantLike
+import com.restaurant.be.restaurant.domain.entity.RestaurantBookmark
 import com.restaurant.be.restaurant.presentation.controller.dto.GetRestaurantsResponse
 import com.restaurant.be.restaurant.presentation.controller.dto.LikeRestaurantResponse
 import com.restaurant.be.restaurant.presentation.controller.dto.common.RestaurantDto
@@ -89,7 +89,7 @@ class LikeRestaurantControllerTest(
                     )
                 restaurantRepository.save(restaurantEntity)
                 restaurantLikeRepository.save(
-                    RestaurantLike(
+                    RestaurantBookmark(
                         userId = newUser?.id ?: 0,
                         restaurantId = restaurantEntity.id
                     )
@@ -145,7 +145,7 @@ class LikeRestaurantControllerTest(
                     )
                 restaurantRepository.save(restaurantEntity)
                 restaurantLikeRepository.save(
-                    RestaurantLike(
+                    RestaurantBookmark(
                         userId = anotherUser.id ?: 0,
                         restaurantId = restaurantEntity.id
                     )
@@ -187,7 +187,7 @@ class LikeRestaurantControllerTest(
                     )
                 restaurantRepository.save(restaurantEntity)
                 restaurantLikeRepository.save(
-                    RestaurantLike(
+                    RestaurantBookmark(
                         userId = newUser?.id ?: 0,
                         restaurantId = restaurantEntity.id
                     )
@@ -238,13 +238,13 @@ class LikeRestaurantControllerTest(
                 restaurantRepository.save(restaurantEntity1)
                 restaurantRepository.save(restaurantEntity2)
                 restaurantLikeRepository.save(
-                    RestaurantLike(
+                    RestaurantBookmark(
                         userId = newUser?.id ?: 0,
                         restaurantId = restaurantEntity1.id
                     )
                 )
                 restaurantLikeRepository.save(
-                    RestaurantLike(
+                    RestaurantBookmark(
                         userId = newUser?.id ?: 0,
                         restaurantId = restaurantEntity2.id
                     )
@@ -297,13 +297,13 @@ class LikeRestaurantControllerTest(
                 restaurantRepository.save(restaurantEntity1)
                 restaurantRepository.save(restaurantEntity2)
                 restaurantLikeRepository.save(
-                    RestaurantLike(
+                    RestaurantBookmark(
                         userId = newUser?.id ?: 0,
                         restaurantId = restaurantEntity1.id
                     )
                 )
                 restaurantLikeRepository.save(
-                    RestaurantLike(
+                    RestaurantBookmark(
                         userId = newUser?.id ?: 0,
                         restaurantId = restaurantEntity2.id
                     )
@@ -356,13 +356,13 @@ class LikeRestaurantControllerTest(
                 restaurantRepository.save(restaurantEntity1)
                 restaurantRepository.save(restaurantEntity2)
                 restaurantLikeRepository.save(
-                    RestaurantLike(
+                    RestaurantBookmark(
                         userId = newUser?.id ?: 0,
                         restaurantId = restaurantEntity1.id
                     )
                 )
                 restaurantLikeRepository.save(
-                    RestaurantLike(
+                    RestaurantBookmark(
                         userId = newUser?.id ?: 0,
                         restaurantId = restaurantEntity2.id
                     )
@@ -424,13 +424,13 @@ class LikeRestaurantControllerTest(
                     )
                 restaurantRepository.save(restaurantEntity)
                 restaurantLikeRepository.save(
-                    RestaurantLike(
+                    RestaurantBookmark(
                         userId = originalUser.id ?: 0,
                         restaurantId = restaurantEntity.id
                     )
                 )
                 restaurantLikeRepository.save(
-                    RestaurantLike(
+                    RestaurantBookmark(
                         userId = newUser.id ?: 0,
                         restaurantId = restaurantEntity.id
                     )
@@ -512,7 +512,7 @@ class LikeRestaurantControllerTest(
                 restaurantRepository.save(restaurantEntity)
                 val newUser = userRepository.findByPhoneNumber("01012345678")
                 restaurantLikeRepository.save(
-                    RestaurantLike(
+                    RestaurantBookmark(
                         userId = newUser?.id ?: 0,
                         restaurantId = restaurantEntity.id
                     )
