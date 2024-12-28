@@ -24,7 +24,6 @@ import java.security.Principal
 class RecentQueryController(
     private val recentQueryService: RecentQueryService
 ) {
-
     @GetMapping
     @PreAuthorize("hasRole('USER')")
     @ApiOperation(value = "최근검색어 조회 API")
@@ -34,7 +33,7 @@ class RecentQueryController(
         content = [Content(schema = Schema(implementation = RecentQueriesResponse::class))]
     )
     fun getRecentQueries(principal: Principal): CommonResponse<RecentQueriesResponse> {
-        val response = recentQueryService.getRecentQueries(principal.name)
+        val response = recentQueryService.getRecentQueries(principal.name.toLong())
         return CommonResponse.success(response)
     }
 
@@ -51,7 +50,7 @@ class RecentQueryController(
         @Valid @RequestBody
         request: DeleteRecentQueriesRequest
     ): CommonResponse<RecentQueriesResponse> {
-        val response = recentQueryService.deleteRecentQueries(principal.name, request)
+        val response = recentQueryService.deleteRecentQueries(principal.name.toLong(), request)
         return CommonResponse.success(response)
     }
 }

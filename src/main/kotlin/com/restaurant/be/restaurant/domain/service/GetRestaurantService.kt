@@ -1,7 +1,6 @@
 package com.restaurant.be.restaurant.domain.service
 
 import com.restaurant.be.common.exception.NotFoundRestaurantException
-import com.restaurant.be.common.exception.NotFoundUserPhoneNumberException
 import com.restaurant.be.common.redis.RedisRepository
 import com.restaurant.be.restaurant.presentation.controller.dto.GetRestaurantResponse
 import com.restaurant.be.restaurant.presentation.controller.dto.GetRestaurantsRequest
@@ -9,7 +8,6 @@ import com.restaurant.be.restaurant.presentation.controller.dto.GetRestaurantsRe
 import com.restaurant.be.restaurant.repository.RestaurantEsRepository
 import com.restaurant.be.restaurant.repository.RestaurantLikeRepository
 import com.restaurant.be.restaurant.repository.RestaurantRepository
-import com.restaurant.be.user.repository.UserRepository
 import org.springframework.data.domain.PageImpl
 import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Service
@@ -19,41 +17,41 @@ import org.springframework.transaction.annotation.Transactional
 class GetRestaurantService(
     private val restaurantEsRepository: RestaurantEsRepository,
     private val redisRepository: RedisRepository,
-    private val userRepository: UserRepository,
     private val restaurantRepository: RestaurantRepository,
     private val restaurantLikeRepository: RestaurantLikeRepository
 ) {
-
     @Transactional(readOnly = true)
     fun getRestaurants(
         request: GetRestaurantsRequest,
         pageable: Pageable,
-        email: String
+        userId: Long
     ): GetRestaurantsResponse {
-        val userId = userRepository.findByPhoneNumber(email)?.id ?: throw NotFoundUserPhoneNumberException()
         val restaurantIds =
             if (request.like != null) {
-                restaurantLikeRepository.findAllByUserId(userId)
+                restaurantLikeRepository
+                    .findAllByUserId(userId)
                     .map { it.restaurantId }
             } else {
                 null
             }
 
-        val (restaurants, nextCursor) = restaurantEsRepository.searchRestaurants(
-            request,
-            pageable,
-            restaurantIds,
-            request.like
-        )
+        val (restaurants, nextCursor) =
+            restaurantEsRepository.searchRestaurants(
+                request,
+                pageable,
+                restaurantIds,
+                request.like
+            )
 
         if (!request.query.isNullOrEmpty()) {
             redisRepository.addSearchQuery(userId, request.query)
         }
 
-        val restaurantProjections = restaurantRepository.findDtoByIds(
-            restaurants.map { it.id },
-            userId
-        )
+        val restaurantProjections =
+            restaurantRepository.findDtoByIds(
+                restaurants.map { it.id },
+                userId
+            )
 
         val restaurantMap = restaurantProjections.associateBy { it.restaurant.id }
         val sortedRestaurantProjections = restaurants.mapNotNull { restaurantMap[it.id] }
@@ -69,10 +67,13 @@ class GetRestaurantService(
     }
 
     @Transactional(readOnly = true)
-    fun getRestaurant(restaurantId: Long, email: String): GetRestaurantResponse {
-        val userId = userRepository.findByPhoneNumber(email)?.id ?: throw NotFoundUserPhoneNumberException()
-        val restaurant = restaurantRepository.findDtoById(restaurantId, userId)
-            ?: throw NotFoundRestaurantException()
+    fun getRestaurant(
+        restaurantId: Long,
+        userId: Long
+    ): GetRestaurantResponse {
+        val restaurant =
+            restaurantRepository.findDtoById(restaurantId, userId)
+                ?: throw NotFoundRestaurantException()
         return GetRestaurantResponse(restaurant.toDto())
     }
 }

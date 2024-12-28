@@ -35,11 +35,12 @@ class SignInUserControllerTest(
     private val userRepository: UserRepository
 ) : CustomDescribeSpec() {
     private val baseUrl = "/v1/users"
-    private val objectMapper: ObjectMapper = ObjectMapper().registerModule(KotlinModule()).apply {
-        val module = SimpleModule()
-        module.addDeserializer(Page::class.java, PageDeserializer(RestaurantDto::class.java))
-        this.registerModule(module)
-    }
+    private val objectMapper: ObjectMapper =
+        ObjectMapper().registerModule(KotlinModule()).apply {
+            val module = SimpleModule()
+            module.addDeserializer(Page::class.java, PageDeserializer(RestaurantDto::class.java))
+            this.registerModule(module)
+        }
 
     init {
         beforeEach {
@@ -50,25 +51,27 @@ class SignInUserControllerTest(
         describe("로그인 테스트") {
             it("로그인 성공 테스트") {
                 // given
-                val request = SignInUserRequest(
-                    id = "01012341234",
-                    certificationNumber = "1111"
-                )
+                val request =
+                    SignInUserRequest(
+                        phoneNumber = "01012341234",
+                        certificationNumber = "1111"
+                    )
 
                 // when
-                val result = mockMvc.perform(
-                    post("$baseUrl/sign-in")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(request))
-                ).also {
-                    println(it.andReturn().response.contentAsString)
-                }
-                    .andExpect(status().isOk)
-                    .andExpect(jsonPath("$.result").value("SUCCESS"))
-                    .andExpect(header().exists("Authorization"))
-                    .andExpect(header().string("Authorization", Matchers.startsWith("Bearer ")))
-                    .andExpect(header().exists("RefreshToken"))
-                    .andReturn()
+                val result =
+                    mockMvc.perform(
+                        post("$baseUrl/sign-in")
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .content(objectMapper.writeValueAsString(request))
+                    ).also {
+                        println(it.andReturn().response.contentAsString)
+                    }
+                        .andExpect(status().isOk)
+                        .andExpect(jsonPath("$.result").value("SUCCESS"))
+                        .andExpect(header().exists("Authorization"))
+                        .andExpect(header().string("Authorization", Matchers.startsWith("Bearer ")))
+                        .andExpect(header().exists("RefreshToken"))
+                        .andReturn()
 
                 val responseContent = result.response.getContentAsString(Charset.forName("UTF-8"))
                 val responseType =
@@ -91,22 +94,24 @@ class SignInUserControllerTest(
 
             it("로그인 실패 테스트") {
                 // given
-                val request = SignInUserRequest(
-                    id = "01012345678",
-                    certificationNumber = "1111"
-                )
+                val request =
+                    SignInUserRequest(
+                        phoneNumber = "01012345678",
+                        certificationNumber = "1111"
+                    )
 
                 // when
-                val result = mockMvc.perform(
-                    post("$baseUrl/sign-in")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(request))
-                ).also {
-                    println(it.andReturn().response.contentAsString)
-                }
-                    .andExpect(status().isBadRequest)
-                    .andExpect(jsonPath("$.result").value("FAIL"))
-                    .andReturn()
+                val result =
+                    mockMvc.perform(
+                        post("$baseUrl/sign-in")
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .content(objectMapper.writeValueAsString(request))
+                    ).also {
+                        println(it.andReturn().response.contentAsString)
+                    }
+                        .andExpect(status().isBadRequest)
+                        .andExpect(jsonPath("$.result").value("FAIL"))
+                        .andReturn()
 
                 val responseContent = result.response.getContentAsString(Charset.forName("UTF-8"))
                 val responseType =

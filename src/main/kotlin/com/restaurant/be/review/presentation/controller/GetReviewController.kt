@@ -23,7 +23,6 @@ import java.security.Principal
 class GetReviewController(
     private val getReviewService: GetReviewService
 ) {
-
     @GetMapping("/{restaurantId}/reviews")
     @PreAuthorize("hasRole('USER')")
     @ApiOperation(value = "리뷰 리스트 조회 API")
@@ -37,7 +36,7 @@ class GetReviewController(
         @PathVariable restaurantId: Long,
         pageable: Pageable
     ): CommonResponse<GetReviewsResponse> {
-        val response = getReviewService.getReviews(pageable, restaurantId, principal.name)
+        val response = getReviewService.getReviews(pageable, restaurantId, principal.name.toLong())
         return CommonResponse.success(response)
     }
 
@@ -53,7 +52,7 @@ class GetReviewController(
         principal: Principal,
         @PathVariable reviewId: Long
     ): CommonResponse<GetReviewResponse> {
-        val response = getReviewService.getReview(reviewId, principal.name)
+        val response = getReviewService.getReview(reviewId, principal.name.toLong())
         return CommonResponse.success(response)
     }
 }

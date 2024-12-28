@@ -10,6 +10,7 @@ import com.restaurant.be.review.presentation.dto.common.ReviewResponseDto
 import com.restaurant.be.review.repository.ReviewRepository
 import com.restaurant.be.user.repository.UserRepository
 import jakarta.transaction.Transactional
+import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 import kotlin.jvm.optionals.getOrNull
 
@@ -23,9 +24,9 @@ class CreateReviewService(
     fun createReview(
         restaurantId: Long,
         reviewRequest: ReviewRequestDto,
-        email: String
+        userId: Long
     ): CreateReviewResponse {
-        val user = userRepository.findByPhoneNumber(email) ?: throw NotFoundUserPhoneNumberException()
+        val user = userRepository.findByIdOrNull(userId) ?: throw NotFoundUserPhoneNumberException()
 
         val review = reviewRequest.toEntity(user, restaurantId)
 
@@ -43,17 +44,22 @@ class CreateReviewService(
 
         val reviewWithLikes = reviewRepository.findReview(user, review.id ?: 0)!!
 
-        val responseDto = ReviewResponseDto.toDto(
-            reviewWithLikes.review,
-            reviewWithLikes.isLikedByUser
-        )
+        val responseDto =
+            ReviewResponseDto.toDto(
+                reviewWithLikes.review,
+                reviewWithLikes.isLikedByUser
+            )
 
         return CreateReviewResponse(responseDto)
     }
 
-    private fun applyReviewCountAndAvgRating(restaurantId: Long, newRating: Double) {
-        val restaurant = restaurantRepository.findById(restaurantId).getOrNull()
-            ?: throw NotFoundRestaurantException()
+    private fun applyReviewCountAndAvgRating(
+        restaurantId: Long,
+        newRating: Double
+    ) {
+        val restaurant =
+            restaurantRepository.findById(restaurantId).getOrNull()
+                ?: throw NotFoundRestaurantException()
         restaurant.createReview(newRating)
     }
 }

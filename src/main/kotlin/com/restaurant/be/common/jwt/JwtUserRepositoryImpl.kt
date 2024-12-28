@@ -10,13 +10,13 @@ import org.springframework.stereotype.Repository
 class JwtUserRepositoryImpl(
     private val userRepository: UserRepository
 ) : JwtUserRepository {
-    override fun validTokenById(id: String): Boolean {
-        val user = userRepository.findByIdOrNull(id.toLong()) ?: return false
+    override fun validTokenById(userId: Long): Boolean {
+        val user = userRepository.findByIdOrNull(userId) ?: return false
         return !user.isDeleted
     }
 
-    override fun userRolesById(id: String): List<String> {
-        val user = userRepository.findByIdOrNull(id.toLong()) ?: throw NotFoundUserException()
+    override fun userRolesById(userId: Long): List<String> {
+        val user = userRepository.findByIdOrNull(userId) ?: throw NotFoundUserException()
         if (user.isDeleted) {
             throw WithdrawalUserException()
         }

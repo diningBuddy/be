@@ -47,11 +47,14 @@ class TokenProvider(
 
     val log = KotlinLogging.logger {}
 
-    fun createTokens(id: String, roles: List<String>): Token {
+    fun createTokens(
+        userId: Long,
+        roles: List<String>
+    ): Token {
         val claims: MutableMap<String, Any?> = HashMap()
         claims[AUTHORITIES_KEY] = roles.joinToString(",")
 
-        return doGenerateToken(claims, id)
+        return doGenerateToken(claims, userId)
     }
 
     override fun afterPropertiesSet() {
@@ -59,50 +62,55 @@ class TokenProvider(
         key = Keys.hmacShaKeyFor(keyBytes)
     }
 
-    fun getAllClaimsFromToken(token: String?): Claims {
-        return Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token).body
-    }
-
-    fun getIdFromToken(token: String): String {
-        return getAllClaimsFromToken(token).subject
-    }
-
-    fun getIdFromExpiredToken(token: String): String {
-        return try {
-            Jwts.parserBuilder()
-                .setSigningKey(key)
-                .build()
-                .parseClaimsJws(token)
-                .body.subject
-
-            // 토큰 파싱 및 ID 추출
-        } catch (ex: ExpiredJwtException) {
-            // 만료된 토큰이어도 ID는 추출
-            ex.claims.subject
-        }
-    }
-
-    fun getRolesFromToken(token: String): String {
-        return getAllClaimsFromToken(token)["roles"].toString()
-    }
-
-    fun getAuthentication(token: String?): Authentication {
-        val claims = Jwts
+    fun getAllClaimsFromToken(token: String?): Claims =
+        Jwts
             .parserBuilder()
             .setSigningKey(key)
             .build()
             .parseClaimsJws(token)
             .body
-        val authorities: Collection<GrantedAuthority> = Arrays.stream(
-            claims[AUTHORITIES_KEY].toString().split(",".toRegex()).dropLastWhile { it.isEmpty() }
-                .toTypedArray()
-        )
-            .map { role: String? ->
-                SimpleGrantedAuthority(
-                    role
-                )
-            }
-            .collect(Collectors.toList())
+
+    fun getUserIdFromToken(token: String): Long = getAllClaimsFromToken(token).subject.toLong()
+
+    fun getIdFromExpiredToken(token: String): Long =
+        try {
+            Jwts
+                .parserBuilder()
+                .setSigningKey(key)
+                .build()
+                .parseClaimsJws(token)
+                .body.subject
+                .toLong()
+
+            // 토큰 파싱 및 ID 추출
+        } catch (ex: ExpiredJwtException) {
+            // 만료된 토큰이어도 ID는 추출
+            ex.claims.subject.toLong()
+        }
+
+    fun getRolesFromToken(token: String): String = getAllClaimsFromToken(token)["roles"].toString()
+
+    fun getAuthentication(token: String?): Authentication {
+        val claims =
+            Jwts
+                .parserBuilder()
+                .setSigningKey(key)
+                .build()
+                .parseClaimsJws(token)
+                .body
+        val authorities: Collection<GrantedAuthority> =
+            Arrays
+                .stream(
+                    claims[AUTHORITIES_KEY]
+                        .toString()
+                        .split(",".toRegex())
+                        .dropLastWhile { it.isEmpty() }
+                        .toTypedArray()
+                ).map { role: String? ->
+                    SimpleGrantedAuthority(
+                        role
+                    )
+                }.collect(Collectors.toList())
         val principal = User(claims.subject, "", authorities)
         return UsernamePasswordAuthenticationToken(principal, token, authorities)
     }
@@ -128,14 +136,14 @@ class TokenProvider(
         refreshToken: String
     ): Token {
         val createdDate = Date()
-        val phoneNumber = getIdFromToken(accessToken)
-        val refreshTokenInDBMS = redisRepository.getValue("RT:$phoneNumber")
+        val userId = getUserIdFromToken(accessToken)
+        val refreshTokenInDBMS = redisRepository.getValue("RT:$userId")
         if (!refreshTokenInDBMS.equals(refreshToken)) {
             throw InvalidTokenException()
         }
         val userRoles = getRolesFromToken(accessToken)
 
-        val newAccessToken = createAccessToken(phoneNumber, listOf(userRoles))
+        val newAccessToken = createAccessToken(userId, listOf(userRoles))
         val authentication: Authentication = getAuthentication(accessToken)
         SecurityContextHolder.getContext().authentication = authentication
 
@@ -150,7 +158,11 @@ class TokenProvider(
 
     fun validateToken(token: String?): Boolean {
         try {
-            Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token)
+            Jwts
+                .parserBuilder()
+                .setSigningKey(key)
+                .build()
+                .parseClaimsJws(token)
             return true
         } catch (e: SecurityException) {
             log.info("잘못된 JWT 서명입니다.")
@@ -166,24 +178,30 @@ class TokenProvider(
         return false
     }
 
-    fun createAccessToken(id: String, roles: List<String>): String {
+    fun createAccessToken(
+        userId: Long,
+        roles: List<String>
+    ): String {
         val claims: MutableMap<String, Any?> = HashMap()
         val createdDate = Date()
         val accessTokenExpirationDate =
             Date(createdDate.time + accessTokenValidityInMilliseconds * 1000)
         claims[AUTHORITIES_KEY] = roles.joinToString(",")
-        return createToken(claims, id, accessTokenExpirationDate)
+        return createToken(claims, userId, accessTokenExpirationDate)
     }
 
-    private fun doGenerateToken(claims: Map<String, Any?>, id: String): Token {
+    private fun doGenerateToken(
+        claims: Map<String, Any?>,
+        userId: Long
+    ): Token {
         val createdDate = Date()
         val accessTokenExpirationDate =
             Date(createdDate.time + accessTokenValidityInMilliseconds * 1000)
         val refreshTokenExpirationDate =
             Date(createdDate.time + refreshTokenValidityInMilliseconds * 1000)
 
-        val accessToken = createToken(claims, id, accessTokenExpirationDate)
-        val refreshToken = createToken(claims, id, refreshTokenExpirationDate)
+        val accessToken = createToken(claims, userId, accessTokenExpirationDate)
+        val refreshToken = createToken(claims, userId, refreshTokenExpirationDate)
 
         return Token(
             accessToken,
@@ -196,14 +214,15 @@ class TokenProvider(
 
     fun createToken(
         claims: Map<String, Any?>,
-        id: String,
+        userId: Long,
         expirationDate: Date
     ): String {
         val createdDate = Date()
 
-        return Jwts.builder()
+        return Jwts
+            .builder()
             .setClaims(claims)
-            .setSubject(id)
+            .setSubject(userId.toString())
             .setIssuedAt(createdDate)
             .setExpiration(expirationDate)
             .signWith(key)

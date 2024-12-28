@@ -27,7 +27,6 @@ import java.security.Principal
 class LikeRestaurantController(
     private val likeRestaurantService: LikeRestaurantService
 ) {
-
     @GetMapping("/my-like")
     @PreAuthorize("hasRole('USER')")
     @ApiOperation(value = "좋아요한 음식점 리스트 조회 API")
@@ -40,7 +39,7 @@ class LikeRestaurantController(
         principal: Principal,
         pageable: Pageable
     ): CommonResponse<GetLikeRestaurantsResponse> {
-        val response = likeRestaurantService.getMyLikeRestaurant(pageable, principal.name)
+        val response = likeRestaurantService.getMyLikeRestaurant(pageable, principal.name.toLong())
         return CommonResponse.success(response)
     }
 
@@ -59,7 +58,11 @@ class LikeRestaurantController(
         request: LikeRestaurantRequest
     ): CommonResponse<LikeRestaurantResponse> {
         val response =
-            likeRestaurantService.likeRestaurant(principal.name, restaurantId, request.isLike)
+            likeRestaurantService.likeRestaurant(
+                principal.name.toLong(),
+                restaurantId,
+                request.isLike
+            )
         return CommonResponse.success(response)
     }
 }

@@ -25,7 +25,6 @@ import java.security.Principal
 class GetRestaurantController(
     private val getRestaurantService: GetRestaurantService
 ) {
-
     @GetMapping
     @PreAuthorize("hasRole('USER')")
     @ApiOperation(value = "음식점 조회 API")
@@ -39,7 +38,8 @@ class GetRestaurantController(
         @ModelAttribute request: GetRestaurantsRequest,
         pageable: Pageable
     ): CommonResponse<GetRestaurantsResponse> {
-        val response = getRestaurantService.getRestaurants(request, pageable, principal.name)
+        val response =
+            getRestaurantService.getRestaurants(request, pageable, principal.name.toLong())
         return CommonResponse.success(response)
     }
 
@@ -55,7 +55,7 @@ class GetRestaurantController(
         principal: Principal,
         @PathVariable restaurantId: Long
     ): CommonResponse<GetRestaurantResponse> {
-        val response = getRestaurantService.getRestaurant(restaurantId, principal.name)
+        val response = getRestaurantService.getRestaurant(restaurantId, principal.name.toLong())
         return CommonResponse.success(response)
     }
 }

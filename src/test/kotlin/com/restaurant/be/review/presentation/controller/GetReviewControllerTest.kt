@@ -39,12 +39,13 @@ class GetReviewControllerTest(
     private val reviewRepository: ReviewRepository
 ) : CustomDescribeSpec() {
     private val baseUrl = "/v1/restaurants"
-    private val objectMapper: ObjectMapper = ObjectMapper().registerModule(KotlinModule()).apply {
-        val module = SimpleModule()
-        module.addDeserializer(Page::class.java, PageDeserializer(ReviewResponseDto::class.java))
-        this.registerModule(module)
-        this.registerModule(JavaTimeModule())
-    }
+    private val objectMapper: ObjectMapper =
+        ObjectMapper().registerModule(KotlinModule()).apply {
+            val module = SimpleModule()
+            module.addDeserializer(Page::class.java, PageDeserializer(ReviewResponseDto::class.java))
+            this.registerModule(module)
+            this.registerModule(JavaTimeModule())
+        }
 
     init {
         beforeEach {
@@ -54,37 +55,41 @@ class GetReviewControllerTest(
         describe("#getReviews basic test") {
             it("when getReviews then return 200") {
                 // given
-                val restaurant = restaurantRepository.save(
-                    RestaurantUtil.generateRestaurantEntity(
-                        name = "restaurant"
+                val restaurant =
+                    restaurantRepository.save(
+                        RestaurantUtil.generateRestaurantEntity(
+                            name = "restaurant"
+                        )
                     )
-                )
 
                 for (i in 1..5) {
                     reviewRepository.save(
                         ReviewUtil.generateReviewEntity(
                             restaurantId = restaurant.id,
-                            user = userRepository.findByPhoneNumber("01012345678")
+                            user =
+                            userRepository.findByPhoneNumber("01012345678")
                                 ?: throw Exception()
                         )
                     )
                 }
 
                 // when
-                val result = mockMvc.perform(
-                    get("$baseUrl/${restaurant.id}/reviews")
-                ).also {
-                    println(it.andReturn().response.contentAsString)
-                }
-                    .andExpect(status().isOk)
-                    .andExpect(jsonPath("$.result").value("SUCCESS"))
-                    .andReturn()
+                val result =
+                    mockMvc
+                        .perform(
+                            get("$baseUrl/${restaurant.id}/reviews")
+                        ).also {
+                            println(it.andReturn().response.contentAsString)
+                        }.andExpect(status().isOk)
+                        .andExpect(jsonPath("$.result").value("SUCCESS"))
+                        .andReturn()
 
-                val responseContent = result.response.getContentAsString(
-                    Charset.forName(
-                        "UTF-8"
+                val responseContent =
+                    result.response.getContentAsString(
+                        Charset.forName(
+                            "UTF-8"
+                        )
                     )
-                )
                 val responseType =
                     object : TypeReference<CommonResponse<GetReviewsResponse>>() {}
                 val actualResult: CommonResponse<GetReviewsResponse> =
@@ -95,46 +100,51 @@ class GetReviewControllerTest(
 
                 // then
                 actualResult.result shouldBe CommonResponse.Result.SUCCESS
-                actualResult.data!!.reviews.content.size shouldBe 5
+                actualResult.data!!
+                    .reviews.content.size shouldBe 5
             }
         }
 
         describe("#getReviews pagination test") {
             it("when 8 data and set size 5 and page 0 should return 5") {
                 // given
-                val restaurant = restaurantRepository.save(
-                    RestaurantUtil.generateRestaurantEntity(
-                        name = "restaurant"
+                val restaurant =
+                    restaurantRepository.save(
+                        RestaurantUtil.generateRestaurantEntity(
+                            name = "restaurant"
+                        )
                     )
-                )
 
                 for (i in 1..8) {
                     reviewRepository.save(
                         ReviewUtil.generateReviewEntity(
                             restaurantId = restaurant.id,
-                            user = userRepository.findByPhoneNumber("01012345678")
+                            user =
+                            userRepository.findByPhoneNumber("01012345678")
                                 ?: throw Exception()
                         )
                     )
                 }
 
                 // when
-                val result = mockMvc.perform(
-                    get("$baseUrl/${restaurant.id}/reviews")
-                        .param("page", "0")
-                        .param("size", "5")
-                ).also {
-                    println(it.andReturn().response.contentAsString)
-                }
-                    .andExpect(status().isOk)
-                    .andExpect(jsonPath("$.result").value("SUCCESS"))
-                    .andReturn()
+                val result =
+                    mockMvc
+                        .perform(
+                            get("$baseUrl/${restaurant.id}/reviews")
+                                .param("page", "0")
+                                .param("size", "5")
+                        ).also {
+                            println(it.andReturn().response.contentAsString)
+                        }.andExpect(status().isOk)
+                        .andExpect(jsonPath("$.result").value("SUCCESS"))
+                        .andReturn()
 
-                val responseContent = result.response.getContentAsString(
-                    Charset.forName(
-                        "UTF-8"
+                val responseContent =
+                    result.response.getContentAsString(
+                        Charset.forName(
+                            "UTF-8"
+                        )
                     )
-                )
                 val responseType =
                     object : TypeReference<CommonResponse<GetReviewsResponse>>() {}
                 val actualResult: CommonResponse<GetReviewsResponse> =
@@ -145,44 +155,49 @@ class GetReviewControllerTest(
 
                 // then
                 actualResult.result shouldBe CommonResponse.Result.SUCCESS
-                actualResult.data!!.reviews.content.size shouldBe 5
+                actualResult.data!!
+                    .reviews.content.size shouldBe 5
             }
 
             it("when 8 data and set size 5 and page 1 should return 3") {
                 // given
-                val restaurant = restaurantRepository.save(
-                    RestaurantUtil.generateRestaurantEntity(
-                        name = "restaurant"
+                val restaurant =
+                    restaurantRepository.save(
+                        RestaurantUtil.generateRestaurantEntity(
+                            name = "restaurant"
+                        )
                     )
-                )
 
                 for (i in 1..8) {
                     reviewRepository.save(
                         ReviewUtil.generateReviewEntity(
                             restaurantId = restaurant.id,
-                            user = userRepository.findByPhoneNumber("01012345678")
+                            user =
+                            userRepository.findByPhoneNumber("01012345678")
                                 ?: throw Exception()
                         )
                     )
                 }
 
                 // when
-                val result = mockMvc.perform(
-                    get("$baseUrl/${restaurant.id}/reviews")
-                        .param("page", "1")
-                        .param("size", "5")
-                ).also {
-                    println(it.andReturn().response.contentAsString)
-                }
-                    .andExpect(status().isOk)
-                    .andExpect(jsonPath("$.result").value("SUCCESS"))
-                    .andReturn()
+                val result =
+                    mockMvc
+                        .perform(
+                            get("$baseUrl/${restaurant.id}/reviews")
+                                .param("page", "1")
+                                .param("size", "5")
+                        ).also {
+                            println(it.andReturn().response.contentAsString)
+                        }.andExpect(status().isOk)
+                        .andExpect(jsonPath("$.result").value("SUCCESS"))
+                        .andReturn()
 
-                val responseContent = result.response.getContentAsString(
-                    Charset.forName(
-                        "UTF-8"
+                val responseContent =
+                    result.response.getContentAsString(
+                        Charset.forName(
+                            "UTF-8"
+                        )
                     )
-                )
                 val responseType =
                     object : TypeReference<CommonResponse<GetReviewsResponse>>() {}
                 val actualResult: CommonResponse<GetReviewsResponse> =
@@ -193,44 +208,49 @@ class GetReviewControllerTest(
 
                 // then
                 actualResult.result shouldBe CommonResponse.Result.SUCCESS
-                actualResult.data!!.reviews.content.size shouldBe 3
+                actualResult.data!!
+                    .reviews.content.size shouldBe 3
             }
         }
 
         describe("#getReviews sort test") {
             it("when basic sort should return sorted data by id") {
                 // given
-                val restaurant = restaurantRepository.save(
-                    RestaurantUtil.generateRestaurantEntity(
-                        name = "restaurant"
+                val restaurant =
+                    restaurantRepository.save(
+                        RestaurantUtil.generateRestaurantEntity(
+                            name = "restaurant"
+                        )
                     )
-                )
 
                 for (i in 1..5) {
                     reviewRepository.save(
                         ReviewUtil.generateReviewEntity(
                             restaurantId = restaurant.id,
-                            user = userRepository.findByPhoneNumber("01012345678")
+                            user =
+                            userRepository.findByPhoneNumber("01012345678")
                                 ?: throw Exception()
                         )
                     )
                 }
 
                 // when
-                val result = mockMvc.perform(
-                    get("$baseUrl/${restaurant.id}/reviews")
-                ).also {
-                    println(it.andReturn().response.contentAsString)
-                }
-                    .andExpect(status().isOk)
-                    .andExpect(jsonPath("$.result").value("SUCCESS"))
-                    .andReturn()
+                val result =
+                    mockMvc
+                        .perform(
+                            get("$baseUrl/${restaurant.id}/reviews")
+                        ).also {
+                            println(it.andReturn().response.contentAsString)
+                        }.andExpect(status().isOk)
+                        .andExpect(jsonPath("$.result").value("SUCCESS"))
+                        .andReturn()
 
-                val responseContent = result.response.getContentAsString(
-                    Charset.forName(
-                        "UTF-8"
+                val responseContent =
+                    result.response.getContentAsString(
+                        Charset.forName(
+                            "UTF-8"
+                        )
                     )
-                )
                 val responseType =
                     object : TypeReference<CommonResponse<GetReviewsResponse>>() {}
                 val actualResult: CommonResponse<GetReviewsResponse> =
@@ -241,25 +261,43 @@ class GetReviewControllerTest(
 
                 // then
                 actualResult.result shouldBe CommonResponse.Result.SUCCESS
-                actualResult.data!!.reviews.content[0].id shouldBe actualResult.data!!.reviews.content[1].id + 1
-                actualResult.data!!.reviews.content[1].id shouldBe actualResult.data!!.reviews.content[2].id + 1
-                actualResult.data!!.reviews.content[2].id shouldBe actualResult.data!!.reviews.content[3].id + 1
-                actualResult.data!!.reviews.content[3].id shouldBe actualResult.data!!.reviews.content[4].id + 1
+                actualResult.data!!
+                    .reviews.content[0]
+                    .id shouldBe actualResult.data!!
+                    .reviews.content[1]
+                    .id + 1
+                actualResult.data!!
+                    .reviews.content[1]
+                    .id shouldBe actualResult.data!!
+                    .reviews.content[2]
+                    .id + 1
+                actualResult.data!!
+                    .reviews.content[2]
+                    .id shouldBe actualResult.data!!
+                    .reviews.content[3]
+                    .id + 1
+                actualResult.data!!
+                    .reviews.content[3]
+                    .id shouldBe actualResult.data!!
+                    .reviews.content[4]
+                    .id + 1
             }
 
             it("when likeCount desc sort should return sorted data by likeCount") {
                 // given
-                val restaurant = restaurantRepository.save(
-                    RestaurantUtil.generateRestaurantEntity(
-                        name = "restaurant"
+                val restaurant =
+                    restaurantRepository.save(
+                        RestaurantUtil.generateRestaurantEntity(
+                            name = "restaurant"
+                        )
                     )
-                )
 
                 for (i in 1..5) {
                     reviewRepository.save(
                         ReviewUtil.generateReviewEntity(
                             restaurantId = restaurant.id,
-                            user = userRepository.findByPhoneNumber("01012345678")
+                            user =
+                            userRepository.findByPhoneNumber("01012345678")
                                 ?: throw Exception(),
                             likeCount = i.toLong()
                         )
@@ -267,21 +305,23 @@ class GetReviewControllerTest(
                 }
 
                 // when
-                val result = mockMvc.perform(
-                    get("$baseUrl/${restaurant.id}/reviews")
-                        .param("sort", "likeCount,desc")
-                ).also {
-                    println(it.andReturn().response.contentAsString)
-                }
-                    .andExpect(status().isOk)
-                    .andExpect(jsonPath("$.result").value("SUCCESS"))
-                    .andReturn()
+                val result =
+                    mockMvc
+                        .perform(
+                            get("$baseUrl/${restaurant.id}/reviews")
+                                .param("sort", "likeCount,desc")
+                        ).also {
+                            println(it.andReturn().response.contentAsString)
+                        }.andExpect(status().isOk)
+                        .andExpect(jsonPath("$.result").value("SUCCESS"))
+                        .andReturn()
 
-                val responseContent = result.response.getContentAsString(
-                    Charset.forName(
-                        "UTF-8"
+                val responseContent =
+                    result.response.getContentAsString(
+                        Charset.forName(
+                            "UTF-8"
+                        )
                     )
-                )
                 val responseType =
                     object : TypeReference<CommonResponse<GetReviewsResponse>>() {}
                 val actualResult: CommonResponse<GetReviewsResponse> =
@@ -292,46 +332,61 @@ class GetReviewControllerTest(
 
                 // then
                 actualResult.result shouldBe CommonResponse.Result.SUCCESS
-                actualResult.data!!.reviews.content[0].likeCount shouldBe 5
-                actualResult.data!!.reviews.content[1].likeCount shouldBe 4
-                actualResult.data!!.reviews.content[2].likeCount shouldBe 3
-                actualResult.data!!.reviews.content[3].likeCount shouldBe 2
-                actualResult.data!!.reviews.content[4].likeCount shouldBe 1
+                actualResult.data!!
+                    .reviews.content[0]
+                    .likeCount shouldBe 5
+                actualResult.data!!
+                    .reviews.content[1]
+                    .likeCount shouldBe 4
+                actualResult.data!!
+                    .reviews.content[2]
+                    .likeCount shouldBe 3
+                actualResult.data!!
+                    .reviews.content[3]
+                    .likeCount shouldBe 2
+                actualResult.data!!
+                    .reviews.content[4]
+                    .likeCount shouldBe 1
             }
         }
 
         describe("#getReview basic test") {
             it("when getReview then return 200") {
                 // given
-                val restaurant = restaurantRepository.save(
-                    RestaurantUtil.generateRestaurantEntity(
-                        name = "restaurant"
+                val restaurant =
+                    restaurantRepository.save(
+                        RestaurantUtil.generateRestaurantEntity(
+                            name = "restaurant"
+                        )
                     )
-                )
 
-                val review = reviewRepository.save(
-                    ReviewUtil.generateReviewEntity(
-                        restaurantId = restaurant.id,
-                        user = userRepository.findByPhoneNumber("01012345678")
-                            ?: throw Exception()
+                val review =
+                    reviewRepository.save(
+                        ReviewUtil.generateReviewEntity(
+                            restaurantId = restaurant.id,
+                            user =
+                            userRepository.findByPhoneNumber("01012345678")
+                                ?: throw Exception()
+                        )
                     )
-                )
 
                 // when
-                val result = mockMvc.perform(
-                    get("$baseUrl/reviews/${review.id}")
-                ).also {
-                    println(it.andReturn().response.contentAsString)
-                }
-                    .andExpect(status().isOk)
-                    .andExpect(jsonPath("$.result").value("SUCCESS"))
-                    .andReturn()
+                val result =
+                    mockMvc
+                        .perform(
+                            get("$baseUrl/reviews/${review.id}")
+                        ).also {
+                            println(it.andReturn().response.contentAsString)
+                        }.andExpect(status().isOk)
+                        .andExpect(jsonPath("$.result").value("SUCCESS"))
+                        .andReturn()
 
-                val responseContent = result.response.getContentAsString(
-                    Charset.forName(
-                        "UTF-8"
+                val responseContent =
+                    result.response.getContentAsString(
+                        Charset.forName(
+                            "UTF-8"
+                        )
                     )
-                )
                 val responseType =
                     object : TypeReference<CommonResponse<GetReviewResponse>>() {}
                 val actualResult: CommonResponse<GetReviewResponse> =
@@ -347,20 +402,22 @@ class GetReviewControllerTest(
 
             it("when not existed review then return 404") {
                 // when
-                val result = mockMvc.perform(
-                    get("$baseUrl/reviews/1")
-                ).also {
-                    println(it.andReturn().response.contentAsString)
-                }
-                    .andExpect(status().isBadRequest)
-                    .andExpect(jsonPath("$.result").value("FAIL"))
-                    .andReturn()
+                val result =
+                    mockMvc
+                        .perform(
+                            get("$baseUrl/reviews/1")
+                        ).also {
+                            println(it.andReturn().response.contentAsString)
+                        }.andExpect(status().isBadRequest)
+                        .andExpect(jsonPath("$.result").value("FAIL"))
+                        .andReturn()
 
-                val responseContent = result.response.getContentAsString(
-                    Charset.forName(
-                        "UTF-8"
+                val responseContent =
+                    result.response.getContentAsString(
+                        Charset.forName(
+                            "UTF-8"
+                        )
                     )
-                )
                 val responseType =
                     object : TypeReference<CommonResponse<GetReviewResponse>>() {}
                 val actualResult: CommonResponse<GetReviewResponse> =
@@ -376,44 +433,49 @@ class GetReviewControllerTest(
 
             it("when another user get review then increment view count") {
                 // given
-                val restaurant = restaurantRepository.save(
-                    RestaurantUtil.generateRestaurantEntity(
-                        name = "restaurant"
+                val restaurant =
+                    restaurantRepository.save(
+                        RestaurantUtil.generateRestaurantEntity(
+                            name = "restaurant"
+                        )
                     )
-                )
 
-                val user = userRepository.save(
-                    User(
-                        phoneNumber = "01099999999",
-                        nickname = "test_review_nickname",
-                        name = "test_name",
-                        gender = Gender.MAN,
-                        birthday = LocalDate.now(),
-                        isTermsAgreed = true
+                val user =
+                    userRepository.save(
+                        User(
+                            phoneNumber = "01099999999",
+                            nickname = "test_review_nickname",
+                            name = "test_name",
+                            gender = Gender.MAN,
+                            birthday = LocalDate.now(),
+                            isTermsAgreed = true
+                        )
                     )
-                )
 
-                val review = reviewRepository.save(
-                    ReviewUtil.generateReviewEntity(
-                        restaurantId = restaurant.id,
-                        user = user
+                val review =
+                    reviewRepository.save(
+                        ReviewUtil.generateReviewEntity(
+                            restaurantId = restaurant.id,
+                            user = user
+                        )
                     )
-                )
 
                 // when
-                val result = mockMvc.perform(
-                    get("$baseUrl/reviews/${review.id}")
-                ).also {
-                    println(it.andReturn().response.contentAsString)
-                }
-                    .andExpect(status().isOk)
-                    .andExpect(jsonPath("$.result").value("SUCCESS"))
-                    .andReturn()
-                val responseContent = result.response.getContentAsString(
-                    Charset.forName(
-                        "UTF-8"
+                val result =
+                    mockMvc
+                        .perform(
+                            get("$baseUrl/reviews/${review.id}")
+                        ).also {
+                            println(it.andReturn().response.contentAsString)
+                        }.andExpect(status().isOk)
+                        .andExpect(jsonPath("$.result").value("SUCCESS"))
+                        .andReturn()
+                val responseContent =
+                    result.response.getContentAsString(
+                        Charset.forName(
+                            "UTF-8"
+                        )
                     )
-                )
                 val responseType =
                     object : TypeReference<CommonResponse<GetReviewResponse>>() {}
                 val actualResult: CommonResponse<GetReviewResponse> =

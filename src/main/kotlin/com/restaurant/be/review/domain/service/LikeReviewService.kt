@@ -23,20 +23,24 @@ class LikeReviewService(
     val reviewRepository: ReviewRepository
 ) {
     @Transactional
-    fun likeReview(reviewId: Long, request: LikeReviewRequest, email: String): LikeReviewResponse {
-        val user = userRepository.findByPhoneNumber(email) ?: throw NotFoundUserPhoneNumberException()
-
-        val userId = user.id ?: 0L
+    fun likeReview(
+        reviewId: Long,
+        request: LikeReviewRequest,
+        userId: Long
+    ): LikeReviewResponse {
+        val user = userRepository.findByIdOrNull(userId) ?: throw NotFoundUserPhoneNumberException()
 
         likeReviewWhetherAlreadyLikeOrNot(request, reviewId, user, userId)
 
-        val reviewWithLikes: ReviewWithLikesDto = reviewRepository.findReview(user, reviewId)
-            ?: throw NotFoundReviewException()
+        val reviewWithLikes: ReviewWithLikesDto =
+            reviewRepository.findReview(user, reviewId)
+                ?: throw NotFoundReviewException()
 
-        val responseDto = ReviewResponseDto.toDto(
-            reviewWithLikes.review,
-            reviewWithLikes.isLikedByUser
-        )
+        val responseDto =
+            ReviewResponseDto.toDto(
+                reviewWithLikes.review,
+                reviewWithLikes.isLikedByUser
+            )
 
         return LikeReviewResponse(responseDto)
     }
@@ -64,6 +68,8 @@ class LikeReviewService(
         }
     }
 
-    private fun isAlreadyLike(reviewId: Long, user: User) =
-        reviewLikeRepository.existsByReviewIdAndUserId(reviewId, user.id)
+    private fun isAlreadyLike(
+        reviewId: Long,
+        user: User
+    ) = reviewLikeRepository.existsByReviewIdAndUserId(reviewId, user.id)
 }

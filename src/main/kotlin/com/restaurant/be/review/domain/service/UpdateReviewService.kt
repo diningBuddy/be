@@ -1,7 +1,6 @@
 package com.restaurant.be.review.domain.service
 
 import com.restaurant.be.common.exception.NotFoundReviewException
-import com.restaurant.be.common.exception.NotFoundUserPhoneNumberException
 import com.restaurant.be.common.exception.UnAuthorizedUpdateException
 import com.restaurant.be.restaurant.repository.RestaurantRepository
 import com.restaurant.be.review.presentation.dto.UpdateReviewRequest
@@ -9,7 +8,7 @@ import com.restaurant.be.review.presentation.dto.UpdateReviewResponse
 import com.restaurant.be.review.presentation.dto.common.ReviewResponseDto
 import com.restaurant.be.review.repository.ReviewLikeRepository
 import com.restaurant.be.review.repository.ReviewRepository
-import com.restaurant.be.user.repository.UserRepository
+import com.restaurant.be.user.domain.entity.QUser.user
 import jakarta.transaction.Transactional
 import org.springframework.stereotype.Service
 import kotlin.jvm.optionals.getOrNull
@@ -17,7 +16,6 @@ import kotlin.jvm.optionals.getOrNull
 @Service
 class UpdateReviewService(
     private val reviewRepository: ReviewRepository,
-    private val userRepository: UserRepository,
     private val restaurantRepository: RestaurantRepository,
     private val reviewLikeRepository: ReviewLikeRepository
 ) {
@@ -26,14 +24,14 @@ class UpdateReviewService(
         restaurantId: Long,
         reviewId: Long,
         reviewRequest: UpdateReviewRequest,
-        email: String
+        userId: Long
     ): UpdateReviewResponse {
-        val user = userRepository.findByPhoneNumber(email) ?: throw NotFoundUserPhoneNumberException()
+        val review =
+            reviewRepository
+                .findById(reviewId)
+                .orElseThrow { NotFoundReviewException() }
 
-        val review = reviewRepository.findById(reviewId)
-            .orElseThrow { NotFoundReviewException() }
-
-        if (user.id != review.user.id) throw UnAuthorizedUpdateException()
+        if (userId != review.user.id) throw UnAuthorizedUpdateException()
 
         applyReviewCountAndAvgRating(
             review.restaurantId,
@@ -45,10 +43,11 @@ class UpdateReviewService(
 
         reviewRepository.save(review)
 
-        val responseDto = ReviewResponseDto.toDto(
-            review,
-            reviewLikeRepository.existsByReviewIdAndUserId(reviewId, user.id)
-        )
+        val responseDto =
+            ReviewResponseDto.toDto(
+                review,
+                reviewLikeRepository.existsByReviewIdAndUserId(reviewId, userId)
+            )
 
         return UpdateReviewResponse(responseDto)
     }

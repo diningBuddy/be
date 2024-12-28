@@ -20,7 +20,6 @@ import java.security.Principal
 class RecommendRestaurantController(
     private val recommendRestaurantService: RecommendRestaurantService
 ) {
-
     @GetMapping("/recommend")
     @PreAuthorize("hasRole('USER')")
     @ApiOperation(value = "gpt 기반 추천 음식점 리스트 조회 API")
@@ -29,10 +28,8 @@ class RecommendRestaurantController(
         description = "성공",
         content = [Content(schema = Schema(implementation = RecommendRestaurantResponse::class))]
     )
-    fun getRecommendRestaurants(
-        principal: Principal
-    ): CommonResponse<RecommendRestaurantResponse> {
-        val response = recommendRestaurantService.recommendRestaurants(principal.name)
+    fun getRecommendRestaurants(principal: Principal): CommonResponse<RecommendRestaurantResponse> {
+        val response = recommendRestaurantService.recommendRestaurants(principal.name.toLong())
         return CommonResponse.success(response)
     }
 }
