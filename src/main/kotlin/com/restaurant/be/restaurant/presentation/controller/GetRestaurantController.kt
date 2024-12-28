@@ -39,6 +39,7 @@ class GetRestaurantController(
         @ModelAttribute request: GetRestaurantsRequest,
         pageable: Pageable
     ): CommonResponse<GetRestaurantsResponse> {
+        print(principal.toString())
         val response = getRestaurantService.getRestaurants(request, pageable, principal.name)
         return CommonResponse.success(response)
     }
