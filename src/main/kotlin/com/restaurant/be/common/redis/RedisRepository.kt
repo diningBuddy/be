@@ -2,6 +2,7 @@ package com.restaurant.be.common.redis
 
 import com.restaurant.be.common.exception.ExpiredCertificationNumberException
 import com.restaurant.be.common.exception.InvalidTokenException
+import com.restaurant.be.common.exception.NotFoundSocialKeyException
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.data.redis.core.RedisTemplate
 import org.springframework.stereotype.Component
@@ -129,8 +130,13 @@ class RedisRepository(
         redisTemplate.delete(key)
     }
 
-    fun saveSocialUser(kakaoCode: String, kakaoKey: String) {
+    fun saveSocialKey(kakaoCode: String, kakaoKey: String) {
         val key = "$SOCIAL_USER_PREFIX$kakaoCode"
         setValue(key, kakaoKey, 1, TimeUnit.HOURS)
+    }
+
+    fun getSocialKey(socialCode: String): String {
+        val key = "$SOCIAL_USER_PREFIX$socialCode"
+        return getValue(key) ?: throw NotFoundSocialKeyException()
     }
 }
