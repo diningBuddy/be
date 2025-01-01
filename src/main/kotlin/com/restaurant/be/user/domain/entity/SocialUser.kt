@@ -30,5 +30,15 @@ class SocialUser(
     var socialKey: String,
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "user_id", nullable = false, foreignKey = ForeignKey(ConstraintMode.NO_CONSTRAINT))
-    val user: User
-) : BaseEntity()
+    val user: User? = null
+) : BaseEntity() {
+    companion object {
+        fun createKakao(user: User, socialKey: String): SocialUser {
+            return SocialUser(
+                socialType = SocialType.KAKAO,
+                socialKey = socialKey,
+                user = user
+            )
+        }
+    }
+}

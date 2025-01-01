@@ -14,14 +14,14 @@ class SignUpUserService(
     private val userRepository: UserRepository
 ) {
     @Transactional
-    fun signUp(request: SignUpUserRequest) {
+    fun signUp(request: SignUpUserRequest): User {
         if (userRepository.findByPhoneNumber(request.phoneNumber) != null) {
             throw DuplicateUserPhoneNumberException()
         }
 
         val nickname = generateUniqueNickname()
         val user = User.create(request, nickname)
-        userRepository.save(user)
+        return userRepository.save(user)
     }
 
     fun generateUniqueNickname(): String {

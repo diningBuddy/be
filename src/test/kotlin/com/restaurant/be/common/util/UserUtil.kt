@@ -1,7 +1,10 @@
 package com.restaurant.be.common.util
 
 import com.restaurant.be.user.domain.constant.Gender
+import com.restaurant.be.user.domain.constant.SocialType
+import com.restaurant.be.user.domain.entity.SocialUser
 import com.restaurant.be.user.domain.entity.User
+import com.restaurant.be.user.repository.SocialUserRepository
 import com.restaurant.be.user.repository.UserRepository
 import org.springframework.security.core.authority.SimpleGrantedAuthority
 import org.springframework.security.core.context.SecurityContextHolder
@@ -57,5 +60,21 @@ fun setUpUser(
             listOf(SimpleGrantedAuthority("ROLE_USER"))
         )
 
+    return user
+}
+
+fun setUpSocialUser(
+    phoneNumber: String,
+    kakaoKey: String,
+    userRepository: UserRepository,
+    socialUserRepository: SocialUserRepository
+): User {
+    val user = setUpUser(phoneNumber, userRepository)
+    val socialUser = SocialUser(
+        user = user,
+        socialKey = kakaoKey,
+        socialType = SocialType.KAKAO
+    )
+    socialUserRepository.save(socialUser)
     return user
 }
