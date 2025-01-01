@@ -96,3 +96,9 @@ data class ExpiredCertificationNumberException(
 data class InvalidCertificationNumberException(
     override val message: String = "일치하지 않는 인증번호 입니다."
 ) : ServerException(400, message)
+
+data class KaKaoGetTokenException(
+    override val message: String = "카카오 토큰을 가져오는데 실패 했습니다."
+) : ServerException(500, message)
+
+

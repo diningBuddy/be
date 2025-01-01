@@ -30,5 +30,6 @@ class SocialUser(
     var socialKey: String,
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "user_id", nullable = false, foreignKey = ForeignKey(ConstraintMode.NO_CONSTRAINT))
-    val user: User
-) : BaseEntity()
+    val user: User? = null
+) : BaseEntity() {
+}

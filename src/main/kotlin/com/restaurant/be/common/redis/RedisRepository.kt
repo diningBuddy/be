@@ -19,6 +19,7 @@ class RedisRepository(
         private const val RECOMMENDATION_PREFIX = "RECOMMENDATION:"
         const val CERTIFICATION_PREFIX = "CERTIFICATION:"
         const val REFRESH_TOKEN_PREFIX = "REFRESH_TOKEN:"
+        const val SOCIAL_USER_PREFIX = "SOCIAL_USER:"
     }
 
     // 사용자별 추천 식당을 조회하는 메서드
@@ -126,5 +127,10 @@ class RedisRepository(
 
     fun delValue(key: String) {
         redisTemplate.delete(key)
+    }
+
+    fun saveSocialUser(kakaoCode: String, kakaoKey: String) {
+        val key = "$SOCIAL_USER_PREFIX$kakaoCode"
+        setValue(key, kakaoKey, 1, TimeUnit.HOURS)
     }
 }
