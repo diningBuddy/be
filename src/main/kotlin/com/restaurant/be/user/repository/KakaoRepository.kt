@@ -19,7 +19,7 @@ class KakaoRepository(
     @Value("\${kakao.redirect-uri}")
     private val kakaoRedirectUrl: String,
 
-    private val restClient: RestClient,
+    private val restClient: RestClient
 ) {
 
     fun getKakaoKey(kakaoCode: String): String {
@@ -37,12 +37,14 @@ class KakaoRepository(
             .post()
             .uri("https://kauth.kakao.com/oauth/token")
             .contentType(MediaType.APPLICATION_FORM_URLENCODED)
-            .body(LinkedMultiValueMap<String, String>().apply {
-                add("grant_type", "authorization_code")
-                add("client_id", kakaoApiKey)
-                add("redirect_uri", kakaoRedirectUrl)
-                add("code", kakaoCode)
-            })
+            .body(
+                LinkedMultiValueMap<String, String>().apply {
+                    add("grant_type", "authorization_code")
+                    add("client_id", kakaoApiKey)
+                    add("redirect_uri", kakaoRedirectUrl)
+                    add("code", kakaoCode)
+                }
+            )
             .retrieve()
             .body(KakaoTokenResponse::class.java) ?: throw KaKaoGetTokenException()
     }

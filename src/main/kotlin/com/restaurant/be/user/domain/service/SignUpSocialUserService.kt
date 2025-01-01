@@ -36,5 +36,4 @@ class SignUpSocialUserService(
 
         socialUserRepository.save(socialUser)
     }
-
 }

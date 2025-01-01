@@ -10,5 +10,5 @@ data class KakaoTokenResponse(
 )
 
 data class KakaoUserInfo(
-    val id: String,
+    val id: String
 )

@@ -108,5 +108,3 @@ data class NotFoundSocialKeyException(
 data class DuplicateSocialUserException(
     override val message: String = "이미 존재 하는 소셜 회원 입니다."
 ) : ServerException(400, message)
-
-
