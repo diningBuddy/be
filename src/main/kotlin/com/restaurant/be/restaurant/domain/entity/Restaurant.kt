@@ -1,14 +1,6 @@
 package com.restaurant.be.restaurant.domain.entity
 
-import jakarta.persistence.CascadeType
-import jakarta.persistence.Column
-import jakarta.persistence.Entity
-import jakarta.persistence.FetchType
-import jakarta.persistence.GeneratedValue
-import jakarta.persistence.GenerationType
-import jakarta.persistence.Id
-import jakarta.persistence.OneToMany
-import jakarta.persistence.Table
+import jakarta.persistence.*
 
 @Entity
 @Table(name = "restaurants")
@@ -27,8 +19,8 @@ class Restaurant(
     @Column(name = "review_count", nullable = false)
     var reviewCount: Long = 0,
 
-    @Column(name = "like_count", nullable = false)
-    var likeCount: Long = 0,
+    @Column(name = "bookmark_count", nullable = false)
+    var bookmarkCount: Long = 0,
 
     @Column(name = "address", length = 256)
     var address: String,
@@ -38,6 +30,20 @@ class Restaurant(
 
     @Column(name = "rating_avg")
     var ratingAvg: Double,
+
+    @Column(name = "rating_count")
+    var ratingCount: Long,
+
+    @Column(name = "facility_infos")
+    @Lob
+    var facilityInfos: String,
+
+    @Column(name = "operation_infos")
+    @Lob
+    var operationInfos: String,
+
+    @Column(name = "operation_times",columnDefinition = "TEXT")
+    var operationTimes: String,
 
     @Column(name = "representative_image_url", length = 300)
     var representativeImageUrl: String,
@@ -60,9 +66,14 @@ class Restaurant(
     @Column(name = "naver_review_count")
     var naverReviewCount: Int,
 
+    @Column(name = "kakao_rating_avg")
+    var kakaoRatingAvg: Double,
+
+    @Column(name = "kakao_rating_count")
+    var kakaoRatingCount: Long,
+
     @OneToMany(mappedBy = "restaurantId", cascade = [CascadeType.ALL], fetch = FetchType.LAZY)
     var menus: MutableList<Menu> = mutableListOf()
-
 ) {
     fun createReview(newRating: Double) {
         val beforeCount = reviewCount

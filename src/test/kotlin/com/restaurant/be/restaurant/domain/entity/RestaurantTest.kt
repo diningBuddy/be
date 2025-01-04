@@ -14,10 +14,14 @@ class RestaurantTest : DescribeSpec({
                 name = "Test Restaurant",
                 originalCategories = "Category1",
                 reviewCount = 0,
-                likeCount = 0,
+                bookmarkCount = 0,
                 address = "123 Test St",
                 contactNumber = "123-456-7890",
                 ratingAvg = 0.0,
+                ratingCount = 0,
+                facilityInfos = "default_string",
+                operationInfos = "default_string",
+                operationTimes = "default_string",
                 representativeImageUrl = "http://example.com/image.jpg",
                 viewCount = 0,
                 discountContent = null,
@@ -25,6 +29,8 @@ class RestaurantTest : DescribeSpec({
                 latitude = 0.0,
                 naverRatingAvg = 0.0,
                 naverReviewCount = 0,
+                kakaoRatingAvg = 0.0,
+                kakaoRatingCount = 0,
                 menus = mutableListOf()
             )
         }
@@ -34,7 +40,7 @@ class RestaurantTest : DescribeSpec({
                 restaurant.name shouldBe "Test Restaurant"
                 restaurant.originalCategories shouldBe "Category1"
                 restaurant.reviewCount shouldBe 0
-                restaurant.likeCount shouldBe 0
+                restaurant.bookmarkCount shouldBe 0
                 restaurant.address shouldBe "123 Test St"
                 restaurant.contactNumber shouldBe "123-456-7890"
                 restaurant.ratingAvg shouldBeExactly 0.0
@@ -45,7 +51,7 @@ class RestaurantTest : DescribeSpec({
                 restaurant.latitude shouldBeExactly 0.0
                 restaurant.naverRatingAvg shouldBeExactly 0.0
                 restaurant.naverReviewCount shouldBe 0
-                restaurant.menus shouldBe mutableListOf()
+                restaurant.menus shouldBe "default_string"
             }
         }
 
