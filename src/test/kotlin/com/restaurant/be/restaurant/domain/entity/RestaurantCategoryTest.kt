@@ -9,17 +9,22 @@ class RestaurantCategoryTest : DescribeSpec({
         it("should create a correct RestaurantCategory instance") {
             // Given
             val restaurantCategory = RestaurantCategory(
-                id = 1L,
-                restaurantId = 1,
-                categoryId = 1
+                            id = 1L,
+                            name = "name",
+                            groupId = 1L,
+                            restaurantId = 1L,
+                            categoryGroup = "default_group"
             )
 
             // When
 
             // Then
             restaurantCategory.id shouldBe 1L
-            restaurantCategory.restaurantId shouldBe 1
-            restaurantCategory.categoryId shouldBe 1
+            restaurantCategory.name shouldBe "name"
+            restaurantCategory.groupId shouldBe 1L
+            restaurantCategory.restaurantId shouldBe 1L
+            restaurantCategory.categoryGroup shouldBe 1L
+
         }
     }
 })
