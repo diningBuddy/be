@@ -27,8 +27,8 @@ class Restaurant(
     @Column(name = "review_count", nullable = false)
     var reviewCount: Long = 0,
 
-    @Column(name = "like_count", nullable = false)
-    var likeCount: Long = 0,
+    @Column(name = "bookmark_count", nullable = false)
+    var bookmarkCount: Long = 0,
 
     @Column(name = "address", length = 256)
     var address: String,

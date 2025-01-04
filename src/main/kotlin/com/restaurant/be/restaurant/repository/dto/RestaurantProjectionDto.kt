@@ -21,7 +21,7 @@ data class RestaurantProjectionDto(
             name = restaurant.name,
             ratingAvg = restaurant.ratingAvg,
             reviewCount = restaurant.reviewCount,
-            likeCount = restaurant.likeCount,
+            likeCount = restaurant.bookmarkCount,
             categories = categories.map { it.name },
             representativeMenu = menus.firstOrNull()?.toDto(),
             representativeReviewContent = review?.content,
