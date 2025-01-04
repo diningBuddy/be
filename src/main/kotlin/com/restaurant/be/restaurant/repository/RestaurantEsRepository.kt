@@ -3,16 +3,7 @@ package com.restaurant.be.restaurant.repository
 import com.jillesvangurp.ktsearch.SearchClient
 import com.jillesvangurp.ktsearch.parseHits
 import com.jillesvangurp.ktsearch.search
-import com.jillesvangurp.searchdsls.querydsl.ESQuery
-import com.jillesvangurp.searchdsls.querydsl.SearchDSL
-import com.jillesvangurp.searchdsls.querydsl.SortOrder
-import com.jillesvangurp.searchdsls.querydsl.bool
-import com.jillesvangurp.searchdsls.querydsl.exists
-import com.jillesvangurp.searchdsls.querydsl.match
-import com.jillesvangurp.searchdsls.querydsl.nested
-import com.jillesvangurp.searchdsls.querydsl.range
-import com.jillesvangurp.searchdsls.querydsl.sort
-import com.jillesvangurp.searchdsls.querydsl.terms
+import com.jillesvangurp.searchdsls.querydsl.*
 import com.restaurant.be.restaurant.presentation.controller.dto.GetRestaurantsRequest
 import com.restaurant.be.restaurant.presentation.controller.dto.Sort
 import com.restaurant.be.restaurant.repository.dto.RestaurantEsDocument

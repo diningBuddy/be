@@ -1,6 +1,6 @@
 package com.restaurant.be.common.response
 
-import java.util.Date
+import java.util.*
 
 data class Token(
     val accessToken: String,
