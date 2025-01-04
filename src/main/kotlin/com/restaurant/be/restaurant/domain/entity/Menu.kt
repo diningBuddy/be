@@ -1,12 +1,7 @@
 package com.restaurant.be.restaurant.domain.entity
 
 import com.restaurant.be.restaurant.presentation.controller.dto.common.MenuDto
-import jakarta.persistence.Column
-import jakarta.persistence.Entity
-import jakarta.persistence.GeneratedValue
-import jakarta.persistence.GenerationType
-import jakarta.persistence.Id
-import jakarta.persistence.Table
+import jakarta.persistence.*
 
 @Entity
 @Table(name = "menus")
@@ -31,7 +26,7 @@ class Menu(
     @Column(name = "is_representative")
     var isRepresentative: Boolean,
 
-    @Column(name = "image_url")
+    @Column(name = "image_url", columnDefinition = "TEXT")
     var imageUrl: String
 ) {
     fun toDto(): MenuDto {
