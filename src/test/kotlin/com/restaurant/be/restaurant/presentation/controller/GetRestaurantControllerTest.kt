@@ -2036,7 +2036,7 @@ class GetRestaurantControllerTest(
                 // when
                 val result = mockMvc.perform(
                     get(restaurantUrl)
-                        .param("customSort", "LIKE_COUNT_DESC")
+                        .param("customSort", "BOOKMARK_COUNT_DESC")
                 )
                     .also {
                         println(it.andReturn().response.contentAsString)
