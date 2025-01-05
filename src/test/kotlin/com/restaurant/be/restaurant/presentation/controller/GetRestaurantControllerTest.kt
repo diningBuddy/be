@@ -13,13 +13,13 @@ import com.restaurant.be.common.response.CommonResponse
 import com.restaurant.be.common.util.RestaurantDocument
 import com.restaurant.be.common.util.RestaurantUtil
 import com.restaurant.be.common.util.setUpUser
-import com.restaurant.be.restaurant.domain.entity.RestaurantCategory
 import com.restaurant.be.restaurant.domain.entity.RestaurantBookmark
+import com.restaurant.be.restaurant.domain.entity.RestaurantCategory
 import com.restaurant.be.restaurant.presentation.controller.dto.GetRestaurantResponse
 import com.restaurant.be.restaurant.presentation.controller.dto.GetRestaurantsResponse
 import com.restaurant.be.restaurant.presentation.controller.dto.common.RestaurantDto
-import com.restaurant.be.restaurant.repository.RestaurantCategoryRepository
 import com.restaurant.be.restaurant.repository.RestaurantBookmarkRepository
+import com.restaurant.be.restaurant.repository.RestaurantCategoryRepository
 import com.restaurant.be.restaurant.repository.RestaurantRepository
 import com.restaurant.be.user.repository.UserRepository
 import io.kotest.matchers.shouldBe
@@ -2014,13 +2014,13 @@ class GetRestaurantControllerTest(
 
                 val restaurantEntity2 = RestaurantUtil.generateRestaurantEntity(
                     name = "목구멍 율전점2",
-                    likeCount = 1
+                    bookmarkCount = 1
                 )
                 restaurantRepository.save(restaurantEntity2)
                 val restaurantDocument2 = RestaurantUtil.generateRestaurantDocument(
                     id = restaurantEntity2.id,
                     name = "목구멍 율전점2",
-                    likeCount = 1
+                    bookmarkCount = 1
                 )
                 elasticsearchOperations.save(restaurantDocument2)
                 elasticsearchOperations.indexOps(RestaurantDocument::class.java).refresh()
