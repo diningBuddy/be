@@ -2,6 +2,10 @@ package com.restaurant.be.common.util
 
 import com.restaurant.be.restaurant.domain.entity.Menu
 import com.restaurant.be.restaurant.domain.entity.Restaurant
+import com.restaurant.be.restaurant.domain.entity.kakaoinfo.FacilityInfoJsonEntity
+import com.restaurant.be.restaurant.domain.entity.kakaoinfo.OperationInfoJsonEntity
+import com.restaurant.be.restaurant.domain.entity.kakaoinfo.OperationTimeInfoJsonEntity
+import com.restaurant.be.restaurant.domain.entity.kakaoinfo.OperationTimeInfosJsonEntity
 import org.springframework.data.elasticsearch.core.geo.GeoPoint
 
 object RestaurantUtil {
@@ -22,7 +26,14 @@ object RestaurantUtil {
         discountContent: String? = "default_discount_content",
         menus: List<MenuDocument> = emptyList(),
         latitude: Double = 0.0,
-        longitude: Double = 0.0
+        longitude: Double = 0.0,
+        facilityInfos: FacilityInfoJsonEntity = FacilityInfoJsonEntity("N", "N", "N", "N", "N", "N"),
+        operationInfos: OperationInfoJsonEntity = OperationInfoJsonEntity("N", "N", "N"),
+        operationTimes: OperationTimeInfosJsonEntity = OperationTimeInfosJsonEntity(
+            "월요일",
+            OperationTimeInfoJsonEntity("11:00", "23:00", "15:00", "17:00", "21:00")
+        )
+
     ): RestaurantDocument {
         return RestaurantDocument(
             id = id,
@@ -39,7 +50,10 @@ object RestaurantUtil {
             category = category,
             discountContent = discountContent,
             menus = menus,
-            location = GeoPoint(latitude, longitude)
+            location = GeoPoint(latitude, longitude),
+            facilityInfos = facilityInfos,
+            operationInfos = operationInfos,
+            operationTimes = operationTimes
         )
     }
 
@@ -58,12 +72,15 @@ object RestaurantUtil {
         menus: MutableList<Menu> = mutableListOf(),
         longitude: Double = 0.0,
         latitude: Double = 0.0,
-        facilityInfos: String = "tempString",
-        operationInfos: String = "tempString",
-        operationTimes: String = "tempString",
+        facilityInfos: FacilityInfoJsonEntity = FacilityInfoJsonEntity("N", "N", "N", "N", "N", "N"),
+        operationInfos: OperationInfoJsonEntity = OperationInfoJsonEntity("N", "N", "N"),
+        operationTimes: OperationTimeInfosJsonEntity = OperationTimeInfosJsonEntity(
+            "월요일",
+            OperationTimeInfoJsonEntity("11:00", "23:00", "15:00", "17:00", "21:00")
+        ),
         kakaoRatingAvg: Double = 0.0,
         kakaoRatingCount: Long = 0,
-        ratingCount: Long = 0,
+        ratingCount: Long = 0
     ): Restaurant {
         return Restaurant(
             id = id,
@@ -87,7 +104,7 @@ object RestaurantUtil {
             naverReviewCount = 0,
             kakaoRatingAvg = 0.0,
             kakaoRatingCount = 0,
-            ratingCount = 0,
+            ratingCount = 0
         )
     }
 

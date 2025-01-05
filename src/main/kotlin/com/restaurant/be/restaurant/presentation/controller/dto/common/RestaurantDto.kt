@@ -1,5 +1,8 @@
 package com.restaurant.be.restaurant.presentation.controller.dto.common
 
+import com.restaurant.be.restaurant.domain.entity.kakaoinfo.FacilityInfoJsonEntity
+import com.restaurant.be.restaurant.domain.entity.kakaoinfo.OperationInfoJsonEntity
+import com.restaurant.be.restaurant.domain.entity.kakaoinfo.OperationTimeInfosJsonEntity
 import io.swagger.v3.oas.annotations.media.Schema
 
 data class RestaurantDto(
@@ -14,11 +17,11 @@ data class RestaurantDto(
     @Schema(description = "식당 평점 개수")
     var ratingCount: Long,
     @Schema(description = "식당 편의 정보")
-    var facilityInfos: String,
+    var facilityInfos: FacilityInfoJsonEntity,
     @Schema(description = "식당 운영 정보(예약,배달,포장)")
-    var operationInfos: String,
+    var operationInfos: OperationInfoJsonEntity,
     @Schema(description = "식당 운영 시간")
-    var operationTimes: String,
+    var operationTimes: OperationTimeInfosJsonEntity,
     @Schema(description = "식당 리뷰 수")
     val reviewCount: Long,
     @Schema(description = "식당 좋아요 수")

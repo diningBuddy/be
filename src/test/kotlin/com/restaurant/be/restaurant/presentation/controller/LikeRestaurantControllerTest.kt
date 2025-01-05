@@ -500,7 +500,7 @@ class LikeRestaurantControllerTest(
                 actualResult.data!!.restaurant.shouldNotBeNull()
                 actualResult.data!!.restaurant.name shouldBe "목구멍 율전점"
                 actualResult.data!!.restaurant.isLike shouldBe true
-                actualResult.data!!.restaurant.likeCount shouldBe 1
+                actualResult.data!!.restaurant.bookmarkCount shouldBe 1
             }
 
             it("when unlike restaurant should success unlike") {
@@ -549,7 +549,7 @@ class LikeRestaurantControllerTest(
                 actualResult.data!!.restaurant.shouldNotBeNull()
                 actualResult.data!!.restaurant.name shouldBe "목구멍 율전점"
                 actualResult.data!!.restaurant.isLike shouldBe false
-                actualResult.data!!.restaurant.likeCount shouldBe -1
+                actualResult.data!!.restaurant.bookmarkCount shouldBe -1
             }
 
             it("when not exist restaurant should return not found") {

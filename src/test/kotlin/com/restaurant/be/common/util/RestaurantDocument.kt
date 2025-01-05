@@ -1,5 +1,8 @@
 package com.restaurant.be.common.util
 
+import com.restaurant.be.restaurant.domain.entity.kakaoinfo.FacilityInfoJsonEntity
+import com.restaurant.be.restaurant.domain.entity.kakaoinfo.OperationInfoJsonEntity
+import com.restaurant.be.restaurant.domain.entity.kakaoinfo.OperationTimeInfosJsonEntity
 import jakarta.persistence.Id
 import org.springframework.data.elasticsearch.annotations.Document
 import org.springframework.data.elasticsearch.annotations.Field
@@ -34,8 +37,17 @@ data class RestaurantDocument(
     @Field(type = FieldType.Double, name = "rating_avg")
     val ratingAvg: Double,
 
-    @Field(type = FieldType.Long, name = "like_count")
-    val likeCount: Long,
+    @Field(type = FieldType.Text, name = "facility_infos")
+    val facilityInfos: FacilityInfoJsonEntity,
+
+    @Field(type = FieldType.Text, name = "operation_infos")
+    val operationInfos: OperationInfoJsonEntity,
+
+    @Field(type = FieldType.Text, name = "operation_times")
+    val operationTimes: OperationTimeInfosJsonEntity,
+
+    @Field(type = FieldType.Long, name = "bookmark_count")
+    val bookmarkCount: Long,
 
     @Field(type = FieldType.Text, name = "number")
     val number: String,

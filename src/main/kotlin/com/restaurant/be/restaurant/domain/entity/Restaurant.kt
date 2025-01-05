@@ -1,6 +1,19 @@
 package com.restaurant.be.restaurant.domain.entity
 
-import jakarta.persistence.*
+import com.restaurant.be.restaurant.domain.entity.kakaoinfo.FacilityInfoJsonEntity
+import com.restaurant.be.restaurant.domain.entity.kakaoinfo.OperationInfoJsonEntity
+import com.restaurant.be.restaurant.domain.entity.kakaoinfo.OperationTimeInfosJsonEntity
+import jakarta.persistence.CascadeType
+import jakarta.persistence.Column
+import jakarta.persistence.Entity
+import jakarta.persistence.FetchType
+import jakarta.persistence.GeneratedValue
+import jakarta.persistence.GenerationType
+import jakarta.persistence.Id
+import jakarta.persistence.OneToMany
+import jakarta.persistence.Table
+import org.hibernate.annotations.JdbcTypeCode
+import org.hibernate.type.SqlTypes
 
 @Entity
 @Table(name = "restaurants")
@@ -34,16 +47,14 @@ class Restaurant(
     @Column(name = "rating_count")
     var ratingCount: Long,
 
-    @Column(name = "facility_infos")
-    @Lob
-    var facilityInfos: String,
+    @JdbcTypeCode(SqlTypes.JSON)
+    var facilityInfos: FacilityInfoJsonEntity,
 
-    @Column(name = "operation_infos")
-    @Lob
-    var operationInfos: String,
+    @JdbcTypeCode(SqlTypes.JSON)
+    var operationInfos: OperationInfoJsonEntity,
 
-    @Column(name = "operation_times",columnDefinition = "TEXT")
-    var operationTimes: String,
+    @JdbcTypeCode(SqlTypes.JSON)
+    var operationTimes: OperationTimeInfosJsonEntity,
 
     @Column(name = "representative_image_url", length = 300)
     var representativeImageUrl: String,

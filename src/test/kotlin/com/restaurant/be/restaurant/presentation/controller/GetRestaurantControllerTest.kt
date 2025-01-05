@@ -2014,13 +2014,13 @@ class GetRestaurantControllerTest(
 
                 val restaurantEntity2 = RestaurantUtil.generateRestaurantEntity(
                     name = "목구멍 율전점2",
-                    likeCount = 1
+                    bookmarkCount = 1
                 )
                 restaurantRepository.save(restaurantEntity2)
                 val restaurantDocument2 = RestaurantUtil.generateRestaurantDocument(
                     id = restaurantEntity2.id,
                     name = "목구멍 율전점2",
-                    likeCount = 1
+                    bookmarkCount = 1
                 )
                 elasticsearchOperations.save(restaurantDocument2)
                 elasticsearchOperations.indexOps(RestaurantDocument::class.java).refresh()

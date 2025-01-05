@@ -38,11 +38,11 @@ class LikeRestaurantService(
                         userId = userId
                     )
                 )
-                restaurant.likeCount += 1
+                restaurant.bookmarkCount += 1
             }
         } else {
             if (restaurantDto.isLike) {
-                restaurant.likeCount -= 1
+                restaurant.bookmarkCount -= 1
                 restaurantLikeRepository.deleteByUserIdAndRestaurantId(userId, restaurantId)
             }
         }

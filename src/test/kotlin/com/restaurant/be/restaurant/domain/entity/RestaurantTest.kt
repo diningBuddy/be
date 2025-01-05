@@ -1,5 +1,9 @@
 package com.restaurant.be.restaurant.domain.entity
 
+import com.restaurant.be.restaurant.domain.entity.kakaoinfo.FacilityInfoJsonEntity
+import com.restaurant.be.restaurant.domain.entity.kakaoinfo.OperationInfoJsonEntity
+import com.restaurant.be.restaurant.domain.entity.kakaoinfo.OperationTimeInfoJsonEntity
+import com.restaurant.be.restaurant.domain.entity.kakaoinfo.OperationTimeInfosJsonEntity
 import io.kotest.core.spec.style.DescribeSpec
 import io.kotest.matchers.doubles.shouldBeExactly
 import io.kotest.matchers.shouldBe
@@ -19,9 +23,12 @@ class RestaurantTest : DescribeSpec({
                 contactNumber = "123-456-7890",
                 ratingAvg = 0.0,
                 ratingCount = 0,
-                facilityInfos = "default_string",
-                operationInfos = "default_string",
-                operationTimes = "default_string",
+                facilityInfos = FacilityInfoJsonEntity("N", "N", "N", "N", "N", "N"),
+                operationInfos = OperationInfoJsonEntity("N", "N", "N"),
+                operationTimes = OperationTimeInfosJsonEntity(
+                    "월요일",
+                    OperationTimeInfoJsonEntity("11:00", "23:00", "15:00", "17:00", "21:00")
+                ),
                 representativeImageUrl = "http://example.com/image.jpg",
                 viewCount = 0,
                 discountContent = null,
