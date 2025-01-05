@@ -26,7 +26,7 @@ class Menu(
     @Column(name = "is_representative")
     var isRepresentative: Boolean,
 
-    @Column(name = "image_url", columnDefinition = "TEXT")
+    @Column(name = "image_url", columnDefinition = "varchar(500)")
     var imageUrl: String
 ) {
     fun toDto(): MenuDto {
