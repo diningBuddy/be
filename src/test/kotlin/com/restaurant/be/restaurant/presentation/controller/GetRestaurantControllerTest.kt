@@ -2008,7 +2008,7 @@ class GetRestaurantControllerTest(
                 actualResult.data!!.restaurants.content[1].name shouldBe "목구멍 율전점1"
             }
 
-            it("when like_count_desc sort should return sorted restaurants by like_count_desc") {
+            it("when bookmark_count_desc sort should return sorted restaurants by bookmark_count_desc") {
                 // given
                 val restaurantEntity1 = RestaurantUtil.generateRestaurantEntity(
                     name = "목구멍 율전점1"
@@ -2044,7 +2044,7 @@ class GetRestaurantControllerTest(
                 // when
                 val result = mockMvc.perform(
                     get(restaurantUrl)
-                        .param("customSort", "LIKE_COUNT_DESC")
+                        .param("customSort", "BOOKMARK_COUNT_DESC")
                 )
                     .also {
                         println(it.andReturn().response.contentAsString)

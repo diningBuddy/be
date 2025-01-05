@@ -23,7 +23,7 @@ class RestaurantCategoryTest : DescribeSpec({
             restaurantCategory.name shouldBe "name"
             restaurantCategory.groupId shouldBe 1L
             restaurantCategory.restaurantId shouldBe 1L
-            restaurantCategory.categoryGroup shouldBe 1L
+            restaurantCategory.categoryGroup shouldBe "default_group"
         }
     }
 })
