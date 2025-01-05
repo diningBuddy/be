@@ -2,7 +2,9 @@ package com.restaurant.be.restaurant.presentation.controller
 
 import com.restaurant.be.common.response.CommonResponse
 import com.restaurant.be.restaurant.domain.service.BookmarkRestaurantService
-import com.restaurant.be.restaurant.presentation.controller.dto.*
+import com.restaurant.be.restaurant.presentation.controller.dto.GetBookmarkRestaurantsResponse
+import com.restaurant.be.restaurant.presentation.controller.dto.BookmarkRestaurantRequest
+import com.restaurant.be.restaurant.presentation.controller.dto.BookmarkRestaurantResponse
 import io.swagger.annotations.Api
 import io.swagger.annotations.ApiOperation
 import io.swagger.v3.oas.annotations.media.Content
