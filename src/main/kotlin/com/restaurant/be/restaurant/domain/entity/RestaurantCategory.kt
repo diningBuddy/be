@@ -1,6 +1,13 @@
 package com.restaurant.be.restaurant.domain.entity
 
-import jakarta.persistence.*
+import jakarta.persistence.Entity
+import jakarta.persistence.Table
+import jakarta.persistence.Id
+import jakarta.persistence.Column
+import jakarta.persistence.GenerationType
+import jakarta.persistence.GeneratedValue
+
+
 
 @Entity
 @Table(name = "restaurant_categories")
@@ -13,12 +20,12 @@ data class RestaurantCategory(
     @Column(name = "name", nullable = false)
     var name: String,
 
-    @Column(name = "parent_category")
+    @Column(name = "group_id")
     var groupId: Long,
 
     @Column(name = "restaurant_id")
     var restaurantId: Long,
 
-    @Column(name = "category_groups", nullable = false)
+    @Column(name = "category_group", nullable = false)
     var categoryGroup: String
 )
