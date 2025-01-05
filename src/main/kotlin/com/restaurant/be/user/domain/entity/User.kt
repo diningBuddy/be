@@ -5,7 +5,14 @@ import com.restaurant.be.common.entity.BaseEntity
 import com.restaurant.be.common.exception.NotFoundUserException
 import com.restaurant.be.user.domain.constant.Gender
 import com.restaurant.be.user.presentation.dto.SignUpUserRequest
-import jakarta.persistence.*
+import jakarta.persistence.Column
+import jakarta.persistence.Entity
+import jakarta.persistence.Convert
+import jakarta.persistence.GenerationType
+import jakarta.persistence.GeneratedValue
+import jakarta.persistence.OneToMany
+import jakarta.persistence.Table
+import jakarta.persistence.Id
 import jakarta.persistence.FetchType.LAZY
 import java.time.LocalDate
 
