@@ -4,7 +4,6 @@ import com.restaurant.be.common.exception.NotFoundRestaurantException
 import com.restaurant.be.common.exception.NotFoundReviewException
 import com.restaurant.be.common.exception.UnAuthorizedDeleteException
 import com.restaurant.be.restaurant.repository.RestaurantRepository
-import com.restaurant.be.review.domain.entity.QReview.review
 import com.restaurant.be.review.repository.ReviewRepository
 import jakarta.transaction.Transactional
 import org.springframework.stereotype.Service

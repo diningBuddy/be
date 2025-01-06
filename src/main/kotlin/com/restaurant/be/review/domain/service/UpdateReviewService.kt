@@ -8,7 +8,6 @@ import com.restaurant.be.review.presentation.dto.UpdateReviewResponse
 import com.restaurant.be.review.presentation.dto.common.ReviewResponseDto
 import com.restaurant.be.review.repository.ReviewLikeRepository
 import com.restaurant.be.review.repository.ReviewRepository
-import com.restaurant.be.user.domain.entity.QUser.user
 import jakarta.transaction.Transactional
 import org.springframework.stereotype.Service
 import kotlin.jvm.optionals.getOrNull
