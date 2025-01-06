@@ -56,7 +56,10 @@ object RestaurantUtil {
             location = GeoPoint(latitude, longitude),
             facilityInfos = facilityInfos,
             operationInfos = operationInfos,
-            operationTimes = operationTimes
+            operationTimes = operationTimes,
+            kakaoRatingAvg = kakaoRatingAvg,
+            kakaoRatingCount = kakaoRatingCount,
+            ratingCount = ratingCount
         )
     }
 

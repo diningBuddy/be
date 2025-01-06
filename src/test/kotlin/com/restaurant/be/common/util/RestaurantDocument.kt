@@ -65,7 +65,16 @@ data class RestaurantDocument(
     val menus: List<MenuDocument>,
 
     @GeoPointField
-    val location: GeoPoint
+    val location: GeoPoint,
+
+    @Field(type = FieldType.Double, name = "kakao_rating_avg")
+    val kakaoRatingAvg: Double = 0.0,
+
+    @Field(type = FieldType.Long, name = "kakao_rating_count")
+    val kakaoRatingCount: Long = 0,
+
+    @Field(type = FieldType.Long, name = "rating_count")
+    val ratingCount: Long = 0
 )
 
 data class MenuDocument(
