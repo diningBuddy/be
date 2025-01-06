@@ -52,9 +52,9 @@ class RestaurantTest : DescribeSpec({
                 restaurant.contactNumber shouldBe "123-456-7890"
                 restaurant.ratingAvg shouldBeExactly 0.0
                 restaurant.ratingCount shouldBe 0
-                restaurant.facilityInfos shouldBe  FacilityInfoJsonEntity("N", "N", "N", "N", "N", "N")
-                restaurant.operationInfos shouldBe  OperationInfoJsonEntity("N", "N", "N")
-                restaurant.operationTimes shouldBe  OperationTimeInfosJsonEntity(
+                restaurant.facilityInfos shouldBe FacilityInfoJsonEntity("N", "N", "N", "N", "N", "N")
+                restaurant.operationInfos shouldBe OperationInfoJsonEntity("N", "N", "N")
+                restaurant.operationTimes shouldBe OperationTimeInfosJsonEntity(
                     "월요일",
                     OperationTimeInfoJsonEntity("11:00", "23:00", "15:00", "17:00", "21:00")
                 )
