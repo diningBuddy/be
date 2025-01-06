@@ -1,10 +1,10 @@
 package com.restaurant.be.restaurant.presentation.controller
 
 import com.restaurant.be.common.response.CommonResponse
-import com.restaurant.be.restaurant.domain.service.LikeRestaurantService
-import com.restaurant.be.restaurant.presentation.controller.dto.GetLikeRestaurantsResponse
-import com.restaurant.be.restaurant.presentation.controller.dto.LikeRestaurantRequest
-import com.restaurant.be.restaurant.presentation.controller.dto.LikeRestaurantResponse
+import com.restaurant.be.restaurant.domain.service.BookmarkRestaurantService
+import com.restaurant.be.restaurant.presentation.controller.dto.BookmarkRestaurantRequest
+import com.restaurant.be.restaurant.presentation.controller.dto.BookmarkRestaurantResponse
+import com.restaurant.be.restaurant.presentation.controller.dto.GetBookmarkRestaurantsResponse
 import io.swagger.annotations.Api
 import io.swagger.annotations.ApiOperation
 import io.swagger.v3.oas.annotations.media.Content
@@ -24,8 +24,8 @@ import java.security.Principal
 @Api(tags = ["02. Restaurant Info"], description = "음식점 서비스")
 @RestController
 @RequestMapping("/v1/restaurants")
-class LikeRestaurantController(
-    private val likeRestaurantService: LikeRestaurantService
+class BookmarkRestaurantController(
+    private val bookmarkRestaurantService: BookmarkRestaurantService
 ) {
     @GetMapping("/my-like")
     @PreAuthorize("hasRole('USER')")
@@ -33,13 +33,13 @@ class LikeRestaurantController(
     @ApiResponse(
         responseCode = "200",
         description = "성공",
-        content = [Content(schema = Schema(implementation = GetLikeRestaurantsResponse::class))]
+        content = [Content(schema = Schema(implementation = GetBookmarkRestaurantsResponse::class))]
     )
     fun getMyLikeRestaurants(
         principal: Principal,
         pageable: Pageable
-    ): CommonResponse<GetLikeRestaurantsResponse> {
-        val response = likeRestaurantService.getMyLikeRestaurant(pageable, principal.name.toLong())
+    ): CommonResponse<GetBookmarkRestaurantsResponse> {
+        val response = bookmarkRestaurantService.getMyLikeRestaurant(pageable, principal.name.toLong())
         return CommonResponse.success(response)
     }
 
@@ -49,16 +49,16 @@ class LikeRestaurantController(
     @ApiResponse(
         responseCode = "200",
         description = "성공",
-        content = [Content(schema = Schema(implementation = LikeRestaurantResponse::class))]
+        content = [Content(schema = Schema(implementation = BookmarkRestaurantResponse::class))]
     )
     fun likeRestaurant(
         principal: Principal,
         @PathVariable restaurantId: Long,
         @RequestBody @Valid
-        request: LikeRestaurantRequest
-    ): CommonResponse<LikeRestaurantResponse> {
+        request: BookmarkRestaurantRequest
+    ): CommonResponse<BookmarkRestaurantResponse> {
         val response =
-            likeRestaurantService.likeRestaurant(
+            bookmarkRestaurantService.likeRestaurant(
                 principal.name.toLong(),
                 restaurantId,
                 request.isLike

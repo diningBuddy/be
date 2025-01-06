@@ -18,8 +18,8 @@ import com.restaurant.be.restaurant.domain.entity.RestaurantCategory
 import com.restaurant.be.restaurant.presentation.controller.dto.GetRestaurantResponse
 import com.restaurant.be.restaurant.presentation.controller.dto.GetRestaurantsResponse
 import com.restaurant.be.restaurant.presentation.controller.dto.common.RestaurantDto
+import com.restaurant.be.restaurant.repository.RestaurantBookmarkRepository
 import com.restaurant.be.restaurant.repository.RestaurantCategoryRepository
-import com.restaurant.be.restaurant.repository.RestaurantLikeRepository
 import com.restaurant.be.restaurant.repository.RestaurantRepository
 import com.restaurant.be.user.repository.UserRepository
 import io.kotest.matchers.shouldBe
@@ -41,7 +41,7 @@ class GetRestaurantControllerTest(
     private val restaurantRepository: RestaurantRepository,
     private val categoryRepository: CategoryRepository,
     private val restaurantCategoryRepository: RestaurantCategoryRepository,
-    private val restaurantLikeRepository: RestaurantLikeRepository
+    private val restaurantLikeRepository: RestaurantBookmarkRepository
 ) : CustomDescribeSpec() {
     private val restaurantUrl = "/v1/restaurants"
     private val objectMapper: ObjectMapper = ObjectMapper().registerModule(KotlinModule()).apply {

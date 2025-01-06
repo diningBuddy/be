@@ -11,10 +11,10 @@ import com.restaurant.be.common.response.CommonResponse
 import com.restaurant.be.common.util.RestaurantUtil
 import com.restaurant.be.common.util.setUpUser
 import com.restaurant.be.restaurant.domain.entity.RestaurantBookmark
+import com.restaurant.be.restaurant.presentation.controller.dto.BookmarkRestaurantResponse
 import com.restaurant.be.restaurant.presentation.controller.dto.GetRestaurantsResponse
-import com.restaurant.be.restaurant.presentation.controller.dto.LikeRestaurantResponse
 import com.restaurant.be.restaurant.presentation.controller.dto.common.RestaurantDto
-import com.restaurant.be.restaurant.repository.RestaurantLikeRepository
+import com.restaurant.be.restaurant.repository.RestaurantBookmarkRepository
 import com.restaurant.be.restaurant.repository.RestaurantRepository
 import com.restaurant.be.user.domain.constant.Gender
 import com.restaurant.be.user.domain.entity.User
@@ -33,10 +33,10 @@ import java.time.LocalDate
 
 @IntegrationTest
 @Transactional
-class LikeRestaurantControllerTest(
+class BookmarkRestaurantControllerTest(
     private val mockMvc: MockMvc,
     private val userRepository: UserRepository,
-    private val restaurantLikeRepository: RestaurantLikeRepository,
+    private val restaurantLikeRepository: RestaurantBookmarkRepository,
     private val restaurantRepository: RestaurantRepository
 ) : CustomDescribeSpec() {
     private val baseUrl = "/v1/restaurants"
@@ -489,8 +489,8 @@ class LikeRestaurantControllerTest(
 
                 val responseContent = result.response.getContentAsString(Charset.forName("UTF-8"))
                 val responseType =
-                    object : TypeReference<CommonResponse<LikeRestaurantResponse>>() {}
-                val actualResult: CommonResponse<LikeRestaurantResponse> =
+                    object : TypeReference<CommonResponse<BookmarkRestaurantResponse>>() {}
+                val actualResult: CommonResponse<BookmarkRestaurantResponse> =
                     objectMapper.readValue(
                         responseContent,
                         responseType
@@ -538,8 +538,8 @@ class LikeRestaurantControllerTest(
 
                 val responseContent = result.response.getContentAsString(Charset.forName("UTF-8"))
                 val responseType =
-                    object : TypeReference<CommonResponse<LikeRestaurantResponse>>() {}
-                val actualResult: CommonResponse<LikeRestaurantResponse> =
+                    object : TypeReference<CommonResponse<BookmarkRestaurantResponse>>() {}
+                val actualResult: CommonResponse<BookmarkRestaurantResponse> =
                     objectMapper.readValue(
                         responseContent,
                         responseType
@@ -574,8 +574,8 @@ class LikeRestaurantControllerTest(
 
                 val responseContent = result.response.getContentAsString(Charset.forName("UTF-8"))
                 val responseType =
-                    object : TypeReference<CommonResponse<LikeRestaurantResponse>>() {}
-                val actualResult: CommonResponse<LikeRestaurantResponse> =
+                    object : TypeReference<CommonResponse<BookmarkRestaurantResponse>>() {}
+                val actualResult: CommonResponse<BookmarkRestaurantResponse> =
                     objectMapper.readValue(
                         responseContent,
                         responseType

@@ -3,9 +3,9 @@ package com.restaurant.be.restaurant.domain.entity
 import io.kotest.core.spec.style.DescribeSpec
 import io.kotest.matchers.shouldBe
 
-class RestaurantLikeTest : DescribeSpec({
-    describe("RestaurantLike") {
-        it("should create a correct RestaurantLike instance") {
+class RestaurantBookmarkTest : DescribeSpec({
+    describe("RestaurantBookmark") {
+        it("should create a correct RestaurantBookmark instance") {
             // Given
             val restaurantBookmark = RestaurantBookmark(
                 id = 1L,

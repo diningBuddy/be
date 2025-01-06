@@ -151,8 +151,8 @@ class RestaurantRepositoryCustomImpl(
         userId: Long,
         pageable: Pageable
     ): Page<RestaurantProjectionDto> {
-        val restaurantLikePath = PathBuilderFactory().create(RestaurantBookmark::class.java)
-        val orderSpecifier = listOf(restaurantLikePath.getNumber("id", Long::class.java).desc())
+        val restaurantBookmarkPath = PathBuilderFactory().create(RestaurantBookmark::class.java)
+        val orderSpecifier = listOf(restaurantBookmarkPath.getNumber("id", Long::class.java).desc())
 
         val myLikeQuery =
             queryFactory
