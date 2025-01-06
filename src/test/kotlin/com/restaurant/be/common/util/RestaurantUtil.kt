@@ -32,7 +32,10 @@ object RestaurantUtil {
         operationTimes: OperationTimeInfosJsonEntity = OperationTimeInfosJsonEntity(
             "월요일",
             OperationTimeInfoJsonEntity("11:00", "23:00", "15:00", "17:00", "21:00")
-        )
+        ),
+        kakaoRatingAvg: Double = 0.0,
+        kakaoRatingCount: Long = 0,
+        ratingCount: Long = 0
 
     ): RestaurantDocument {
         return RestaurantDocument(
