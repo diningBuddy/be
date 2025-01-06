@@ -45,7 +45,7 @@ enum class Sort {
     CLOSELY_DESC,
     RATING_DESC,
     REVIEW_COUNT_DESC,
-    LIKE_COUNT_DESC,
+    BOOKMARK_COUNT_DESC,
     ID_ASC
 }
 

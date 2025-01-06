@@ -14,7 +14,7 @@ class RestaurantTest : DescribeSpec({
                 name = "Test Restaurant",
                 originalCategories = "Category1",
                 reviewCount = 0,
-                likeCount = 0,
+                bookmarkCount = 0,
                 address = "123 Test St",
                 contactNumber = "123-456-7890",
                 ratingAvg = 0.0,
@@ -34,7 +34,7 @@ class RestaurantTest : DescribeSpec({
                 restaurant.name shouldBe "Test Restaurant"
                 restaurant.originalCategories shouldBe "Category1"
                 restaurant.reviewCount shouldBe 0
-                restaurant.likeCount shouldBe 0
+                restaurant.bookmarkCount shouldBe 0
                 restaurant.address shouldBe "123 Test St"
                 restaurant.contactNumber shouldBe "123-456-7890"
                 restaurant.ratingAvg shouldBeExactly 0.0

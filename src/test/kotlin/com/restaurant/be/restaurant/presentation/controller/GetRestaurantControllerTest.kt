@@ -13,8 +13,8 @@ import com.restaurant.be.common.response.CommonResponse
 import com.restaurant.be.common.util.RestaurantDocument
 import com.restaurant.be.common.util.RestaurantUtil
 import com.restaurant.be.common.util.setUpUser
+import com.restaurant.be.restaurant.domain.entity.RestaurantBookmark
 import com.restaurant.be.restaurant.domain.entity.RestaurantCategory
-import com.restaurant.be.restaurant.domain.entity.RestaurantLike
 import com.restaurant.be.restaurant.presentation.controller.dto.GetRestaurantResponse
 import com.restaurant.be.restaurant.presentation.controller.dto.GetRestaurantsResponse
 import com.restaurant.be.restaurant.presentation.controller.dto.common.RestaurantDto
@@ -141,8 +141,10 @@ class GetRestaurantControllerTest(
                 restaurantRepository.save(restaurantEntity)
                 restaurantCategoryRepository.save(
                     RestaurantCategory(
-                        restaurantId = restaurantEntity.id,
-                        categoryId = category.id ?: 0
+                        name = category.name,
+                        groupId = 1L,
+                        restaurantId = 1L,
+                        categoryGroup = "default_group"
                     )
                 )
                 val restaurantDocument = RestaurantUtil.generateRestaurantDocument(
@@ -188,8 +190,10 @@ class GetRestaurantControllerTest(
                 restaurantRepository.save(restaurantEntity)
                 restaurantCategoryRepository.save(
                     RestaurantCategory(
-                        restaurantId = restaurantEntity.id,
-                        categoryId = category.id ?: 0
+                        name = category.name,
+                        groupId = 1L,
+                        restaurantId = 1L,
+                        categoryGroup = "default_group"
                     )
                 )
                 val restaurantDocument = RestaurantUtil.generateRestaurantDocument(
@@ -436,7 +440,7 @@ class GetRestaurantControllerTest(
                 elasticsearchOperations.indexOps(RestaurantDocument::class.java).refresh()
 
                 restaurantLikeRepository.save(
-                    RestaurantLike(
+                    RestaurantBookmark(
                         userId = newUser?.id ?: 0,
                         restaurantId = restaurantEntity.id
                     )
@@ -560,7 +564,7 @@ class GetRestaurantControllerTest(
                 elasticsearchOperations.indexOps(RestaurantDocument::class.java).refresh()
 
                 restaurantLikeRepository.save(
-                    RestaurantLike(
+                    RestaurantBookmark(
                         userId = newUser?.id ?: 0,
                         restaurantId = restaurantEntity.id
                     )
@@ -606,7 +610,7 @@ class GetRestaurantControllerTest(
                 elasticsearchOperations.indexOps(RestaurantDocument::class.java).refresh()
 
                 restaurantLikeRepository.save(
-                    RestaurantLike(
+                    RestaurantBookmark(
                         userId = newUser?.id ?: 0,
                         restaurantId = restaurantEntity.id
                     )
@@ -1474,12 +1478,14 @@ class GetRestaurantControllerTest(
                 restaurantRepository.save(restaurantEntity)
                 restaurantCategoryRepository.save(
                     RestaurantCategory(
-                        restaurantId = restaurantEntity.id,
-                        categoryId = category.id ?: 0
+                        name = category.name,
+                        groupId = 1L,
+                        restaurantId = 1L,
+                        categoryGroup = "default_group"
                     )
                 )
                 restaurantLikeRepository.save(
-                    RestaurantLike(
+                    RestaurantBookmark(
                         userId = user?.id ?: 0,
                         restaurantId = restaurantEntity.id
                     )
@@ -1558,12 +1564,14 @@ class GetRestaurantControllerTest(
                 restaurantRepository.save(restaurantEntity)
                 restaurantCategoryRepository.save(
                     RestaurantCategory(
-                        restaurantId = restaurantEntity.id,
-                        categoryId = category.id ?: 0
+                        name = category.name,
+                        groupId = 1L,
+                        restaurantId = 1L,
+                        categoryGroup = "default_group"
                     )
                 )
                 restaurantLikeRepository.save(
-                    RestaurantLike(
+                    RestaurantBookmark(
                         userId = user?.id ?: 0,
                         restaurantId = restaurantEntity.id
                     )
@@ -2000,7 +2008,7 @@ class GetRestaurantControllerTest(
                 actualResult.data!!.restaurants.content[1].name shouldBe "목구멍 율전점1"
             }
 
-            it("when like_count_desc sort should return sorted restaurants by like_count_desc") {
+            it("when bookmark_count_desc sort should return sorted restaurants by bookmark_count_desc") {
                 // given
                 val restaurantEntity1 = RestaurantUtil.generateRestaurantEntity(
                     name = "목구멍 율전점1"
@@ -2014,20 +2022,20 @@ class GetRestaurantControllerTest(
 
                 val restaurantEntity2 = RestaurantUtil.generateRestaurantEntity(
                     name = "목구멍 율전점2",
-                    likeCount = 1
+                    bookmarkCount = 1
                 )
                 restaurantRepository.save(restaurantEntity2)
                 val restaurantDocument2 = RestaurantUtil.generateRestaurantDocument(
                     id = restaurantEntity2.id,
                     name = "목구멍 율전점2",
-                    likeCount = 1
+                    bookmarkCount = 1
                 )
                 elasticsearchOperations.save(restaurantDocument2)
                 elasticsearchOperations.indexOps(RestaurantDocument::class.java).refresh()
 
                 val user = userRepository.findByPhoneNumber("01012345678")
                 restaurantLikeRepository.save(
-                    RestaurantLike(
+                    RestaurantBookmark(
                         userId = user?.id ?: 0,
                         restaurantId = restaurantEntity2.id
                     )
@@ -2036,7 +2044,7 @@ class GetRestaurantControllerTest(
                 // when
                 val result = mockMvc.perform(
                     get(restaurantUrl)
-                        .param("customSort", "LIKE_COUNT_DESC")
+                        .param("customSort", "BOOKMARK_COUNT_DESC")
                 )
                     .also {
                         println(it.andReturn().response.contentAsString)
@@ -2204,7 +2212,7 @@ class GetRestaurantControllerTest(
                 )
                 restaurantRepository.save(restaurantEntity)
                 restaurantLikeRepository.save(
-                    RestaurantLike(
+                    RestaurantBookmark(
                         userId = user?.id ?: 0,
                         restaurantId = restaurantEntity.id
                     )

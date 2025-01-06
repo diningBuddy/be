@@ -7,7 +7,7 @@ class RestaurantLikeTest : DescribeSpec({
     describe("RestaurantLike") {
         it("should create a correct RestaurantLike instance") {
             // Given
-            val restaurantLike = RestaurantLike(
+            val restaurantBookmark = RestaurantBookmark(
                 id = 1L,
                 restaurantId = 1,
                 userId = 1
@@ -16,9 +16,9 @@ class RestaurantLikeTest : DescribeSpec({
             // When
 
             // Then
-            restaurantLike.id shouldBe 1L
-            restaurantLike.restaurantId shouldBe 1
-            restaurantLike.userId shouldBe 1
+            restaurantBookmark.id shouldBe 1L
+            restaurantBookmark.restaurantId shouldBe 1
+            restaurantBookmark.userId shouldBe 1
         }
     }
 })

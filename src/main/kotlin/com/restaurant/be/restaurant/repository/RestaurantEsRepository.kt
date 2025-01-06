@@ -181,7 +181,7 @@ class RestaurantEsRepository(
                                 }
                                 Sort.RATING_DESC -> add("rating_avg", SortOrder.DESC)
                                 Sort.REVIEW_COUNT_DESC -> add("review_count", SortOrder.DESC)
-                                Sort.LIKE_COUNT_DESC -> add("like_count", SortOrder.DESC)
+                                Sort.BOOKMARK_COUNT_DESC -> add("bookmark_count", SortOrder.DESC)
                                 Sort.ID_ASC -> null
                             }
 
