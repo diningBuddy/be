@@ -15,9 +15,15 @@ data class RestaurantCategory(
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id: Long? = null,
 
-    @Column(name = "restaurant_id", nullable = false)
+    @Column(name = "name", nullable = false)
+    var name: String,
+
+    @Column(name = "group_id")
+    var groupId: Long,
+
+    @Column(name = "restaurant_id")
     var restaurantId: Long,
 
-    @Column(name = "category_id", nullable = false)
-    var categoryId: Long
+    @Column(name = "category_group", nullable = false)
+    var categoryGroup: String
 )

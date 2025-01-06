@@ -10,16 +10,20 @@ class RestaurantCategoryTest : DescribeSpec({
             // Given
             val restaurantCategory = RestaurantCategory(
                 id = 1L,
-                restaurantId = 1,
-                categoryId = 1
+                name = "name",
+                groupId = 1L,
+                restaurantId = 1L,
+                categoryGroup = "default_group"
             )
 
             // When
 
             // Then
             restaurantCategory.id shouldBe 1L
-            restaurantCategory.restaurantId shouldBe 1
-            restaurantCategory.categoryId shouldBe 1
+            restaurantCategory.name shouldBe "name"
+            restaurantCategory.groupId shouldBe 1L
+            restaurantCategory.restaurantId shouldBe 1L
+            restaurantCategory.categoryGroup shouldBe "default_group"
         }
     }
 })

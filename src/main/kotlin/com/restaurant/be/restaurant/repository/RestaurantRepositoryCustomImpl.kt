@@ -5,9 +5,9 @@ import com.querydsl.jpa.impl.JPAQueryFactory
 import com.restaurant.be.category.domain.entity.QCategory.category
 import com.restaurant.be.restaurant.domain.entity.QMenu.menu
 import com.restaurant.be.restaurant.domain.entity.QRestaurant.restaurant
+import com.restaurant.be.restaurant.domain.entity.QRestaurantBookmark.restaurantBookmark
 import com.restaurant.be.restaurant.domain.entity.QRestaurantCategory.restaurantCategory
-import com.restaurant.be.restaurant.domain.entity.QRestaurantLike.restaurantLike
-import com.restaurant.be.restaurant.domain.entity.RestaurantLike
+import com.restaurant.be.restaurant.domain.entity.RestaurantBookmark
 import com.restaurant.be.restaurant.repository.dto.RestaurantProjectionDto
 import com.restaurant.be.review.domain.entity.QReview.review
 import com.restaurant.be.user.domain.entity.QUser.user
@@ -32,13 +32,13 @@ class RestaurantRepositoryCustomImpl(
         val likedUsers =
             queryFactory
                 .select(user.id)
-                .from(restaurantLike)
+                .from(restaurantBookmark)
                 .leftJoin(user)
-                .on(restaurantLike.userId.eq(user.id))
+                .on(restaurantBookmark.userId.eq(user.id))
                 .where(
-                    restaurantLike.restaurantId
+                    restaurantBookmark.restaurantId
                         .eq(restaurantId)
-                        .and(restaurantLike.userId.eq(userId))
+                        .and(restaurantBookmark.userId.eq(userId))
                 ).fetch()
 
         val menus =
@@ -62,7 +62,7 @@ class RestaurantRepositoryCustomImpl(
                 .select(category)
                 .from(restaurantCategory)
                 .leftJoin(category)
-                .on(restaurantCategory.categoryId.eq(category.id))
+                .on(restaurantCategory.name.eq(category.name))
                 .where(restaurantCategory.restaurantId.eq(restaurantId))
                 .fetch()
 
@@ -96,9 +96,9 @@ class RestaurantRepositoryCustomImpl(
 
         val likedUsers =
             queryFactory
-                .select(restaurantLike)
-                .from(restaurantLike)
-                .where(restaurantLike.userId.eq(userId))
+                .select(restaurantBookmark)
+                .from(restaurantBookmark)
+                .where(restaurantBookmark.userId.eq(userId))
                 .fetch()
 
         val menus =
@@ -121,7 +121,7 @@ class RestaurantRepositoryCustomImpl(
                 .select(restaurantCategory, category)
                 .from(restaurantCategory)
                 .leftJoin(category)
-                .on(restaurantCategory.categoryId.eq(category.id))
+                .on(restaurantCategory.name.eq(category.name))
                 .where(restaurantCategory.restaurantId.`in`(restaurantIds))
                 .fetch()
 
@@ -151,14 +151,14 @@ class RestaurantRepositoryCustomImpl(
         userId: Long,
         pageable: Pageable
     ): Page<RestaurantProjectionDto> {
-        val restaurantLikePath = PathBuilderFactory().create(RestaurantLike::class.java)
-        val orderSpecifier = listOf(restaurantLikePath.getNumber("id", Long::class.java).desc())
+        val restaurantBookmarkPath = PathBuilderFactory().create(RestaurantBookmark::class.java)
+        val orderSpecifier = listOf(restaurantBookmarkPath.getNumber("id", Long::class.java).desc())
 
         val myLikeQuery =
             queryFactory
-                .select(restaurantLike.restaurantId)
-                .from(restaurantLike)
-                .where(restaurantLike.userId.eq(userId))
+                .select(restaurantBookmark.restaurantId)
+                .from(restaurantBookmark)
+                .where(restaurantBookmark.userId.eq(userId))
 
         val total = myLikeQuery.fetchCount()
 
@@ -171,8 +171,8 @@ class RestaurantRepositoryCustomImpl(
                 .select(restaurant)
                 .from(restaurant)
                 .where(restaurant.id.`in`(restaurantIds))
-                .leftJoin(restaurantLike)
-                .on(restaurant.id.eq(restaurantLike.restaurantId))
+                .leftJoin(restaurantBookmark)
+                .on(restaurant.id.eq(restaurantBookmark.restaurantId))
                 .orderBy(*orderSpecifier.toTypedArray())
                 .fetchJoin()
                 .offset(pageable.offset)
@@ -199,7 +199,7 @@ class RestaurantRepositoryCustomImpl(
                 .select(restaurantCategory, category)
                 .from(restaurantCategory)
                 .leftJoin(category)
-                .on(restaurantCategory.categoryId.eq(category.id))
+                .on(restaurantCategory.name.eq(category.name))
                 .where(restaurantCategory.restaurantId.`in`(restaurantIds))
                 .fetch()
 

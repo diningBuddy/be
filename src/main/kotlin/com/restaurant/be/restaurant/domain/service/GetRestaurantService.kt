@@ -5,8 +5,8 @@ import com.restaurant.be.common.redis.RedisRepository
 import com.restaurant.be.restaurant.presentation.controller.dto.GetRestaurantResponse
 import com.restaurant.be.restaurant.presentation.controller.dto.GetRestaurantsRequest
 import com.restaurant.be.restaurant.presentation.controller.dto.GetRestaurantsResponse
+import com.restaurant.be.restaurant.repository.RestaurantBookmarkRepository
 import com.restaurant.be.restaurant.repository.RestaurantEsRepository
-import com.restaurant.be.restaurant.repository.RestaurantLikeRepository
 import com.restaurant.be.restaurant.repository.RestaurantRepository
 import org.springframework.data.domain.PageImpl
 import org.springframework.data.domain.Pageable
@@ -18,7 +18,7 @@ class GetRestaurantService(
     private val restaurantEsRepository: RestaurantEsRepository,
     private val redisRepository: RedisRepository,
     private val restaurantRepository: RestaurantRepository,
-    private val restaurantLikeRepository: RestaurantLikeRepository
+    private val restaurantLikeRepository: RestaurantBookmarkRepository
 ) {
     @Transactional(readOnly = true)
     fun getRestaurants(

@@ -1,26 +1,26 @@
 package com.restaurant.be.restaurant.domain.service
 
 import com.restaurant.be.common.exception.NotFoundRestaurantException
-import com.restaurant.be.restaurant.domain.entity.RestaurantLike
-import com.restaurant.be.restaurant.presentation.controller.dto.GetLikeRestaurantsResponse
-import com.restaurant.be.restaurant.presentation.controller.dto.LikeRestaurantResponse
-import com.restaurant.be.restaurant.repository.RestaurantLikeRepository
+import com.restaurant.be.restaurant.domain.entity.RestaurantBookmark
+import com.restaurant.be.restaurant.presentation.controller.dto.BookmarkRestaurantResponse
+import com.restaurant.be.restaurant.presentation.controller.dto.GetBookmarkRestaurantsResponse
+import com.restaurant.be.restaurant.repository.RestaurantBookmarkRepository
 import com.restaurant.be.restaurant.repository.RestaurantRepository
 import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
 @Service
-class LikeRestaurantService(
+class BookmarkRestaurantService(
     private val restaurantRepository: RestaurantRepository,
-    private val restaurantLikeRepository: RestaurantLikeRepository
+    private val restaurantLikeRepository: RestaurantBookmarkRepository
 ) {
     @Transactional
     fun likeRestaurant(
         userId: Long,
         restaurantId: Long,
         isLike: Boolean
-    ): LikeRestaurantResponse {
+    ): BookmarkRestaurantResponse {
         val restaurantDto =
             restaurantRepository.findDtoById(restaurantId, userId)
                 ?: throw NotFoundRestaurantException()
@@ -33,7 +33,7 @@ class LikeRestaurantService(
         if (isLike) {
             if (!restaurantDto.isLike) {
                 restaurantLikeRepository.save(
-                    RestaurantLike(
+                    RestaurantBookmark(
                         restaurantId = restaurantId,
                         userId = userId
                     )
@@ -48,15 +48,15 @@ class LikeRestaurantService(
         }
 
         restaurantRepository.save(restaurant)
-        return LikeRestaurantResponse(restaurantRepository.findDtoById(restaurantId, userId)!!.toDto())
+        return BookmarkRestaurantResponse(restaurantRepository.findDtoById(restaurantId, userId)!!.toDto())
     }
 
     @Transactional(readOnly = true)
     fun getMyLikeRestaurant(
         pageable: Pageable,
         userId: Long
-    ): GetLikeRestaurantsResponse =
-        GetLikeRestaurantsResponse(
+    ): GetBookmarkRestaurantsResponse =
+        GetBookmarkRestaurantsResponse(
             restaurantRepository
                 .findMyLikeRestaurants(userId, pageable)
                 .map { it.toDto() }
