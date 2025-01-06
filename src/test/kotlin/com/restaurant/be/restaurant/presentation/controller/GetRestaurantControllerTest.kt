@@ -141,8 +141,10 @@ class GetRestaurantControllerTest(
                 restaurantRepository.save(restaurantEntity)
                 restaurantCategoryRepository.save(
                     RestaurantCategory(
-                        restaurantId = restaurantEntity.id,
-                        categoryId = category.id ?: 0
+                        name = category.name,
+                        groupId = 1L,
+                        restaurantId = 1L,
+                        categoryGroup = "default_group"
                     )
                 )
                 val restaurantDocument = RestaurantUtil.generateRestaurantDocument(
@@ -188,8 +190,10 @@ class GetRestaurantControllerTest(
                 restaurantRepository.save(restaurantEntity)
                 restaurantCategoryRepository.save(
                     RestaurantCategory(
-                        restaurantId = restaurantEntity.id,
-                        categoryId = category.id ?: 0
+                        name = category.name,
+                        groupId = 1L,
+                        restaurantId = 1L,
+                        categoryGroup = "default_group"
                     )
                 )
                 val restaurantDocument = RestaurantUtil.generateRestaurantDocument(
@@ -1474,8 +1478,10 @@ class GetRestaurantControllerTest(
                 restaurantRepository.save(restaurantEntity)
                 restaurantCategoryRepository.save(
                     RestaurantCategory(
-                        restaurantId = restaurantEntity.id,
-                        categoryId = category.id ?: 0
+                        name = category.name,
+                        groupId = 1L,
+                        restaurantId = 1L,
+                        categoryGroup = "default_group"
                     )
                 )
                 restaurantLikeRepository.save(
@@ -1558,8 +1564,10 @@ class GetRestaurantControllerTest(
                 restaurantRepository.save(restaurantEntity)
                 restaurantCategoryRepository.save(
                     RestaurantCategory(
-                        restaurantId = restaurantEntity.id,
-                        categoryId = category.id ?: 0
+                        name = category.name,
+                        groupId = 1L,
+                        restaurantId = 1L,
+                        categoryGroup = "default_group"
                     )
                 )
                 restaurantLikeRepository.save(
@@ -2000,7 +2008,7 @@ class GetRestaurantControllerTest(
                 actualResult.data!!.restaurants.content[1].name shouldBe "목구멍 율전점1"
             }
 
-            it("when like_count_desc sort should return sorted restaurants by like_count_desc") {
+            it("when bookmark_count_desc sort should return sorted restaurants by bookmark_count_desc") {
                 // given
                 val restaurantEntity1 = RestaurantUtil.generateRestaurantEntity(
                     name = "목구멍 율전점1"

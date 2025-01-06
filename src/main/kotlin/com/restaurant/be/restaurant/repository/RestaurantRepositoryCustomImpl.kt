@@ -62,7 +62,7 @@ class RestaurantRepositoryCustomImpl(
                 .select(category)
                 .from(restaurantCategory)
                 .leftJoin(category)
-                .on(restaurantCategory.categoryId.eq(category.id))
+                .on(restaurantCategory.name.eq(category.name))
                 .where(restaurantCategory.restaurantId.eq(restaurantId))
                 .fetch()
 
@@ -121,7 +121,7 @@ class RestaurantRepositoryCustomImpl(
                 .select(restaurantCategory, category)
                 .from(restaurantCategory)
                 .leftJoin(category)
-                .on(restaurantCategory.categoryId.eq(category.id))
+                .on(restaurantCategory.name.eq(category.name))
                 .where(restaurantCategory.restaurantId.`in`(restaurantIds))
                 .fetch()
 
@@ -199,7 +199,7 @@ class RestaurantRepositoryCustomImpl(
                 .select(restaurantCategory, category)
                 .from(restaurantCategory)
                 .leftJoin(category)
-                .on(restaurantCategory.categoryId.eq(category.id))
+                .on(restaurantCategory.name.eq(category.name))
                 .where(restaurantCategory.restaurantId.`in`(restaurantIds))
                 .fetch()
 
