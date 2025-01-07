@@ -1,19 +1,19 @@
 package com.restaurant.be.restaurant.domain.entity
 
-import com.restaurant.be.restaurant.domain.entity.kakaoinfo.FacilityInfoJsonEntity
-import com.restaurant.be.restaurant.domain.entity.kakaoinfo.OperationInfoJsonEntity
-import com.restaurant.be.restaurant.domain.entity.kakaoinfo.OperationTimeInfosJsonEntity
-import jakarta.persistence.CascadeType
+import com.restaurant.be.restaurant.domain.entity.jsonentity.FacilityInfoJsonEntity
+import com.restaurant.be.restaurant.domain.entity.jsonentity.MenuJsonEntity
+import com.restaurant.be.restaurant.domain.entity.jsonentity.OperationInfoJsonEntity
+import com.restaurant.be.restaurant.domain.entity.jsonentity.OperationTimeInfosJsonEntity
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
-import jakarta.persistence.FetchType
 import jakarta.persistence.GeneratedValue
 import jakarta.persistence.GenerationType
 import jakarta.persistence.Id
-import jakarta.persistence.OneToMany
 import jakarta.persistence.Table
 import org.hibernate.annotations.JdbcTypeCode
 import org.hibernate.type.SqlTypes
+import org.springframework.data.elasticsearch.annotations.Field
+import org.springframework.data.elasticsearch.annotations.FieldType
 
 @Entity
 @Table(name = "restaurants")
@@ -48,12 +48,18 @@ class Restaurant(
     var ratingCount: Long,
 
     @JdbcTypeCode(SqlTypes.JSON)
+    @Field(type=FieldType.Object)
+    @Column(name = "facility_infos")
     var facilityInfos: FacilityInfoJsonEntity,
 
     @JdbcTypeCode(SqlTypes.JSON)
+    @Field(type=FieldType.Object)
+    @Column(name = "operation_infos")
     var operationInfos: OperationInfoJsonEntity,
 
     @JdbcTypeCode(SqlTypes.JSON)
+    @Field(type=FieldType.Nested)
+    @Column(name = "operation_times")
     var operationTimes: OperationTimeInfosJsonEntity,
 
     @Column(name = "representative_image_url", length = 300)
@@ -83,8 +89,10 @@ class Restaurant(
     @Column(name = "kakao_rating_count")
     var kakaoRatingCount: Long,
 
-    @OneToMany(mappedBy = "restaurantId", cascade = [CascadeType.ALL], fetch = FetchType.LAZY)
-    var menus: MutableList<Menu> = mutableListOf()
+    @JdbcTypeCode(SqlTypes.JSON)
+    @Field(type=FieldType.Nested)
+    @Column(name = "menus")
+    var menus: MutableList<MenuJsonEntity>
 ) {
     fun createReview(newRating: Double) {
         val beforeCount = reviewCount

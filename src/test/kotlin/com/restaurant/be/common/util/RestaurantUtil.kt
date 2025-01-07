@@ -2,10 +2,7 @@ package com.restaurant.be.common.util
 
 import com.restaurant.be.restaurant.domain.entity.Menu
 import com.restaurant.be.restaurant.domain.entity.Restaurant
-import com.restaurant.be.restaurant.domain.entity.kakaoinfo.FacilityInfoJsonEntity
-import com.restaurant.be.restaurant.domain.entity.kakaoinfo.OperationInfoJsonEntity
-import com.restaurant.be.restaurant.domain.entity.kakaoinfo.OperationTimeInfoJsonEntity
-import com.restaurant.be.restaurant.domain.entity.kakaoinfo.OperationTimeInfosJsonEntity
+import com.restaurant.be.restaurant.domain.entity.jsonentity.*
 import org.springframework.data.elasticsearch.core.geo.GeoPoint
 
 object RestaurantUtil {
@@ -24,7 +21,7 @@ object RestaurantUtil {
         imageUrl: String = "default_image_url",
         category: String = "default_category",
         discountContent: String? = "default_discount_content",
-        menus: List<MenuDocument> = emptyList(),
+        menus: MenuJsonEntity = MenuJsonEntity("default_name",0,"default_description",false, "default_image_url"),
         latitude: Double = 0.0,
         longitude: Double = 0.0,
         facilityInfos: FacilityInfoJsonEntity = FacilityInfoJsonEntity("N", "N", "N", "N", "N", "N"),
@@ -75,7 +72,7 @@ object RestaurantUtil {
         representativeImageUrl: String = "default_image_url",
         viewCount: Long = 0,
         discountContent: String? = null,
-        menus: MutableList<Menu> = mutableListOf(),
+        menus: MenuJsonEntity,
         longitude: Double = 0.0,
         latitude: Double = 0.0,
         facilityInfos: FacilityInfoJsonEntity = FacilityInfoJsonEntity("N", "N", "N", "N", "N", "N"),
