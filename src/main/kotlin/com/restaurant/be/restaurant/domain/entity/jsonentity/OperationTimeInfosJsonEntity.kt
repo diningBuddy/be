@@ -1,4 +1,4 @@
-package com.restaurant.be.restaurant.domain.entity.kakaoinfo
+package com.restaurant.be.restaurant.domain.entity.jsonentity
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 
