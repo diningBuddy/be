@@ -1,5 +1,9 @@
 package com.restaurant.be.restaurant.domain.entity
 
+import com.restaurant.be.restaurant.domain.entity.kakaoinfo.FacilityInfoJsonEntity
+import com.restaurant.be.restaurant.domain.entity.kakaoinfo.OperationInfoJsonEntity
+import com.restaurant.be.restaurant.domain.entity.kakaoinfo.OperationTimeInfoJsonEntity
+import com.restaurant.be.restaurant.domain.entity.kakaoinfo.OperationTimeInfosJsonEntity
 import io.kotest.core.spec.style.DescribeSpec
 import io.kotest.matchers.doubles.shouldBeExactly
 import io.kotest.matchers.shouldBe
@@ -18,6 +22,13 @@ class RestaurantTest : DescribeSpec({
                 address = "123 Test St",
                 contactNumber = "123-456-7890",
                 ratingAvg = 0.0,
+                ratingCount = 0,
+                facilityInfos = FacilityInfoJsonEntity("N", "N", "N", "N", "N", "N"),
+                operationInfos = OperationInfoJsonEntity("N", "N", "N"),
+                operationTimes = OperationTimeInfosJsonEntity(
+                    "월요일",
+                    OperationTimeInfoJsonEntity("11:00", "23:00", "15:00", "17:00", "21:00")
+                ),
                 representativeImageUrl = "http://example.com/image.jpg",
                 viewCount = 0,
                 discountContent = null,
@@ -25,6 +36,8 @@ class RestaurantTest : DescribeSpec({
                 latitude = 0.0,
                 naverRatingAvg = 0.0,
                 naverReviewCount = 0,
+                kakaoRatingAvg = 0.0,
+                kakaoRatingCount = 0,
                 menus = mutableListOf()
             )
         }
@@ -38,6 +51,13 @@ class RestaurantTest : DescribeSpec({
                 restaurant.address shouldBe "123 Test St"
                 restaurant.contactNumber shouldBe "123-456-7890"
                 restaurant.ratingAvg shouldBeExactly 0.0
+                restaurant.ratingCount shouldBe 0
+                restaurant.facilityInfos shouldBe FacilityInfoJsonEntity("N", "N", "N", "N", "N", "N")
+                restaurant.operationInfos shouldBe OperationInfoJsonEntity("N", "N", "N")
+                restaurant.operationTimes shouldBe OperationTimeInfosJsonEntity(
+                    "월요일",
+                    OperationTimeInfoJsonEntity("11:00", "23:00", "15:00", "17:00", "21:00")
+                )
                 restaurant.representativeImageUrl shouldBe "http://example.com/image.jpg"
                 restaurant.viewCount shouldBe 0
                 restaurant.discountContent shouldBe null
@@ -46,6 +66,8 @@ class RestaurantTest : DescribeSpec({
                 restaurant.naverRatingAvg shouldBeExactly 0.0
                 restaurant.naverReviewCount shouldBe 0
                 restaurant.menus shouldBe mutableListOf()
+                restaurant.kakaoRatingAvg shouldBe 0.0
+                restaurant.kakaoRatingCount shouldBe 0
             }
         }
 

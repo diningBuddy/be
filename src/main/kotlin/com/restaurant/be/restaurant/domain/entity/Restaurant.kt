@@ -1,5 +1,8 @@
 package com.restaurant.be.restaurant.domain.entity
 
+import com.restaurant.be.restaurant.domain.entity.kakaoinfo.FacilityInfoJsonEntity
+import com.restaurant.be.restaurant.domain.entity.kakaoinfo.OperationInfoJsonEntity
+import com.restaurant.be.restaurant.domain.entity.kakaoinfo.OperationTimeInfosJsonEntity
 import jakarta.persistence.CascadeType
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
@@ -9,6 +12,8 @@ import jakarta.persistence.GenerationType
 import jakarta.persistence.Id
 import jakarta.persistence.OneToMany
 import jakarta.persistence.Table
+import org.hibernate.annotations.JdbcTypeCode
+import org.hibernate.type.SqlTypes
 
 @Entity
 @Table(name = "restaurants")
@@ -39,6 +44,18 @@ class Restaurant(
     @Column(name = "rating_avg")
     var ratingAvg: Double,
 
+    @Column(name = "rating_count")
+    var ratingCount: Long,
+
+    @JdbcTypeCode(SqlTypes.JSON)
+    var facilityInfos: FacilityInfoJsonEntity,
+
+    @JdbcTypeCode(SqlTypes.JSON)
+    var operationInfos: OperationInfoJsonEntity,
+
+    @JdbcTypeCode(SqlTypes.JSON)
+    var operationTimes: OperationTimeInfosJsonEntity,
+
     @Column(name = "representative_image_url", length = 300)
     var representativeImageUrl: String,
 
@@ -60,9 +77,14 @@ class Restaurant(
     @Column(name = "naver_review_count")
     var naverReviewCount: Int,
 
+    @Column(name = "kakao_rating_avg")
+    var kakaoRatingAvg: Double,
+
+    @Column(name = "kakao_rating_count")
+    var kakaoRatingCount: Long,
+
     @OneToMany(mappedBy = "restaurantId", cascade = [CascadeType.ALL], fetch = FetchType.LAZY)
     var menus: MutableList<Menu> = mutableListOf()
-
 ) {
     fun createReview(newRating: Double) {
         val beforeCount = reviewCount
