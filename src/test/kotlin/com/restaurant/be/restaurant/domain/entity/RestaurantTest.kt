@@ -1,9 +1,9 @@
 package com.restaurant.be.restaurant.domain.entity
 
-import com.restaurant.be.restaurant.domain.entity.kakaoinfo.FacilityInfoJsonEntity
-import com.restaurant.be.restaurant.domain.entity.kakaoinfo.OperationInfoJsonEntity
-import com.restaurant.be.restaurant.domain.entity.kakaoinfo.OperationTimeInfoJsonEntity
-import com.restaurant.be.restaurant.domain.entity.kakaoinfo.OperationTimeInfosJsonEntity
+import com.restaurant.be.restaurant.domain.entity.jsonentity.FacilityInfoJsonEntity
+import com.restaurant.be.restaurant.domain.entity.jsonentity.OperationInfoJsonEntity
+import com.restaurant.be.restaurant.domain.entity.jsonentity.OperationTimeInfoJsonEntity
+import com.restaurant.be.restaurant.domain.entity.jsonentity.OperationTimeInfosJsonEntity
 import io.kotest.core.spec.style.DescribeSpec
 import io.kotest.matchers.doubles.shouldBeExactly
 import io.kotest.matchers.shouldBe

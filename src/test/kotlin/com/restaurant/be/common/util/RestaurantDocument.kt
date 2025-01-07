@@ -1,8 +1,9 @@
 package com.restaurant.be.common.util
 
-import com.restaurant.be.restaurant.domain.entity.kakaoinfo.FacilityInfoJsonEntity
-import com.restaurant.be.restaurant.domain.entity.kakaoinfo.OperationInfoJsonEntity
-import com.restaurant.be.restaurant.domain.entity.kakaoinfo.OperationTimeInfosJsonEntity
+import com.restaurant.be.restaurant.domain.entity.jsonentity.FacilityInfoJsonEntity
+import com.restaurant.be.restaurant.domain.entity.jsonentity.MenuJsonEntity
+import com.restaurant.be.restaurant.domain.entity.jsonentity.OperationInfoJsonEntity
+import com.restaurant.be.restaurant.domain.entity.jsonentity.OperationTimeInfosJsonEntity
 import jakarta.persistence.Id
 import org.springframework.data.elasticsearch.annotations.Document
 import org.springframework.data.elasticsearch.annotations.Field
@@ -62,7 +63,7 @@ data class RestaurantDocument(
     val discountContent: String?,
 
     @Field(type = FieldType.Nested, name = "menus")
-    val menus: List<MenuDocument>,
+    val menus: MenuJsonEntity,
 
     @GeoPointField
     val location: GeoPoint,

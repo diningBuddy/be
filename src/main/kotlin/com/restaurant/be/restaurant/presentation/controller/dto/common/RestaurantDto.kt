@@ -1,8 +1,8 @@
 package com.restaurant.be.restaurant.presentation.controller.dto.common
 
-import com.restaurant.be.restaurant.domain.entity.kakaoinfo.FacilityInfoJsonEntity
-import com.restaurant.be.restaurant.domain.entity.kakaoinfo.OperationInfoJsonEntity
-import com.restaurant.be.restaurant.domain.entity.kakaoinfo.OperationTimeInfosJsonEntity
+import com.restaurant.be.restaurant.domain.entity.jsonentity.FacilityInfoJsonEntity
+import com.restaurant.be.restaurant.domain.entity.jsonentity.OperationInfoJsonEntity
+import com.restaurant.be.restaurant.domain.entity.jsonentity.OperationTimeInfosJsonEntity
 import io.swagger.v3.oas.annotations.media.Schema
 
 data class RestaurantDto(
