@@ -155,7 +155,7 @@ class RestaurantEsRepository(
                                     path = "menus"
                                     query = bool {
                                         should(
-                                            match("menus.menu_name", request.query) {
+                                            match("menus.name", request.query) {
                                                 boost = 0.01
                                             },
                                             match("menus.description", request.query) {
