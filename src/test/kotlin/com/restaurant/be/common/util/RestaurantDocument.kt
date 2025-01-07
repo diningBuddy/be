@@ -37,13 +37,13 @@ data class RestaurantDocument(
     @Field(type = FieldType.Double, name = "rating_avg")
     val ratingAvg: Double,
 
-    @Field(type = FieldType.Text, name = "facility_infos")
+    @Field(type = FieldType.Object, name = "facility_infos")
     val facilityInfos: FacilityInfoJsonEntity,
 
-    @Field(type = FieldType.Text, name = "operation_infos")
+    @Field(type = FieldType.Object, name = "operation_infos")
     val operationInfos: OperationInfoJsonEntity,
 
-    @Field(type = FieldType.Text, name = "operation_times")
+    @Field(type = FieldType.Object, name = "operation_times")
     val operationTimes: OperationTimeInfosJsonEntity,
 
     @Field(type = FieldType.Long, name = "bookmark_count")
