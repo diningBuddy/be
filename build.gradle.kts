@@ -103,7 +103,7 @@ dependencies {
     testImplementation("org.testcontainers:elasticsearch:1.16.2")
 
     // ES
-    testImplementation("org.springframework.boot:spring-boot-starter-data-elasticsearch")
+    implementation("org.springframework.boot:spring-boot-starter-data-elasticsearch")
 }
 
 allOpen {
