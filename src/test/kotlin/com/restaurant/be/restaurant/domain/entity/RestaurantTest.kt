@@ -65,7 +65,7 @@ class RestaurantTest : DescribeSpec({
                 restaurant.latitude shouldBeExactly 0.0
                 restaurant.naverRatingAvg shouldBeExactly 0.0
                 restaurant.naverReviewCount shouldBe 0
-                restaurant.menus shouldBe "default_string"
+                restaurant.menus shouldBe mutableListOf()
                 restaurant.kakaoRatingAvg shouldBe 0.0
                 restaurant.kakaoRatingCount shouldBe 0
             }
