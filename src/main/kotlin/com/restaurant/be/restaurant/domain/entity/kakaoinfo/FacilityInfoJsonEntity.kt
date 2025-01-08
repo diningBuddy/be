@@ -4,12 +4,12 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 data class FacilityInfoJsonEntity(
-    val wifi: String,
-    val pet: String,
-    val parking: String,
-    val nursery: String,
-    val smokingRoom: String,
-    val forDisabled: String
+    val wifi: String?,
+    val pet: String?,
+    val parking: String?,
+    val nursery: String?,
+    val smokingRoom: String?,
+    val forDisabled: String?,
 ) {
     companion object {
         fun create(

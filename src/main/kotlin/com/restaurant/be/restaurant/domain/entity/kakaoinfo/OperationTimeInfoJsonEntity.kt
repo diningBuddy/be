@@ -4,11 +4,11 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 data class OperationTimeInfoJsonEntity(
-    val startTime: String,
-    val endTime: String,
-    val breakStartTime: String,
-    val breakEndTime: String,
-    val lastOrder: String
+    val startTime: String?,
+    val endTime: String?,
+    val breakStartTime: String?,
+    val breakEndTime: String?,
+    val lastOrder: String?,
 ) {
     companion object {
         fun create(

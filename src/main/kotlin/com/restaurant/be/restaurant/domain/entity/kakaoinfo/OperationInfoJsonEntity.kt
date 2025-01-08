@@ -4,9 +4,9 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 data class OperationInfoJsonEntity(
-    val appointment: String,
-    val delivery: String,
-    val packagee: String
+    val appointment: String?,
+    val delivery: String?,
+    val packagee: String?,
 ) {
     companion object {
         fun create(
