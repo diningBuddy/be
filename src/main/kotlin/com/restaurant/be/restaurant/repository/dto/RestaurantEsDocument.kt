@@ -37,20 +37,20 @@ data class FacilityInfoEsDocument(
     @SerialName("nursery") val nursery: String,
     @SerialName("parking") val parking: String,
     @SerialName("fordisabled") val forDisabled: String,
-    @SerialName("smokingroom") val smokingRoom: String,
+    @SerialName("smokingroom") val smokingRoom: String
 )
 
 @Serializable
 data class OperationInfoEsDocument(
     @SerialName("package") val packagee: String,
     @SerialName("delivery") val delivery: String,
-    @SerialName("appointment") val appointment: String,
+    @SerialName("appointment") val appointment: String
 )
 
 @Serializable
 data class OperationTimeInfosEsDocument(
     @SerialName("day_of_the_week") val dayOfTheWeek: String,
-    @SerialName("operation_time_info") val operationTimeInfo: OperationTimeInfoEsDocument,
+    @SerialName("operation_time_info") val operationTimeInfo: OperationTimeInfoEsDocument
 )
 
 @Serializable
@@ -59,5 +59,5 @@ data class OperationTimeInfoEsDocument(
     @SerialName("end_time") val endTime: String?,
     @SerialName("break_start_time") val breakStartTime: String?,
     @SerialName("break_end_time") val breakEndTime: String?,
-    @SerialName("last_order") val lastOrder: String?,
+    @SerialName("last_order") val lastOrder: String?
 )

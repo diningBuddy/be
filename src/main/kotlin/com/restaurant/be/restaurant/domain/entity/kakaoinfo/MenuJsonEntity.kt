@@ -8,22 +8,22 @@ data class MenuJsonEntity(
     val price: Int,
     val description: String,
     val isRepresentative: Boolean,
-    val imageUrl: String? = null,
+    val imageUrl: String? = null
 ) {
     companion object {
         fun create(
-            menuName: String ,
-            price: Int ,
-            description: String ,
-            isRepresentative: Boolean ,
-            imageUrl: String ,
+            menuName: String,
+            price: Int,
+            description: String,
+            isRepresentative: Boolean,
+            imageUrl: String
         ): MenuJsonEntity {
             return MenuJsonEntity(
                 menuName = menuName,
                 price = price,
                 description = description,
                 isRepresentative = isRepresentative,
-                imageUrl = imageUrl,
+                imageUrl = imageUrl
             )
         }
     }
