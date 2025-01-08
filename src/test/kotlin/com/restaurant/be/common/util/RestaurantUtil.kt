@@ -1,7 +1,7 @@
 package com.restaurant.be.common.util
 
-import com.restaurant.be.restaurant.domain.entity.Menu
 import com.restaurant.be.restaurant.domain.entity.Restaurant
+import com.restaurant.be.restaurant.domain.entity.jsonentity.MenuJsonEntity
 import com.restaurant.be.restaurant.domain.entity.kakaoinfo.FacilityInfoJsonEntity
 import com.restaurant.be.restaurant.domain.entity.kakaoinfo.OperationInfoJsonEntity
 import com.restaurant.be.restaurant.domain.entity.kakaoinfo.OperationTimeInfoJsonEntity
@@ -24,15 +24,12 @@ object RestaurantUtil {
         imageUrl: String = "default_image_url",
         category: String = "default_category",
         discountContent: String? = "default_discount_content",
-        menus: List<MenuDocument> = emptyList(),
+        menus: List<MenuJsonEntity> = emptyList(),
         latitude: Double = 0.0,
         longitude: Double = 0.0,
         facilityInfos: FacilityInfoJsonEntity = FacilityInfoJsonEntity("N", "N", "N", "N", "N", "N"),
         operationInfos: OperationInfoJsonEntity = OperationInfoJsonEntity("N", "N", "N"),
-        operationTimes: OperationTimeInfosJsonEntity = OperationTimeInfosJsonEntity(
-            "월요일",
-            OperationTimeInfoJsonEntity("11:00", "23:00", "15:00", "17:00", "21:00")
-        ),
+        operationTimes: List<OperationTimeInfosJsonEntity> = emptyList(),
         kakaoRatingAvg: Double = 0.0,
         kakaoRatingCount: Long = 0,
         ratingCount: Long = 0
@@ -75,15 +72,12 @@ object RestaurantUtil {
         representativeImageUrl: String = "default_image_url",
         viewCount: Long = 0,
         discountContent: String? = null,
-        menus: MutableList<Menu> = mutableListOf(),
+        menus: MutableList<MenuJsonEntity> = mutableListOf(),
         longitude: Double = 0.0,
         latitude: Double = 0.0,
         facilityInfos: FacilityInfoJsonEntity = FacilityInfoJsonEntity("N", "N", "N", "N", "N", "N"),
         operationInfos: OperationInfoJsonEntity = OperationInfoJsonEntity("N", "N", "N"),
-        operationTimes: OperationTimeInfosJsonEntity = OperationTimeInfosJsonEntity(
-            "월요일",
-            OperationTimeInfoJsonEntity("11:00", "23:00", "15:00", "17:00", "21:00")
-        ),
+        operationTimes: MutableList<OperationTimeInfosJsonEntity> = mutableListOf(),
         kakaoRatingAvg: Double = 0.0,
         kakaoRatingCount: Long = 0,
         ratingCount: Long = 0
@@ -114,19 +108,15 @@ object RestaurantUtil {
         )
     }
 
-    fun generateMenuEntity(
-        id: Long = 0,
-        restaurantId: Long = 0,
+    fun generateMenuJsonEntity(
         name: String = "default_name",
         price: Int = 0,
         description: String = "default_description",
         isRepresentative: Boolean = false,
         imageUrl: String = "default_image_url"
-    ): Menu {
-        return Menu(
-            id = id,
-            restaurantId = restaurantId,
-            name = name,
+    ): MenuJsonEntity {
+        return MenuJsonEntity(
+            menuName = name,
             price = price,
             description = description,
             isRepresentative = isRepresentative,
@@ -135,7 +125,6 @@ object RestaurantUtil {
     }
 
     fun generateMenuDocument(
-        restaurantId: Long,
         menuName: String = "default_menu_name",
         price: Int = 0,
         description: String = "default_description",
@@ -143,7 +132,6 @@ object RestaurantUtil {
         imageUrl: String = "default_image_url"
     ): MenuDocument {
         return MenuDocument(
-            restaurantId = restaurantId,
             menuName = menuName,
             price = price,
             description = description,

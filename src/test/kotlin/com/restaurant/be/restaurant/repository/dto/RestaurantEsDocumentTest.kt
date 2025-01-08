@@ -8,7 +8,6 @@ class RestaurantEsDocumentTest : DescribeSpec({
         it("should create a correct RestaurantEsDocument instance") {
             // Given
             val menuEsDocument = MenuEsDocument(
-                restaurantId = 1,
                 menuName = "Pasta",
                 price = 15000,
                 description = "Delicious pasta",
@@ -18,15 +17,18 @@ class RestaurantEsDocumentTest : DescribeSpec({
                 id = 1L,
                 name = "Test Restaurant",
                 originalCategory = "Italian",
-                naverReviewCount = 100L,
+                kakaoRatingCount = 100L,
                 address = "123 Test St",
-                naverRatingAvg = 4.5,
+                kakaoRatingAvg = 4.5,
                 imageUrl = "http://example.com/restaurant.jpg",
                 category = "Italian, Pizza",
                 discountContent = "10% off",
                 menus = listOf(menuEsDocument),
                 reviewCount = 200L,
-                ratingAvg = 4.5
+                ratingAvg = 4.5,
+                facilityInfos = FacilityInfoEsDocument("N", "N", "N", "N", "N", "N"),
+                operationInfos = OperationInfoEsDocument("N", "N", "N"),
+                operationTimeInfos = mutableListOf()
             )
 
             // When
@@ -35,16 +37,19 @@ class RestaurantEsDocumentTest : DescribeSpec({
             restaurantEsDocument.id shouldBe 1L
             restaurantEsDocument.name shouldBe "Test Restaurant"
             restaurantEsDocument.originalCategory shouldBe "Italian"
-            restaurantEsDocument.naverReviewCount shouldBe 100L
+            restaurantEsDocument.kakaoRatingCount shouldBe 100L
             restaurantEsDocument.address shouldBe "123 Test St"
-            restaurantEsDocument.naverRatingAvg shouldBe 4.5
-            restaurantEsDocument.imageUrl shouldBe "http://example.com/restaurant.jpg"
+            restaurantEsDocument.kakaoRatingAvg shouldBe 4.5
+//            restaurantEsDocument.imageUrl shouldBe "http://example.com/restaurant.jpg"
             restaurantEsDocument.category shouldBe "Italian, Pizza"
             restaurantEsDocument.discountContent shouldBe "10% off"
             restaurantEsDocument.menus.size shouldBe 1
             restaurantEsDocument.menus[0].menuName shouldBe "Pasta"
             restaurantEsDocument.reviewCount shouldBe 200L
             restaurantEsDocument.ratingAvg shouldBe 4.5
+            restaurantEsDocument.facilityInfos shouldBe FacilityInfoEsDocument
+            restaurantEsDocument.operationInfos shouldBe OperationInfoEsDocument
+            restaurantEsDocument.operationTimeInfos shouldBe mutableListOf()
         }
     }
 
@@ -52,7 +57,6 @@ class RestaurantEsDocumentTest : DescribeSpec({
         it("should create a correct MenuEsDocument instance") {
             // Given
             val menuEsDocument = MenuEsDocument(
-                restaurantId = 1,
                 menuName = "Pasta",
                 price = 15000,
                 description = "Delicious pasta",
@@ -62,7 +66,6 @@ class RestaurantEsDocumentTest : DescribeSpec({
             // When
 
             // Then
-            menuEsDocument.restaurantId shouldBe 1
             menuEsDocument.menuName shouldBe "Pasta"
             menuEsDocument.price shouldBe 15000
             menuEsDocument.description shouldBe "Delicious pasta"

@@ -804,8 +804,8 @@ class GetRestaurantControllerTest(
                 val restaurantEntity = RestaurantUtil.generateRestaurantEntity(
                     name = "목구멍 율전점",
                     menus = mutableListOf(
-                        RestaurantUtil.generateMenuEntity(price = 10000),
-                        RestaurantUtil.generateMenuEntity(price = 20000)
+                        RestaurantUtil.generateMenuJsonEntity(price = 10000),
+                        RestaurantUtil.generateMenuJsonEntity(price = 20000)
                     )
                 )
                 restaurantRepository.save(restaurantEntity)
@@ -813,12 +813,10 @@ class GetRestaurantControllerTest(
                     id = restaurantEntity.id,
                     name = "목구멍 율전점",
                     menus = listOf(
-                        RestaurantUtil.generateMenuDocument(
-                            restaurantId = restaurantEntity.id,
+                        RestaurantUtil.generateMenuJsonEntity(
                             price = 10000
                         ),
-                        RestaurantUtil.generateMenuDocument(
-                            restaurantId = restaurantEntity.id,
+                        RestaurantUtil.generateMenuJsonEntity(
                             price = 20000
                         )
                     )
@@ -857,8 +855,8 @@ class GetRestaurantControllerTest(
                 val restaurantEntity = RestaurantUtil.generateRestaurantEntity(
                     name = "목구멍 율전점",
                     menus = mutableListOf(
-                        RestaurantUtil.generateMenuEntity(price = 10000),
-                        RestaurantUtil.generateMenuEntity(price = 20000)
+                        RestaurantUtil.generateMenuJsonEntity(price = 10000),
+                        RestaurantUtil.generateMenuJsonEntity(price = 20000)
                     )
                 )
                 restaurantRepository.save(restaurantEntity)
@@ -866,12 +864,10 @@ class GetRestaurantControllerTest(
                     id = restaurantEntity.id,
                     name = "목구멍 율전점",
                     menus = listOf(
-                        RestaurantUtil.generateMenuDocument(
-                            restaurantId = restaurantEntity.id,
+                        RestaurantUtil.generateMenuJsonEntity(
                             price = 10000
                         ),
-                        RestaurantUtil.generateMenuDocument(
-                            restaurantId = restaurantEntity.id,
+                        RestaurantUtil.generateMenuJsonEntity(
                             price = 20000
                         )
                     )
@@ -910,8 +906,8 @@ class GetRestaurantControllerTest(
                 val restaurantEntity = RestaurantUtil.generateRestaurantEntity(
                     name = "목구멍 율전점",
                     menus = mutableListOf(
-                        RestaurantUtil.generateMenuEntity(price = 10000),
-                        RestaurantUtil.generateMenuEntity(price = 20000)
+                        RestaurantUtil.generateMenuJsonEntity(price = 10000),
+                        RestaurantUtil.generateMenuJsonEntity(price = 20000)
                     )
                 )
                 restaurantRepository.save(restaurantEntity)
@@ -919,12 +915,10 @@ class GetRestaurantControllerTest(
                     id = restaurantEntity.id,
                     name = "목구멍 율전점",
                     menus = listOf(
-                        RestaurantUtil.generateMenuDocument(
-                            restaurantId = restaurantEntity.id,
+                        RestaurantUtil.generateMenuJsonEntity(
                             price = 10000
                         ),
-                        RestaurantUtil.generateMenuDocument(
-                            restaurantId = restaurantEntity.id,
+                        RestaurantUtil.generateMenuJsonEntity(
                             price = 20000
                         )
                     )
@@ -962,8 +956,8 @@ class GetRestaurantControllerTest(
                 val restaurantEntity = RestaurantUtil.generateRestaurantEntity(
                     name = "목구멍 율전점",
                     menus = mutableListOf(
-                        RestaurantUtil.generateMenuEntity(price = 10000),
-                        RestaurantUtil.generateMenuEntity(price = 20000)
+                        RestaurantUtil.generateMenuJsonEntity(price = 10000),
+                        RestaurantUtil.generateMenuJsonEntity(price = 20000)
                     )
                 )
                 restaurantRepository.save(restaurantEntity)
@@ -971,12 +965,10 @@ class GetRestaurantControllerTest(
                     id = restaurantEntity.id,
                     name = "목구멍 율전점",
                     menus = listOf(
-                        RestaurantUtil.generateMenuDocument(
-                            restaurantId = restaurantEntity.id,
+                        RestaurantUtil.generateMenuJsonEntity(
                             price = 10000
                         ),
-                        RestaurantUtil.generateMenuDocument(
-                            restaurantId = restaurantEntity.id,
+                        RestaurantUtil.generateMenuJsonEntity(
                             price = 20000
                         )
                     )
@@ -1015,8 +1007,8 @@ class GetRestaurantControllerTest(
                 val restaurantEntity = RestaurantUtil.generateRestaurantEntity(
                     name = "목구멍 율전점",
                     menus = mutableListOf(
-                        RestaurantUtil.generateMenuEntity(price = 10000),
-                        RestaurantUtil.generateMenuEntity(price = 20000)
+                        RestaurantUtil.generateMenuJsonEntity(price = 10000),
+                        RestaurantUtil.generateMenuJsonEntity(price = 20000)
                     )
                 )
                 restaurantRepository.save(restaurantEntity)
@@ -1024,12 +1016,10 @@ class GetRestaurantControllerTest(
                     id = restaurantEntity.id,
                     name = "목구멍 율전점",
                     menus = listOf(
-                        RestaurantUtil.generateMenuDocument(
-                            restaurantId = restaurantEntity.id,
+                        RestaurantUtil.generateMenuJsonEntity(
                             price = 10000
                         ),
-                        RestaurantUtil.generateMenuDocument(
-                            restaurantId = restaurantEntity.id,
+                        RestaurantUtil.generateMenuJsonEntity(
                             price = 20000
                         )
                     )
@@ -1068,8 +1058,8 @@ class GetRestaurantControllerTest(
                 val restaurantEntity = RestaurantUtil.generateRestaurantEntity(
                     name = "목구멍 율전점",
                     menus = mutableListOf(
-                        RestaurantUtil.generateMenuEntity(price = 10000),
-                        RestaurantUtil.generateMenuEntity(price = 20000)
+                        RestaurantUtil.generateMenuJsonEntity(price = 10000),
+                        RestaurantUtil.generateMenuJsonEntity(price = 20000)
                     )
                 )
                 restaurantRepository.save(restaurantEntity)
@@ -1077,12 +1067,10 @@ class GetRestaurantControllerTest(
                     id = restaurantEntity.id,
                     name = "목구멍 율전점",
                     menus = listOf(
-                        RestaurantUtil.generateMenuDocument(
-                            restaurantId = restaurantEntity.id,
+                        RestaurantUtil.generateMenuJsonEntity(
                             price = 10000
                         ),
-                        RestaurantUtil.generateMenuDocument(
-                            restaurantId = restaurantEntity.id,
+                        RestaurantUtil.generateMenuJsonEntity(
                             price = 20000
                         )
                     )
@@ -1120,8 +1108,8 @@ class GetRestaurantControllerTest(
                 val restaurantEntity = RestaurantUtil.generateRestaurantEntity(
                     name = "목구멍 율전점",
                     menus = mutableListOf(
-                        RestaurantUtil.generateMenuEntity(price = 10000),
-                        RestaurantUtil.generateMenuEntity(price = 20000)
+                        RestaurantUtil.generateMenuJsonEntity(price = 10000),
+                        RestaurantUtil.generateMenuJsonEntity(price = 20000)
                     )
                 )
                 restaurantRepository.save(restaurantEntity)
@@ -1129,12 +1117,10 @@ class GetRestaurantControllerTest(
                     id = restaurantEntity.id,
                     name = "목구멍 율전점",
                     menus = listOf(
-                        RestaurantUtil.generateMenuDocument(
-                            restaurantId = restaurantEntity.id,
+                        RestaurantUtil.generateMenuJsonEntity(
                             price = 10000
                         ),
-                        RestaurantUtil.generateMenuDocument(
-                            restaurantId = restaurantEntity.id,
+                        RestaurantUtil.generateMenuJsonEntity(
                             price = 20000
                         )
                     )
@@ -1174,8 +1160,8 @@ class GetRestaurantControllerTest(
                 val restaurantEntity = RestaurantUtil.generateRestaurantEntity(
                     name = "목구멍 율전점",
                     menus = mutableListOf(
-                        RestaurantUtil.generateMenuEntity(price = 10000),
-                        RestaurantUtil.generateMenuEntity(price = 20000)
+                        RestaurantUtil.generateMenuJsonEntity(price = 10000),
+                        RestaurantUtil.generateMenuJsonEntity(price = 20000)
                     )
                 )
                 restaurantRepository.save(restaurantEntity)
@@ -1183,12 +1169,10 @@ class GetRestaurantControllerTest(
                     id = restaurantEntity.id,
                     name = "목구멍 율전점",
                     menus = listOf(
-                        RestaurantUtil.generateMenuDocument(
-                            restaurantId = restaurantEntity.id,
+                        RestaurantUtil.generateMenuJsonEntity(
                             price = 10000
                         ),
-                        RestaurantUtil.generateMenuDocument(
-                            restaurantId = restaurantEntity.id,
+                        RestaurantUtil.generateMenuJsonEntity(
                             price = 20000
                         )
                     )
@@ -1471,8 +1455,8 @@ class GetRestaurantControllerTest(
                     reviewCount = 100,
                     discountContent = "성대생 할인 10%",
                     menus = mutableListOf(
-                        RestaurantUtil.generateMenuEntity(price = 10000),
-                        RestaurantUtil.generateMenuEntity(price = 20000)
+                        RestaurantUtil.generateMenuJsonEntity(price = 10000),
+                        RestaurantUtil.generateMenuJsonEntity(price = 20000)
                     )
                 )
                 restaurantRepository.save(restaurantEntity)
@@ -1500,12 +1484,10 @@ class GetRestaurantControllerTest(
                     reviewCount = 100,
                     discountContent = "성대생 할인 10%",
                     menus = listOf(
-                        RestaurantUtil.generateMenuDocument(
-                            restaurantId = restaurantEntity.id,
+                        RestaurantUtil.generateMenuJsonEntity(
                             price = 10000
                         ),
-                        RestaurantUtil.generateMenuDocument(
-                            restaurantId = restaurantEntity.id,
+                        RestaurantUtil.generateMenuJsonEntity(
                             price = 20000
                         )
                     )
@@ -1557,8 +1539,8 @@ class GetRestaurantControllerTest(
                     reviewCount = 100,
                     discountContent = "성대생 할인 10%",
                     menus = mutableListOf(
-                        RestaurantUtil.generateMenuEntity(price = 10000),
-                        RestaurantUtil.generateMenuEntity(price = 20000)
+                        RestaurantUtil.generateMenuJsonEntity(price = 10000),
+                        RestaurantUtil.generateMenuJsonEntity(price = 20000)
                     )
                 )
                 restaurantRepository.save(restaurantEntity)
@@ -1586,12 +1568,10 @@ class GetRestaurantControllerTest(
                     reviewCount = 100,
                     discountContent = "성대생 할인 10%",
                     menus = listOf(
-                        RestaurantUtil.generateMenuDocument(
-                            restaurantId = restaurantEntity.id,
+                        RestaurantUtil.generateMenuJsonEntity(
                             price = 10000
                         ),
-                        RestaurantUtil.generateMenuDocument(
-                            restaurantId = restaurantEntity.id,
+                        RestaurantUtil.generateMenuJsonEntity(
                             price = 20000
                         )
                     )

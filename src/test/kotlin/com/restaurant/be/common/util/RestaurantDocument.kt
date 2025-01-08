@@ -1,5 +1,6 @@
 package com.restaurant.be.common.util
 
+import com.restaurant.be.restaurant.domain.entity.jsonentity.MenuJsonEntity
 import com.restaurant.be.restaurant.domain.entity.kakaoinfo.FacilityInfoJsonEntity
 import com.restaurant.be.restaurant.domain.entity.kakaoinfo.OperationInfoJsonEntity
 import com.restaurant.be.restaurant.domain.entity.kakaoinfo.OperationTimeInfosJsonEntity
@@ -26,25 +27,25 @@ data class RestaurantDocument(
     val address: String,
 
     @Field(type = FieldType.Long, name = "naver_review_count")
-    val naverReviewCount: Long,
+    val naverReviewCount: Long?,
 
     @Field(type = FieldType.Double, name = "naver_rating_avg")
-    val naverRatingAvg: Double,
+    val naverRatingAvg: Double? = 1.0,
 
     @Field(type = FieldType.Long, name = "review_count")
-    val reviewCount: Long,
+    val reviewCount: Long = 0,
 
     @Field(type = FieldType.Double, name = "rating_avg")
-    val ratingAvg: Double,
+    val ratingAvg: Double?,
 
-    @Field(type = FieldType.Text, name = "facility_infos")
+    @Field(type = FieldType.Object, name = "facility_infos")
     val facilityInfos: FacilityInfoJsonEntity,
 
-    @Field(type = FieldType.Text, name = "operation_infos")
+    @Field(type = FieldType.Object, name = "operation_infos")
     val operationInfos: OperationInfoJsonEntity,
 
-    @Field(type = FieldType.Text, name = "operation_times")
-    val operationTimes: OperationTimeInfosJsonEntity,
+    @Field(type = FieldType.Nested, name = "operation_times")
+    val operationTimes: List<OperationTimeInfosJsonEntity>,
 
     @Field(type = FieldType.Long, name = "bookmark_count")
     val bookmarkCount: Long,
@@ -62,25 +63,22 @@ data class RestaurantDocument(
     val discountContent: String?,
 
     @Field(type = FieldType.Nested, name = "menus")
-    val menus: List<MenuDocument>,
+    val menus: List<MenuJsonEntity>,
 
     @GeoPointField
     val location: GeoPoint,
 
     @Field(type = FieldType.Double, name = "kakao_rating_avg")
-    val kakaoRatingAvg: Double = 0.0,
+    val kakaoRatingAvg: Double?,
 
     @Field(type = FieldType.Long, name = "kakao_rating_count")
-    val kakaoRatingCount: Long = 0,
+    val kakaoRatingCount: Long? = 0,
 
     @Field(type = FieldType.Long, name = "rating_count")
     val ratingCount: Long = 0
 )
 
 data class MenuDocument(
-    @Field(type = FieldType.Long, name = "restaurant_id")
-    val restaurantId: Long,
-
     @Field(type = FieldType.Text, name = "menu_name")
     val menuName: String,
 

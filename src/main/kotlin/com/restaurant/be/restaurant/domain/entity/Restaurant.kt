@@ -60,7 +60,7 @@ class Restaurant(
     @JdbcTypeCode(SqlTypes.JSON)
     @Field(type = FieldType.Nested)
     @Column(name = "operation_times")
-    var operationTimes: MutableList<OperationTimeInfosJsonEntity>,
+    var operationTimes: List<OperationTimeInfosJsonEntity> = mutableListOf(),
 
     @Column(name = "representative_image_url", length = 300)
     var representativeImageUrl: String,
@@ -92,7 +92,7 @@ class Restaurant(
     @JdbcTypeCode(SqlTypes.JSON)
     @Field(type = FieldType.Nested)
     @Column(name = "menus")
-    var menus: MutableList<MenuJsonEntity> = mutableListOf()
+    var menus: List<MenuJsonEntity> = mutableListOf()
 ) {
     fun createReview(newRating: Double) {
         val beforeCount = reviewCount
