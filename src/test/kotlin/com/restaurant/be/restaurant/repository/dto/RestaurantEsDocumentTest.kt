@@ -28,7 +28,8 @@ class RestaurantEsDocumentTest : DescribeSpec({
                 ratingAvg = 4.5,
                 facilityInfos = FacilityInfoEsDocument("N", "N", "N", "N", "N", "N"),
                 operationInfos = OperationInfoEsDocument("N", "N", "N"),
-                operationTimeInfos = mutableListOf()
+                operationTimeInfos = mutableListOf(),
+                ratingCount = 100
             )
 
             // When

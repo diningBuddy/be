@@ -9,7 +9,7 @@ data class FacilityInfoJsonEntity(
     val parking: String?,
     val nursery: String?,
     val smokingRoom: String?,
-    val forDisabled: String?
+    val forDisabled: String?,
 ) {
     companion object {
         fun create(

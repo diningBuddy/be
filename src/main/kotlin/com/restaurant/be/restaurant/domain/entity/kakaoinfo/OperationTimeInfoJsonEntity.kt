@@ -8,7 +8,7 @@ data class OperationTimeInfoJsonEntity(
     val endTime: String?,
     val breakStartTime: String?,
     val breakEndTime: String?,
-    val lastOrder: String?
+    val lastOrder: String?,
 ) {
     companion object {
         fun create(

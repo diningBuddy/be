@@ -21,11 +21,12 @@ class RestaurantEsDocumentTest : DescribeSpec({
                 menus = mutableListOf(),
                 reviewCount = 1L,
                 ratingAvg = 4.5,
-                facilityInfos = FacilityInfoEsDocument("N", "N", "N", "N", "N", "N"),
-                operationInfos = OperationInfoEsDocument("N", "N", "N"),
+                kakaoRatingAvg = 4.5,
+                kakaoRatingCount = 100,
+                ratingCount = 100,
+                facilityInfos = FacilityInfoEsDocument("N","N","N","N","N","N"),
+                operationInfos = OperationInfoEsDocument("N","N","N"),
                 operationTimeInfos = mutableListOf(),
-                kakaoRatingAvg = 0.0,
-                kakaoRatingCount = 0
             )
 
             // When
@@ -34,17 +35,19 @@ class RestaurantEsDocumentTest : DescribeSpec({
             restaurantEsDocument.id shouldBe 1L
             restaurantEsDocument.name shouldBe "Pizza"
             restaurantEsDocument.originalCategory shouldBe "Italian"
-            restaurantEsDocument.category shouldBe "Italian"
-            restaurantEsDocument.kakaoRatingAvg shouldBe 0.0
-            restaurantEsDocument.kakaoRatingCount shouldBe 0
             restaurantEsDocument.address shouldBe "Seoul"
-            restaurantEsDocument.facilityInfos shouldBe FacilityInfoEsDocument("N", "N", "N", "N", "N", "N")
-            restaurantEsDocument.operationInfos shouldBe OperationInfoEsDocument("N", "N", "N")
-            restaurantEsDocument.operationTimeInfos shouldBe mutableListOf()
+            restaurantEsDocument.imageUrl shouldBe "http://example.com/pizza.jpg"
+            restaurantEsDocument.category shouldBe "Italian"
             restaurantEsDocument.discountContent shouldBe "10% off"
             restaurantEsDocument.menus shouldBe mutableListOf()
             restaurantEsDocument.reviewCount shouldBe 1L
             restaurantEsDocument.ratingAvg shouldBe 4.5
+            restaurantEsDocument.kakaoRatingAvg shouldBe 4.5
+            restaurantEsDocument.kakaoRatingCount shouldBe 100
+            restaurantEsDocument.facilityInfos shouldBe FacilityInfoEsDocument("N","N","N","N","N","N")
+            restaurantEsDocument.operationInfos shouldBe OperationInfoEsDocument("N","N","N")
+            restaurantEsDocument.operationTimeInfos shouldBe mutableListOf()
+            restaurantEsDocument.ratingCount shouldBe 100
         }
 
         it("should create a correct MenuDto instance") {

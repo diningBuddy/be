@@ -142,7 +142,7 @@ class RestaurantEsRepository(
                         )
                         if (!request.query.isNullOrEmpty()) {
                             should(
-                                match("name", request.query) {
+                                match("menu_name", request.query) {
                                     boost = 0.1
                                 },
                                 match("category", request.query) {

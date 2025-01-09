@@ -19,7 +19,8 @@ data class RestaurantEsDocument(
     @SerialName("discount_content") val discountContent: String?,
     @SerialName("menus") val menus: List<MenuEsDocument>,
     @SerialName("review_count") val reviewCount: Long?,
-    @SerialName("rating_avg") val ratingAvg: Double?
+    @SerialName("rating_avg") val ratingAvg: Double?,
+    @SerialName("rating_count") val ratingCount: Long?,
 )
 
 @Serializable
@@ -32,19 +33,19 @@ data class MenuEsDocument(
 
 @Serializable
 data class FacilityInfoEsDocument(
-    @SerialName("pet") val pet: String,
-    @SerialName("wifi") val wifi: String,
-    @SerialName("nursery") val nursery: String,
-    @SerialName("parking") val parking: String,
-    @SerialName("fordisabled") val forDisabled: String,
-    @SerialName("smokingroom") val smokingRoom: String
+    @SerialName("pet") val pet: String?,
+    @SerialName("wifi") val wifi: String?,
+    @SerialName("nursery") val nursery: String?,
+    @SerialName("parking") val parking: String?,
+    @SerialName("for_disabled") val forDisabled: String?,
+    @SerialName("smoking_room") val smokingRoom: String?,
 )
 
 @Serializable
 data class OperationInfoEsDocument(
-    @SerialName("package") val packagee: String,
-    @SerialName("delivery") val delivery: String,
-    @SerialName("appointment") val appointment: String
+    @SerialName("package") val packagee: String?,
+    @SerialName("delivery") val delivery: String?,
+    @SerialName("appointment") val appointment: String?,
 )
 
 @Serializable
