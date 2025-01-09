@@ -48,7 +48,6 @@ data class GetRestaurantsRequest(
     @ApiModelProperty(value = "메뉴 Json리스트", example = "100", required = false)
     val menus: List<MenuJsonEntity>?,
 
-
     @ApiModelProperty(value = "찜 필터", example = "false", required = false)
     val like: Boolean?,
 

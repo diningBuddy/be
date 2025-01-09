@@ -53,11 +53,6 @@ data class RestaurantDto(
     @Schema(description = "카카오 평점 개수")
     var kakaoRatingCount: Long?,
 
-    @Schema(description = "카카오 평점 평균")
-    var kakaoRatingAvg: Double,
-    @Schema(description = "카카오 평점 개수")
-    var kakaoRatingCount: Long,
-
     @Schema(description = "식당 상세 정보")
     val detailInfo: RestaurantDetailDto
 )

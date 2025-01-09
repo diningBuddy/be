@@ -2,11 +2,12 @@ package com.restaurant.be.common.util
 
 import com.restaurant.be.restaurant.domain.entity.Restaurant
 import com.restaurant.be.restaurant.domain.entity.jsonentity.MenuJsonEntity
-
 import com.restaurant.be.restaurant.domain.entity.kakaoinfo.FacilityInfoJsonEntity
 import com.restaurant.be.restaurant.domain.entity.kakaoinfo.OperationInfoJsonEntity
-import com.restaurant.be.restaurant.domain.entity.kakaoinfo.OperationTimeInfoJsonEntity
 import com.restaurant.be.restaurant.domain.entity.kakaoinfo.OperationTimeInfosJsonEntity
+import com.restaurant.be.restaurant.repository.dto.FacilityInfoEsDocument
+import com.restaurant.be.restaurant.repository.dto.OperationInfoEsDocument
+import com.restaurant.be.restaurant.repository.dto.OperationTimeInfosEsDocument
 import org.springframework.data.elasticsearch.core.geo.GeoPoint
 
 object RestaurantUtil {
@@ -23,14 +24,14 @@ object RestaurantUtil {
         bookmarkCount: Long = 0,
         number: String = "default_number",
         imageUrl: String = "default_image_url",
-        category: String = "default_category",
+        category: List<String> = emptyList(),
         discountContent: String? = "default_discount_content",
         menus: List<MenuJsonEntity> = emptyList(),
         latitude: Double = 0.0,
         longitude: Double = 0.0,
-        facilityInfos: FacilityInfoJsonEntity = FacilityInfoJsonEntity("N", "N", "N", "N", "N", "N"),
-        operationInfos: OperationInfoJsonEntity = OperationInfoJsonEntity("N", "N", "N"),
-        operationTimes: List<OperationTimeInfosJsonEntity> = emptyList(),
+        facilityInfos: FacilityInfoEsDocument = FacilityInfoEsDocument("N", "N", "N", "N", "N", "N"),
+        operationInfos: OperationInfoEsDocument = OperationInfoEsDocument("N", "N", "N"),
+        operationTimes: List<OperationTimeInfosEsDocument> = emptyList(),
 
         kakaoRatingAvg: Double = 0.0,
         kakaoRatingCount: Long = 0,
@@ -42,11 +43,8 @@ object RestaurantUtil {
             name = name,
             originalCategory = originalCategory,
             address = address,
-            naverReviewCount = naverReviewCount,
-            naverRatingAvg = naverRatingAvg,
             reviewCount = reviewCount,
             ratingAvg = ratingAvg,
-            bookmarkCount = bookmarkCount,
             number = number,
             imageUrl = imageUrl,
             category = category,

@@ -24,9 +24,9 @@ class RestaurantEsDocumentTest : DescribeSpec({
                 kakaoRatingAvg = 4.5,
                 kakaoRatingCount = 100,
                 ratingCount = 100,
-                facilityInfos = FacilityInfoEsDocument("N","N","N","N","N","N"),
-                operationInfos = OperationInfoEsDocument("N","N","N"),
-                operationTimeInfos = mutableListOf(),
+                facilityInfos = FacilityInfoEsDocument("N", "N", "N", "N", "N", "N"),
+                operationInfos = OperationInfoEsDocument("N", "N", "N"),
+                operationTimeInfos = mutableListOf()
             )
 
             // When
@@ -44,8 +44,8 @@ class RestaurantEsDocumentTest : DescribeSpec({
             restaurantEsDocument.ratingAvg shouldBe 4.5
             restaurantEsDocument.kakaoRatingAvg shouldBe 4.5
             restaurantEsDocument.kakaoRatingCount shouldBe 100
-            restaurantEsDocument.facilityInfos shouldBe FacilityInfoEsDocument("N","N","N","N","N","N")
-            restaurantEsDocument.operationInfos shouldBe OperationInfoEsDocument("N","N","N")
+            restaurantEsDocument.facilityInfos shouldBe FacilityInfoEsDocument("N", "N", "N", "N", "N", "N")
+            restaurantEsDocument.operationInfos shouldBe OperationInfoEsDocument("N", "N", "N")
             restaurantEsDocument.operationTimeInfos shouldBe mutableListOf()
             restaurantEsDocument.ratingCount shouldBe 100
         }
