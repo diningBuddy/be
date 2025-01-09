@@ -1,0 +1,28 @@
+### 환경변수 설정
+@host = http://localhost:8080
+@token = eyJhbGciOiJIUzUxMiJ9.eyJyb2xlcyI6IlJPTEVfVVNFUiIsInN1YiI6IjEiLCJpYXQiOjE3MzY0MzU2MDksImV4cCI6MzM4NzcyMzU2MDl9.8xxRKZEpGs5Vz8ltyIEQje6mWQJBq2Hq4dk5a0jmwv1d0tVoINRyKiZApNQKjZCasjFyVoSo3LF1KPz_QJQU1w
+
+### GET 요청
+GET {{host}}/v1/restaurants?operationTimes[0].dayOfTheWeek=월요일&operationTimes[0].operationTimeInfo.startTime=11:00&operationTimes[0].operationTimeInfo.endTime=20:30&operationTimes[0].operationTimeInfo.breakStartTime=14:00&operationTimes[0].operationTimeInfo.breakEndTime=17:00&operationTimes[0].operationTimeInfo.lastOrder=20:00
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+### POST 요청
+POST http://localhost:8080/v1/users/sign-up
+Content-Type: application/json
+
+{
+  "phoneNumber":"01011111111",
+  "name":"lee",
+  "birthday": "1999-01-01",
+  "gender": "MAN"
+}
+
+### POST 요청
+POST http://localhost:8080/v1/users/sign-in
+Content-Type: application/json
+
+{
+  "phoneNumber":"01011111111",
+  "certificationNumber":"1111"
+}
