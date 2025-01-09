@@ -10,6 +10,7 @@ data class FacilityInfoJsonEntity(
     val nursery: String?,
     val smokingRoom: String?,
     val forDisabled: String?,
+
 ) {
     companion object {
         fun create(

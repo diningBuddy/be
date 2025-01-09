@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 data class OperationTimeInfosJsonEntity(
     val dayOfTheWeek: String?,
     val operationTimeInfo: OperationTimeInfoJsonEntity?
+
 ) {
     companion object {
         fun create(

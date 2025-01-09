@@ -2,6 +2,7 @@ package com.restaurant.be.restaurant.domain.entity
 
 import com.restaurant.be.restaurant.domain.entity.kakaoinfo.FacilityInfoJsonEntity
 import com.restaurant.be.restaurant.domain.entity.kakaoinfo.OperationInfoJsonEntity
+
 import io.kotest.core.spec.style.DescribeSpec
 import io.kotest.matchers.doubles.shouldBeExactly
 import io.kotest.matchers.shouldBe
@@ -24,6 +25,7 @@ class RestaurantTest : DescribeSpec({
                 facilityInfos = FacilityInfoJsonEntity("N", "N", "N", "N", "N", "N"),
                 operationInfos = OperationInfoJsonEntity("N", "N", "N"),
                 operationTimes = mutableListOf(),
+
                 representativeImageUrl = "http://example.com/image.jpg",
                 viewCount = 0,
                 discountContent = null,

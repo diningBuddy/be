@@ -1,6 +1,7 @@
 package com.restaurant.be.common.util
 
 import com.restaurant.be.restaurant.domain.entity.jsonentity.MenuJsonEntity
+
 import com.restaurant.be.restaurant.domain.entity.kakaoinfo.FacilityInfoJsonEntity
 import com.restaurant.be.restaurant.domain.entity.kakaoinfo.OperationInfoJsonEntity
 import com.restaurant.be.restaurant.domain.entity.kakaoinfo.OperationTimeInfosJsonEntity
@@ -47,6 +48,15 @@ data class RestaurantDocument(
     @Field(type = FieldType.Nested, name = "operation_times")
     val operationTimes: List<OperationTimeInfosJsonEntity>,
 
+    @Field(type = FieldType.Object, name = "facility_infos")
+    val facilityInfos: FacilityInfoJsonEntity,
+
+    @Field(type = FieldType.Object, name = "operation_infos")
+    val operationInfos: OperationInfoJsonEntity,
+
+    @Field(type = FieldType.Object, name = "operation_times")
+    val operationTimes: OperationTimeInfosJsonEntity,
+
     @Field(type = FieldType.Long, name = "bookmark_count")
     val bookmarkCount: Long,
 
@@ -73,6 +83,7 @@ data class RestaurantDocument(
 
     @Field(type = FieldType.Long, name = "kakao_rating_count")
     val kakaoRatingCount: Long? = 0,
+
 
     @Field(type = FieldType.Long, name = "rating_count")
     val ratingCount: Long = 0

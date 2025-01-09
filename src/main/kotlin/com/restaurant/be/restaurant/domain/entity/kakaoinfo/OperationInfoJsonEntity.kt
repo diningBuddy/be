@@ -7,6 +7,7 @@ data class OperationInfoJsonEntity(
     val appointment: String?,
     val delivery: String?,
     val packagee: String?,
+
 ) {
     companion object {
         fun create(

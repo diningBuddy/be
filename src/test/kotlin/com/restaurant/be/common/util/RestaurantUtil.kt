@@ -2,6 +2,7 @@ package com.restaurant.be.common.util
 
 import com.restaurant.be.restaurant.domain.entity.Restaurant
 import com.restaurant.be.restaurant.domain.entity.jsonentity.MenuJsonEntity
+
 import com.restaurant.be.restaurant.domain.entity.kakaoinfo.FacilityInfoJsonEntity
 import com.restaurant.be.restaurant.domain.entity.kakaoinfo.OperationInfoJsonEntity
 import com.restaurant.be.restaurant.domain.entity.kakaoinfo.OperationTimeInfoJsonEntity
@@ -30,6 +31,7 @@ object RestaurantUtil {
         facilityInfos: FacilityInfoJsonEntity = FacilityInfoJsonEntity("N", "N", "N", "N", "N", "N"),
         operationInfos: OperationInfoJsonEntity = OperationInfoJsonEntity("N", "N", "N"),
         operationTimes: List<OperationTimeInfosJsonEntity> = emptyList(),
+
         kakaoRatingAvg: Double = 0.0,
         kakaoRatingCount: Long = 0,
         ratingCount: Long = 0
@@ -78,6 +80,7 @@ object RestaurantUtil {
         facilityInfos: FacilityInfoJsonEntity = FacilityInfoJsonEntity("N", "N", "N", "N", "N", "N"),
         operationInfos: OperationInfoJsonEntity = OperationInfoJsonEntity("N", "N", "N"),
         operationTimes: MutableList<OperationTimeInfosJsonEntity> = mutableListOf(),
+
         kakaoRatingAvg: Double = 0.0,
         kakaoRatingCount: Long = 0,
         ratingCount: Long = 0

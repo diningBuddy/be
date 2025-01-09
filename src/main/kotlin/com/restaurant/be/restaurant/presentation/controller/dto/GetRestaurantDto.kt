@@ -40,12 +40,14 @@ data class GetRestaurantsRequest(
     var operationInfos: OperationInfoJsonEntity?,
     @ApiModelProperty(value = "식당 운영 시간 필터", example = "잠깐 뭔가 JSON형태여야하는데..?", required = false)
     var operationTimes: List<OperationTimeInfosJsonEntity>?,
+
     @ApiModelProperty(value = "카카오 평점 필터", example = "4.5", required = false)
     val kakaoRatingAvg: Double?,
     @ApiModelProperty(value = "카카오 평점 개수 필터", example = "100", required = false)
     val kakaoRatingCount: Int?,
     @ApiModelProperty(value = "메뉴 Json리스트", example = "100", required = false)
     val menus: List<MenuJsonEntity>?,
+
 
     @ApiModelProperty(value = "찜 필터", example = "false", required = false)
     val like: Boolean?,
