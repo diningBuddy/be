@@ -20,7 +20,7 @@ data class RestaurantEsDocument(
     @SerialName("image_url") val imageUrl: String?,
     @SerialName("category") val category: String,
     @SerialName("discount_content") val discountContent: String?,
-    @SerialName("menus") val menus: List<MenuEsDocument>,
+    @SerialName("menus") val menus: List<MenuEsDocument>
 )
 
 @Serializable

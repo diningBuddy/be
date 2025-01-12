@@ -66,9 +66,9 @@ data class RestaurantDocument(
     val menus: List<MenuJsonEntity>,
 
     @GeoPointField
-    val location: GeoPoint,
+    val location: GeoPoint
 
-    )
+)
 
 data class MenuDocument(
     @Field(type = FieldType.Text, name = "menu_name")
