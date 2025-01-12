@@ -1,6 +1,7 @@
 package com.restaurant.be.restaurant.domain.entity.kakaoinfo
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
+import com.fasterxml.jackson.annotation.JsonProperty
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 data class FacilityInfoJsonEntity(
@@ -8,8 +9,10 @@ data class FacilityInfoJsonEntity(
     val pet: String?,
     val parking: String?,
     val nursery: String?,
+    @JsonProperty("smokingroom")
     val smokingRoom: String?,
-    val forDisabled: String?,
+    @JsonProperty("fordisabled")
+    val forDisabled: String?
 
 ) {
     companion object {
