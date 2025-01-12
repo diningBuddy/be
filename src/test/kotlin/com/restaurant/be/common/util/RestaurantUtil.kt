@@ -26,13 +26,12 @@ object RestaurantUtil {
         imageUrl: String = "default_image_url",
         category: List<String> = emptyList(),
         discountContent: String? = "default_discount_content",
-        menus: List<MenuJsonEntity> = emptyList(),
+        menus: List<MenuDocument> = emptyList(),
         latitude: Double = 0.0,
         longitude: Double = 0.0,
         facilityInfos: FacilityInfoEsDocument = FacilityInfoEsDocument("N", "N", "N", "N", "N", "N"),
         operationInfos: OperationInfoEsDocument = OperationInfoEsDocument("N", "N", "N"),
         operationTimes: List<OperationTimeInfosEsDocument> = emptyList(),
-
         kakaoRatingAvg: Double = 0.0,
         kakaoRatingCount: Long = 0,
         ratingCount: Long = 0
@@ -45,6 +44,7 @@ object RestaurantUtil {
             address = address,
             reviewCount = reviewCount,
             ratingAvg = ratingAvg,
+            ratingCount = ratingCount,
             number = number,
             imageUrl = imageUrl,
             category = category,
@@ -55,8 +55,7 @@ object RestaurantUtil {
             operationInfos = operationInfos,
             operationTimes = operationTimes,
             kakaoRatingAvg = kakaoRatingAvg,
-            kakaoRatingCount = kakaoRatingCount,
-            ratingCount = ratingCount
+            kakaoRatingCount = kakaoRatingCount
         )
     }
 

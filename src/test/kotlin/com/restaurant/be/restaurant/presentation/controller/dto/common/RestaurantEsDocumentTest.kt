@@ -16,7 +16,7 @@ class RestaurantEsDocumentTest : DescribeSpec({
                 originalCategory = "Italian",
                 address = "Seoul",
                 imageUrl = "http://example.com/pizza.jpg",
-                category = "Italian",
+                category = mutableListOf(),
                 discountContent = "10% off",
                 menus = mutableListOf(),
                 reviewCount = 1L,

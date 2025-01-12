@@ -18,7 +18,7 @@ data class RestaurantEsDocument(
     @SerialName("kakao_rating_count") val kakaoRatingCount: Long?,
     @SerialName("kakao_rating_avg") val kakaoRatingAvg: Double?,
     @SerialName("image_url") val imageUrl: String?,
-    @SerialName("category") val category: String,
+    @SerialName("category") val category: List<String>,
     @SerialName("discount_content") val discountContent: String?,
     @SerialName("menus") val menus: List<MenuEsDocument>
 )

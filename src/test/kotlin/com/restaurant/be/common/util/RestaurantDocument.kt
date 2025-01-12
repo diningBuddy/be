@@ -1,6 +1,5 @@
 package com.restaurant.be.common.util
 
-import com.restaurant.be.restaurant.domain.entity.jsonentity.MenuJsonEntity
 import com.restaurant.be.restaurant.repository.dto.FacilityInfoEsDocument
 import com.restaurant.be.restaurant.repository.dto.OperationInfoEsDocument
 import com.restaurant.be.restaurant.repository.dto.OperationTimeInfosEsDocument
@@ -57,13 +56,13 @@ data class RestaurantDocument(
     val imageUrl: String?,
 
     @Field(type = FieldType.Text, name = "category")
-    val category: List<String>?,
+    val category: List<String>? = emptyList(),
 
     @Field(type = FieldType.Text, name = "discount_content")
     val discountContent: String?,
 
     @Field(type = FieldType.Nested, name = "menus")
-    val menus: List<MenuJsonEntity>,
+    val menus: List<MenuDocument>,
 
     @GeoPointField
     val location: GeoPoint

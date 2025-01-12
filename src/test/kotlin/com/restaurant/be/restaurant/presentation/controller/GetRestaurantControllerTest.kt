@@ -813,10 +813,10 @@ class GetRestaurantControllerTest(
                     id = restaurantEntity.id,
                     name = "목구멍 율전점",
                     menus = listOf(
-                        RestaurantUtil.generateMenuJsonEntity(
+                        RestaurantUtil.generateMenuDocument(
                             price = 10000
                         ),
-                        RestaurantUtil.generateMenuJsonEntity(
+                        RestaurantUtil.generateMenuDocument(
                             price = 20000
                         )
                     )
@@ -864,10 +864,10 @@ class GetRestaurantControllerTest(
                     id = restaurantEntity.id,
                     name = "목구멍 율전점",
                     menus = listOf(
-                        RestaurantUtil.generateMenuJsonEntity(
+                        RestaurantUtil.generateMenuDocument(
                             price = 10000
                         ),
-                        RestaurantUtil.generateMenuJsonEntity(
+                        RestaurantUtil.generateMenuDocument(
                             price = 20000
                         )
                     )
@@ -915,10 +915,10 @@ class GetRestaurantControllerTest(
                     id = restaurantEntity.id,
                     name = "목구멍 율전점",
                     menus = listOf(
-                        RestaurantUtil.generateMenuJsonEntity(
+                        RestaurantUtil.generateMenuDocument(
                             price = 10000
                         ),
-                        RestaurantUtil.generateMenuJsonEntity(
+                        RestaurantUtil.generateMenuDocument(
                             price = 20000
                         )
                     )
@@ -965,10 +965,10 @@ class GetRestaurantControllerTest(
                     id = restaurantEntity.id,
                     name = "목구멍 율전점",
                     menus = listOf(
-                        RestaurantUtil.generateMenuJsonEntity(
+                        RestaurantUtil.generateMenuDocument(
                             price = 10000
                         ),
-                        RestaurantUtil.generateMenuJsonEntity(
+                        RestaurantUtil.generateMenuDocument(
                             price = 20000
                         )
                     )
@@ -1016,10 +1016,10 @@ class GetRestaurantControllerTest(
                     id = restaurantEntity.id,
                     name = "목구멍 율전점",
                     menus = listOf(
-                        RestaurantUtil.generateMenuJsonEntity(
+                        RestaurantUtil.generateMenuDocument(
                             price = 10000
                         ),
-                        RestaurantUtil.generateMenuJsonEntity(
+                        RestaurantUtil.generateMenuDocument(
                             price = 20000
                         )
                     )
@@ -1067,10 +1067,10 @@ class GetRestaurantControllerTest(
                     id = restaurantEntity.id,
                     name = "목구멍 율전점",
                     menus = listOf(
-                        RestaurantUtil.generateMenuJsonEntity(
+                        RestaurantUtil.generateMenuDocument(
                             price = 10000
                         ),
-                        RestaurantUtil.generateMenuJsonEntity(
+                        RestaurantUtil.generateMenuDocument(
                             price = 20000
                         )
                     )
@@ -1117,10 +1117,10 @@ class GetRestaurantControllerTest(
                     id = restaurantEntity.id,
                     name = "목구멍 율전점",
                     menus = listOf(
-                        RestaurantUtil.generateMenuJsonEntity(
+                        RestaurantUtil.generateMenuDocument(
                             price = 10000
                         ),
-                        RestaurantUtil.generateMenuJsonEntity(
+                        RestaurantUtil.generateMenuDocument(
                             price = 20000
                         )
                     )
@@ -1169,10 +1169,10 @@ class GetRestaurantControllerTest(
                     id = restaurantEntity.id,
                     name = "목구멍 율전점",
                     menus = listOf(
-                        RestaurantUtil.generateMenuJsonEntity(
+                        RestaurantUtil.generateMenuDocument(
                             price = 10000
                         ),
-                        RestaurantUtil.generateMenuJsonEntity(
+                        RestaurantUtil.generateMenuDocument(
                             price = 20000
                         )
                     )
@@ -1484,10 +1484,10 @@ class GetRestaurantControllerTest(
                     reviewCount = 100,
                     discountContent = "성대생 할인 10%",
                     menus = listOf(
-                        RestaurantUtil.generateMenuJsonEntity(
+                        RestaurantUtil.generateMenuDocument(
                             price = 10000
                         ),
-                        RestaurantUtil.generateMenuJsonEntity(
+                        RestaurantUtil.generateMenuDocument(
                             price = 20000
                         )
                     )
@@ -1568,10 +1568,10 @@ class GetRestaurantControllerTest(
                     reviewCount = 100,
                     discountContent = "성대생 할인 10%",
                     menus = listOf(
-                        RestaurantUtil.generateMenuJsonEntity(
+                        RestaurantUtil.generateMenuDocument(
                             price = 10000
                         ),
-                        RestaurantUtil.generateMenuJsonEntity(
+                        RestaurantUtil.generateMenuDocument(
                             price = 20000
                         )
                     )
