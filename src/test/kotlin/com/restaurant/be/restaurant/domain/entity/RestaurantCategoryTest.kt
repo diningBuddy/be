@@ -1,5 +1,7 @@
 package com.restaurant.be.restaurant.domain.entity
 
+import com.restaurant.be.category.domain.entity.Category
+import com.restaurant.be.common.util.RestaurantUtil
 import io.kotest.core.spec.style.DescribeSpec
 import io.kotest.matchers.shouldBe
 
@@ -8,22 +10,26 @@ class RestaurantCategoryTest : DescribeSpec({
     describe("RestaurantCategory") {
         it("should create a correct RestaurantCategory instance") {
             // Given
+            val restaurant = RestaurantUtil.generateRestaurantEntity(
+                id = 1L,
+                name = "default_name"
+            )
+            var category = Category(
+                id = 1L,
+                name = "default_name"
+            )
             val restaurantCategory = RestaurantCategory(
                 id = 1L,
-                name = "name",
-                groupId = 1L,
-                restaurantId = 1L,
-                categoryGroup = "default_group"
+                restaurant = restaurant,
+                category = category
             )
 
             // When
 
             // Then
             restaurantCategory.id shouldBe 1L
-            restaurantCategory.name shouldBe "name"
-            restaurantCategory.groupId shouldBe 1L
-            restaurantCategory.restaurantId shouldBe 1L
-            restaurantCategory.categoryGroup shouldBe "default_group"
+            restaurantCategory.restaurant shouldBe restaurant
+            restaurantCategory.category shouldBe category
         }
     }
 })
