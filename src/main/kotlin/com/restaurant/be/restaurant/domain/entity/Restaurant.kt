@@ -12,8 +12,6 @@ import jakarta.persistence.Id
 import jakarta.persistence.Table
 import org.hibernate.annotations.JdbcTypeCode
 import org.hibernate.type.SqlTypes
-import org.springframework.data.elasticsearch.annotations.Field
-import org.springframework.data.elasticsearch.annotations.FieldType
 
 @Entity
 @Table(name = "restaurants")
@@ -48,17 +46,14 @@ class Restaurant(
     var ratingCount: Long?,
 
     @JdbcTypeCode(SqlTypes.JSON)
-    @Field(type = FieldType.Object)
     @Column(name = "facility_infos")
     var facilityInfos: FacilityInfoJsonEntity,
 
     @JdbcTypeCode(SqlTypes.JSON)
-    @Field(type = FieldType.Object)
     @Column(name = "operation_infos")
     var operationInfos: OperationInfoJsonEntity,
 
     @JdbcTypeCode(SqlTypes.JSON)
-    @Field(type = FieldType.Nested)
     @Column(name = "operation_times")
     var operationTimes: List<OperationTimeInfosJsonEntity> = mutableListOf(),
 
@@ -90,7 +85,6 @@ class Restaurant(
     var kakaoRatingCount: Long?,
 
     @JdbcTypeCode(SqlTypes.JSON)
-    @Field(type = FieldType.Nested)
     @Column(name = "menus")
     var menus: List<MenuJsonEntity> = mutableListOf()
 
