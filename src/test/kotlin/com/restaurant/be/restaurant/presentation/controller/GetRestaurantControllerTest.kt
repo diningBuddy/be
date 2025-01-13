@@ -148,9 +148,7 @@ class GetRestaurantControllerTest(
                 val restaurantDocument = RestaurantUtil.generateRestaurantDocument(
                     id = restaurantEntity.id,
                     name = "목구멍 율전점",
-                    category = listOf(
-                        "한식"
-                    )
+                    category = "한식"
                 )
                 elasticsearchOperations.save(restaurantDocument)
                 elasticsearchOperations.indexOps(RestaurantDocument::class.java).refresh()
@@ -197,9 +195,7 @@ class GetRestaurantControllerTest(
                 val restaurantDocument = RestaurantUtil.generateRestaurantDocument(
                     id = restaurantEntity.id,
                     name = "목구멍 율전점",
-                    category = listOf(
-                        "한식"
-                    )
+                    category = "한식"
                 )
                 elasticsearchOperations.save(restaurantDocument)
                 elasticsearchOperations.indexOps(RestaurantDocument::class.java).refresh()
@@ -1475,9 +1471,7 @@ class GetRestaurantControllerTest(
                 val restaurantDocument = RestaurantUtil.generateRestaurantDocument(
                     id = restaurantEntity.id,
                     name = "목구멍 율전점",
-                    category = listOf(
-                        "한식"
-                    ),
+                    category = "한식",
                     naverRatingAvg = 4.0,
                     naverReviewCount = 50,
                     ratingAvg = 4.5,
@@ -1559,9 +1553,7 @@ class GetRestaurantControllerTest(
                 val restaurantDocument = RestaurantUtil.generateRestaurantDocument(
                     id = restaurantEntity.id,
                     name = "목구멍 율전점",
-                    category = listOf(
-                        "한식"
-                    ),
+                    category = "한식",
                     naverRatingAvg = 4.0,
                     naverReviewCount = 50,
                     ratingAvg = 4.4,

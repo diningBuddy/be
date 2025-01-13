@@ -56,7 +56,7 @@ data class RestaurantDocument(
     val imageUrl: String?,
 
     @Field(type = FieldType.Text, name = "category")
-    val category: List<String>? = emptyList(),
+    val category: String,
 
     @Field(type = FieldType.Text, name = "discount_content")
     val discountContent: String?,

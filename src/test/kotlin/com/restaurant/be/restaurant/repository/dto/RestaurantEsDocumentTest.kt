@@ -21,7 +21,7 @@ class RestaurantEsDocumentTest : DescribeSpec({
                 address = "123 Test St",
                 kakaoRatingAvg = 4.5,
                 imageUrl = "http://example.com/restaurant.jpg",
-                category = listOf("Italian"),
+                category = "Italian",
                 discountContent = "10% off",
                 menus = listOf(menuEsDocument),
                 reviewCount = 200L,
@@ -37,7 +37,7 @@ class RestaurantEsDocumentTest : DescribeSpec({
             // Then
             restaurantEsDocument.id shouldBe 1L
             restaurantEsDocument.name shouldBe "Test Restaurant"
-            restaurantEsDocument.originalCategory shouldBe listOf("Italian")
+            restaurantEsDocument.originalCategory shouldBe "Italian"
             restaurantEsDocument.kakaoRatingCount shouldBe 100L
             restaurantEsDocument.address shouldBe "123 Test St"
             restaurantEsDocument.kakaoRatingAvg shouldBe 4.5

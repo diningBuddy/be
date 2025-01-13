@@ -24,7 +24,7 @@ object RestaurantUtil {
         bookmarkCount: Long = 0,
         number: String = "default_number",
         imageUrl: String = "default_image_url",
-        category: List<String> = emptyList(),
+        category: String = "default_category",
         discountContent: String? = "default_discount_content",
         menus: List<MenuDocument> = emptyList(),
         latitude: Double = 0.0,
