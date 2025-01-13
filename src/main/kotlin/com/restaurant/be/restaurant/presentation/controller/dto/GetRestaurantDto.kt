@@ -30,7 +30,7 @@ data class GetRestaurantsRequest(
     @ApiModelProperty(value = "네이버 평점 필터", example = "4.5", required = false)
     val naverRatingAvg: Double?,
     @ApiModelProperty(value = "네이버 리뷰 개수 필터", example = "100", required = false)
-    val naverReviewCount: Int?,
+    val naverReviewCount: Long?,
 
     @ApiModelProperty(value = "식당 평점 개수 필터", example = "100", required = false)
     var ratingCount: Long?,
@@ -49,7 +49,7 @@ data class GetRestaurantsRequest(
     val menus: List<MenuJsonEntity>?,
 
     @ApiModelProperty(value = "찜 필터", example = "false", required = false)
-    val like: Boolean?,
+    val bookmark: Boolean?,
 
     @ApiModelProperty(value = "경도(거리순 정렬 할 때 사용)", example = "126.123456", required = false)
     val longitude: Double?,

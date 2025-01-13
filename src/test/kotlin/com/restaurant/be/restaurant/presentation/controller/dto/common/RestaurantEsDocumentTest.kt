@@ -21,12 +21,15 @@ class RestaurantEsDocumentTest : DescribeSpec({
                 menus = mutableListOf(),
                 reviewCount = 1L,
                 ratingAvg = 4.5,
+                naverReviewCount = 100L,
+                naverRatingAvg = 4.5,
                 kakaoRatingAvg = 4.5,
                 kakaoRatingCount = 100,
                 ratingCount = 100,
                 facilityInfos = FacilityInfoEsDocument("N", "N", "N", "N", "N", "N"),
                 operationInfos = OperationInfoEsDocument("N", "N", "N"),
-                operationTimeInfos = mutableListOf()
+                operationTimeInfos = mutableListOf(),
+                bookmark_count = 0
             )
 
             // When
@@ -48,6 +51,9 @@ class RestaurantEsDocumentTest : DescribeSpec({
             restaurantEsDocument.operationInfos shouldBe OperationInfoEsDocument("N", "N", "N")
             restaurantEsDocument.operationTimeInfos shouldBe mutableListOf()
             restaurantEsDocument.ratingCount shouldBe 100
+            restaurantEsDocument.naverReviewCount shouldBe 100
+            restaurantEsDocument.naverRatingAvg shouldBe 4.5
+            restaurantEsDocument.bookmark_count shouldBe 0
         }
 
         it("should create a correct MenuDto instance") {

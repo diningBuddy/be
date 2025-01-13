@@ -76,7 +76,7 @@ class Restaurant(
     var naverRatingAvg: Double?,
 
     @Column(name = "naver_review_count")
-    var naverReviewCount: Int?,
+    var naverReviewCount: Long?,
 
     @Column(name = "kakao_rating_avg")
     var kakaoRatingAvg: Double?,

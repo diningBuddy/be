@@ -16,7 +16,7 @@ class RestaurantEsDocumentTest : DescribeSpec({
             val restaurantEsDocument = RestaurantEsDocument(
                 id = 1L,
                 name = "Test Restaurant",
-                originalCategory = "Italian",
+                originalCategory = "Italian, Pizza",
                 kakaoRatingCount = 100L,
                 address = "123 Test St",
                 kakaoRatingAvg = 4.5,
@@ -29,7 +29,10 @@ class RestaurantEsDocumentTest : DescribeSpec({
                 facilityInfos = FacilityInfoEsDocument("N", "N", "N", "N", "N", "N"),
                 operationInfos = OperationInfoEsDocument("N", "N", "N"),
                 operationTimeInfos = mutableListOf(),
-                ratingCount = 100
+                ratingCount = 100,
+                naverRatingAvg = 4.5,
+                naverReviewCount = 100L,
+                bookmark_count = 0
             )
 
             // When
@@ -37,7 +40,7 @@ class RestaurantEsDocumentTest : DescribeSpec({
             // Then
             restaurantEsDocument.id shouldBe 1L
             restaurantEsDocument.name shouldBe "Test Restaurant"
-            restaurantEsDocument.originalCategory shouldBe "Italian"
+            restaurantEsDocument.originalCategory shouldBe "Italian, Pizza"
             restaurantEsDocument.kakaoRatingCount shouldBe 100L
             restaurantEsDocument.address shouldBe "123 Test St"
             restaurantEsDocument.kakaoRatingAvg shouldBe 4.5
@@ -48,9 +51,12 @@ class RestaurantEsDocumentTest : DescribeSpec({
             restaurantEsDocument.menus[0].menuName shouldBe "Pasta"
             restaurantEsDocument.reviewCount shouldBe 200L
             restaurantEsDocument.ratingAvg shouldBe 4.5
+            restaurantEsDocument.naverRatingAvg shouldBe 4.5
+            restaurantEsDocument.naverReviewCount shouldBe 100L
             restaurantEsDocument.facilityInfos shouldBe FacilityInfoEsDocument
             restaurantEsDocument.operationInfos shouldBe OperationInfoEsDocument
             restaurantEsDocument.operationTimeInfos shouldBe mutableListOf()
+            restaurantEsDocument.bookmark_count shouldBe 0
         }
     }
 

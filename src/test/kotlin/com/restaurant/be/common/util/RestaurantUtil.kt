@@ -48,6 +48,8 @@ object RestaurantUtil {
             number = number,
             imageUrl = imageUrl,
             category = category,
+            naverReviewCount = naverReviewCount,
+            naverRatingAvg = naverRatingAvg,
             discountContent = discountContent,
             menus = menus,
             location = GeoPoint(latitude, longitude),
@@ -55,7 +57,8 @@ object RestaurantUtil {
             operationInfos = operationInfos,
             operationTimes = operationTimes,
             kakaoRatingAvg = kakaoRatingAvg,
-            kakaoRatingCount = kakaoRatingCount
+            kakaoRatingCount = kakaoRatingCount,
+            bookmarkCount = 0
         )
     }
 
@@ -76,11 +79,7 @@ object RestaurantUtil {
         latitude: Double = 0.0,
         facilityInfos: FacilityInfoJsonEntity = FacilityInfoJsonEntity("N", "N", "N", "N", "N", "N"),
         operationInfos: OperationInfoJsonEntity = OperationInfoJsonEntity("N", "N", "N"),
-        operationTimes: MutableList<OperationTimeInfosJsonEntity> = mutableListOf(),
-
-        kakaoRatingAvg: Double = 0.0,
-        kakaoRatingCount: Long = 0,
-        ratingCount: Long = 0
+        operationTimes: MutableList<OperationTimeInfosJsonEntity> = mutableListOf()
     ): Restaurant {
         return Restaurant(
             id = id,

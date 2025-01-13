@@ -49,6 +49,12 @@ data class RestaurantDocument(
     @Field(type = FieldType.Long, name = "kakao_rating_count")
     val kakaoRatingCount: Long? = 0,
 
+    @Field(type = FieldType.Long, name = "naver_review_count")
+    val naverReviewCount: Long? = 0,
+
+    @Field(type = FieldType.Double, name = "naver_rating_avg")
+    val naverRatingAvg: Double? = 0.0,
+
     @Field(type = FieldType.Text, name = "number")
     val number: String,
 
@@ -63,6 +69,9 @@ data class RestaurantDocument(
 
     @Field(type = FieldType.Nested, name = "menus")
     val menus: List<MenuDocument>,
+
+    @Field(type = FieldType.Long, name = "bookmark_count")
+    val bookmarkCount: Long,
 
     @GeoPointField
     val location: GeoPoint

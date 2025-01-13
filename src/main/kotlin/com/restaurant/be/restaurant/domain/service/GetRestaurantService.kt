@@ -27,7 +27,7 @@ class GetRestaurantService(
         userId: Long
     ): GetRestaurantsResponse {
         val restaurantIds =
-            if (request.like != null) {
+            if (request.bookmark != null) {
                 restaurantLikeRepository
                     .findAllByUserId(userId)
                     .map { it.restaurantId }
@@ -40,7 +40,7 @@ class GetRestaurantService(
                 request,
                 pageable,
                 restaurantIds,
-                request.like
+                request.bookmark
             )
 
         if (!request.query.isNullOrEmpty()) {
