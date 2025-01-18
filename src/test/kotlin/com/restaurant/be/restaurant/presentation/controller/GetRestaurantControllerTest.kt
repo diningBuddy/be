@@ -524,7 +524,7 @@ class GetRestaurantControllerTest(
                 val result = mockMvc.perform(
                     get(restaurantUrl)
                         .param("query", "목구멍 율전점")
-                        .param("like", "true")
+                        .param("bookmark", "true")
                 )
                     .also {
                         println(it.andReturn().response.contentAsString)
@@ -570,7 +570,7 @@ class GetRestaurantControllerTest(
                 val result = mockMvc.perform(
                     get(restaurantUrl)
                         .param("query", "목구멍 율전점")
-                        .param("like", "false")
+                        .param("bookmark", "false")
                 )
                     .also {
                         println(it.andReturn().response.contentAsString)
