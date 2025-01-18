@@ -54,6 +54,11 @@ aligo:
   sender: ${ALIGO_SENDER_PHONE:01041805905}
   test-mode: ${ALIGO_TEST_MODE:Y}
 
+kakao:
+  key: ${KAKAO_API_KEY:f2dbbd3e0095768f1ba7d133d0837fe3}
+  redirect-uri: ${KAKAO_REDIRECT_URI:http://localhost:8080/kakao/test}
+
+
 logging:
   level:
     root: info

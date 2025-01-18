@@ -39,6 +39,7 @@ class SecurityConfig(
                     .requestMatchers(
                         "/v1/users/sign-up",
                         "/v1/users/sign-in",
+                        "/v1/users/sign-in/social/kakao",
                         "/v1/users/token-reissue",
                         "/v1/users/refresh-token-reissue",
                         "/v1/users/email/send",
