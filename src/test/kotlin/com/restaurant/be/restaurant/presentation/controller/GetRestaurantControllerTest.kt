@@ -41,7 +41,7 @@ class GetRestaurantControllerTest(
     private val restaurantRepository: RestaurantRepository,
     private val categoryRepository: CategoryRepository,
     private val restaurantCategoryRepository: RestaurantCategoryRepository,
-    private val restaurantLikeRepository: RestaurantBookmarkRepository
+    private val restaurantBookmarkRepository: RestaurantBookmarkRepository
 ) : CustomDescribeSpec() {
     private val restaurantUrl = "/v1/restaurants"
     private val objectMapper: ObjectMapper = ObjectMapper().registerModule(KotlinModule()).apply {
@@ -435,7 +435,7 @@ class GetRestaurantControllerTest(
                 elasticsearchOperations.save(restaurantDocument)
                 elasticsearchOperations.indexOps(RestaurantDocument::class.java).refresh()
 
-                restaurantLikeRepository.save(
+                restaurantBookmarkRepository.save(
                     RestaurantBookmark(
                         userId = newUser?.id ?: 0,
                         restaurantId = restaurantEntity.id
@@ -559,7 +559,7 @@ class GetRestaurantControllerTest(
                 elasticsearchOperations.save(restaurantDocument)
                 elasticsearchOperations.indexOps(RestaurantDocument::class.java).refresh()
 
-                restaurantLikeRepository.save(
+                restaurantBookmarkRepository.save(
                     RestaurantBookmark(
                         userId = newUser?.id ?: 0,
                         restaurantId = restaurantEntity.id
@@ -605,7 +605,7 @@ class GetRestaurantControllerTest(
                 elasticsearchOperations.save(restaurantDocument)
                 elasticsearchOperations.indexOps(RestaurantDocument::class.java).refresh()
 
-                restaurantLikeRepository.save(
+                restaurantBookmarkRepository.save(
                     RestaurantBookmark(
                         userId = newUser?.id ?: 0,
                         restaurantId = restaurantEntity.id
@@ -1462,7 +1462,7 @@ class GetRestaurantControllerTest(
                         category = category
                     )
                 )
-                restaurantLikeRepository.save(
+                restaurantBookmarkRepository.save(
                     RestaurantBookmark(
                         userId = user?.id ?: 0,
                         restaurantId = restaurantEntity.id
@@ -1544,7 +1544,7 @@ class GetRestaurantControllerTest(
                         category = category
                     )
                 )
-                restaurantLikeRepository.save(
+                restaurantBookmarkRepository.save(
                     RestaurantBookmark(
                         userId = user?.id ?: 0,
                         restaurantId = restaurantEntity.id
@@ -2006,7 +2006,7 @@ class GetRestaurantControllerTest(
                 elasticsearchOperations.indexOps(RestaurantDocument::class.java).refresh()
 
                 val user = userRepository.findByPhoneNumber("01012345678")
-                restaurantLikeRepository.save(
+                restaurantBookmarkRepository.save(
                     RestaurantBookmark(
                         userId = user?.id ?: 0,
                         restaurantId = restaurantEntity2.id
@@ -2183,7 +2183,7 @@ class GetRestaurantControllerTest(
                     name = "목구멍 율전점"
                 )
                 restaurantRepository.save(restaurantEntity)
-                restaurantLikeRepository.save(
+                restaurantBookmarkRepository.save(
                     RestaurantBookmark(
                         userId = user?.id ?: 0,
                         restaurantId = restaurantEntity.id
@@ -2209,7 +2209,7 @@ class GetRestaurantControllerTest(
                 )
 
                 // then
-                actualResult.data!!.restaurant.isLike shouldBe true
+                actualResult.data!!.restaurant.isBookmarked shouldBe true
             }
 
             it("when not liked restaurant should return liked false") {
@@ -2238,7 +2238,7 @@ class GetRestaurantControllerTest(
                 )
 
                 // then
-                actualResult.data!!.restaurant.isLike shouldBe false
+                actualResult.data!!.restaurant.isBookmarked shouldBe false
             }
         }
     }

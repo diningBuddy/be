@@ -58,7 +58,7 @@ object RestaurantUtil {
             operationTimes = operationTimes,
             kakaoRatingAvg = kakaoRatingAvg,
             kakaoRatingCount = kakaoRatingCount,
-            bookmarkCount = 0
+            bookmarkCount = bookmarkCount
         )
     }
 

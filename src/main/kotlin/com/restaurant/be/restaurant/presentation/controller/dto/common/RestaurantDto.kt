@@ -35,7 +35,7 @@ data class RestaurantDto(
     @Schema(description = "식당 대표 리뷰 내용")
     val representativeReviewContent: String?,
     @Schema(description = "식당 좋아요 여부(로그인한 유저)")
-    val isLike: Boolean,
+    val isBookmarked: Boolean,
     @Schema(description = "식당 할인 내용")
     val discountContent: String?,
     @Schema(description = "longitude")
