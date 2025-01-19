@@ -8,7 +8,11 @@ import jakarta.validation.constraints.NotEmpty
 import jakarta.validation.constraints.Pattern
 import java.time.LocalDate
 
-data class SignUpUserRequest(
+data class SignUpSocialUserRequest(
+
+    @Schema(name = "소셜 code", example = "code", required = true)
+    @field:NotEmpty(message = "소셜 code는 필수 값 입니다.")
+    val socialCode: String,
 
     @Schema(name = "핸드폰 번호", example = "01011111111", required = true)
     @field:NotEmpty(message = "휴대폰 번호는 필수 값 입니다.")
