@@ -1,8 +1,8 @@
 package com.restaurant.be.common.util
 
-import com.restaurant.be.restaurant.domain.entity.kakaoinfo.FacilityInfoJsonEntity
-import com.restaurant.be.restaurant.domain.entity.kakaoinfo.OperationInfoJsonEntity
-import com.restaurant.be.restaurant.domain.entity.kakaoinfo.OperationTimeInfosJsonEntity
+import com.restaurant.be.restaurant.repository.dto.FacilityInfoEsDocument
+import com.restaurant.be.restaurant.repository.dto.OperationInfoEsDocument
+import com.restaurant.be.restaurant.repository.dto.OperationTimeInfosEsDocument
 import jakarta.persistence.Id
 import org.springframework.data.elasticsearch.annotations.Document
 import org.springframework.data.elasticsearch.annotations.Field
@@ -19,41 +19,47 @@ data class RestaurantDocument(
     @Field(type = FieldType.Text, name = "name")
     val name: String,
 
-    @Field(type = FieldType.Text, name = "original_category")
-    val originalCategory: String,
-
     @Field(type = FieldType.Text, name = "address")
     val address: String,
 
-    @Field(type = FieldType.Long, name = "naver_review_count")
-    val naverReviewCount: Long,
-
-    @Field(type = FieldType.Double, name = "naver_rating_avg")
-    val naverRatingAvg: Double,
+    @Field(type = FieldType.Text, name = "original_category")
+    val originalCategory: String,
 
     @Field(type = FieldType.Long, name = "review_count")
-    val reviewCount: Long,
+    val reviewCount: Long? = 0,
 
     @Field(type = FieldType.Double, name = "rating_avg")
-    val ratingAvg: Double,
+    val ratingAvg: Double?,
+
+    @Field(type = FieldType.Long, name = "rating_count")
+    val ratingCount: Long? = 0,
 
     @Field(type = FieldType.Object, name = "facility_infos")
-    val facilityInfos: FacilityInfoJsonEntity,
+    val facilityInfos: FacilityInfoEsDocument,
 
     @Field(type = FieldType.Object, name = "operation_infos")
-    val operationInfos: OperationInfoJsonEntity,
+    val operationInfos: OperationInfoEsDocument,
 
-    @Field(type = FieldType.Object, name = "operation_times")
-    val operationTimes: OperationTimeInfosJsonEntity,
+    @Field(type = FieldType.Nested, name = "operation_times")
+    val operationTimes: List<OperationTimeInfosEsDocument>,
 
-    @Field(type = FieldType.Long, name = "bookmark_count")
-    val bookmarkCount: Long,
+    @Field(type = FieldType.Double, name = "kakao_rating_avg")
+    val kakaoRatingAvg: Double?,
+
+    @Field(type = FieldType.Long, name = "kakao_rating_count")
+    val kakaoRatingCount: Long? = 0,
+
+    @Field(type = FieldType.Long, name = "naver_review_count")
+    val naverReviewCount: Long? = 0,
+
+    @Field(type = FieldType.Double, name = "naver_rating_avg")
+    val naverRatingAvg: Double? = 0.0,
 
     @Field(type = FieldType.Text, name = "number")
     val number: String,
 
     @Field(type = FieldType.Text, name = "image_url")
-    val imageUrl: String,
+    val imageUrl: String?,
 
     @Field(type = FieldType.Text, name = "category")
     val category: String,
@@ -64,23 +70,15 @@ data class RestaurantDocument(
     @Field(type = FieldType.Nested, name = "menus")
     val menus: List<MenuDocument>,
 
+    @Field(type = FieldType.Long, name = "bookmark_count")
+    val bookmarkCount: Long,
+
     @GeoPointField
-    val location: GeoPoint,
+    val location: GeoPoint
 
-    @Field(type = FieldType.Double, name = "kakao_rating_avg")
-    val kakaoRatingAvg: Double = 0.0,
-
-    @Field(type = FieldType.Long, name = "kakao_rating_count")
-    val kakaoRatingCount: Long = 0,
-
-    @Field(type = FieldType.Long, name = "rating_count")
-    val ratingCount: Long = 0
 )
 
 data class MenuDocument(
-    @Field(type = FieldType.Long, name = "restaurant_id")
-    val restaurantId: Long,
-
     @Field(type = FieldType.Text, name = "menu_name")
     val menuName: String,
 

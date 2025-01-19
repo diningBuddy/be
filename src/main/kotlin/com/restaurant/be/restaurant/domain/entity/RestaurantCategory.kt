@@ -1,10 +1,14 @@
 package com.restaurant.be.restaurant.domain.entity
 
+import com.restaurant.be.category.domain.entity.Category
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
+import jakarta.persistence.FetchType
 import jakarta.persistence.GeneratedValue
 import jakarta.persistence.GenerationType
 import jakarta.persistence.Id
+import jakarta.persistence.JoinColumn
+import jakarta.persistence.ManyToOne
 import jakarta.persistence.Table
 
 @Entity
@@ -15,15 +19,11 @@ data class RestaurantCategory(
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id: Long? = null,
 
-    @Column(name = "name", nullable = false)
-    var name: String,
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "restaurant_id", nullable = false)
+    var restaurant: Restaurant,
 
-    @Column(name = "group_id")
-    var groupId: Long,
-
-    @Column(name = "restaurant_id")
-    var restaurantId: Long,
-
-    @Column(name = "category_group", nullable = false)
-    var categoryGroup: String
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "category_id", nullable = false)
+    var category: Category
 )

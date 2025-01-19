@@ -123,7 +123,7 @@ class BookmarkRestaurantControllerTest(
                     .name shouldBe "목구멍 율전점"
                 actualResult.data!!
                     .restaurants.content[0]
-                    .isLike shouldBe true
+                    .isBookmarked shouldBe true
             }
 
             it("when another user's like saved should return empty") {
@@ -221,7 +221,7 @@ class BookmarkRestaurantControllerTest(
                     .name shouldBe "목구멍 율전점"
                 actualResult.data!!
                     .restaurants.content[0]
-                    .isLike shouldBe true
+                    .isBookmarked shouldBe true
             }
 
             it("when 2 data and set size 1 should return 1 data") {
@@ -280,7 +280,7 @@ class BookmarkRestaurantControllerTest(
                     .name shouldBe "목구멍 율전점2"
                 actualResult.data!!
                     .restaurants.content[0]
-                    .isLike shouldBe true
+                    .isBookmarked shouldBe true
             }
 
             it("when 2 data and set size 1 page 0 should return 1's restaurant") {
@@ -339,7 +339,7 @@ class BookmarkRestaurantControllerTest(
                     .name shouldBe "목구멍 율전점2"
                 actualResult.data!!
                     .restaurants.content[0]
-                    .isLike shouldBe true
+                    .isBookmarked shouldBe true
             }
 
             it("when 2 data and set size 1 page 1 should return 2's restaurant") {
@@ -398,7 +398,7 @@ class BookmarkRestaurantControllerTest(
                     .name shouldBe "목구멍 율전점"
                 actualResult.data!!
                     .restaurants.content[0]
-                    .isLike shouldBe true
+                    .isBookmarked shouldBe true
             }
         }
 
@@ -499,7 +499,7 @@ class BookmarkRestaurantControllerTest(
                 // then
                 actualResult.data!!.restaurant.shouldNotBeNull()
                 actualResult.data!!.restaurant.name shouldBe "목구멍 율전점"
-                actualResult.data!!.restaurant.isLike shouldBe true
+                actualResult.data!!.restaurant.isBookmarked shouldBe true
                 actualResult.data!!.restaurant.bookmarkCount shouldBe 1
             }
 
@@ -548,7 +548,7 @@ class BookmarkRestaurantControllerTest(
                 // then
                 actualResult.data!!.restaurant.shouldNotBeNull()
                 actualResult.data!!.restaurant.name shouldBe "목구멍 율전점"
-                actualResult.data!!.restaurant.isLike shouldBe false
+                actualResult.data!!.restaurant.isBookmarked shouldBe false
                 actualResult.data!!.restaurant.bookmarkCount shouldBe -1
             }
 

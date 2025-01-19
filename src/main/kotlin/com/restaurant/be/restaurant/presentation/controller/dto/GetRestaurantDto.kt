@@ -1,5 +1,9 @@
 package com.restaurant.be.restaurant.presentation.controller.dto
 
+import com.restaurant.be.restaurant.domain.entity.jsonentity.MenuJsonEntity
+import com.restaurant.be.restaurant.domain.entity.kakaoinfo.FacilityInfoJsonEntity
+import com.restaurant.be.restaurant.domain.entity.kakaoinfo.OperationInfoJsonEntity
+import com.restaurant.be.restaurant.domain.entity.kakaoinfo.OperationTimeInfosJsonEntity
 import com.restaurant.be.restaurant.presentation.controller.dto.common.RestaurantDto
 import io.swagger.v3.oas.annotations.media.Schema
 import org.springframework.data.domain.Page
@@ -23,22 +27,32 @@ data class GetRestaurantsRequest(
     val customSort: Sort = Sort.BASIC,
     @Schema(name = "네이버 평점 필터", example = "4.5", required = false)
     val naverRatingAvg: Double?,
-    @Schema(name = "네이버 리뷰 개수 필터", example = "100", required = false)
-    val naverReviewCount: Int?,
-    @Schema(name = "식당 평점 개수 필터", example = "100", required = false)
+
+    @ApiModelProperty(value = "네이버 리뷰 개수 필터", example = "100", required = false)
+    val naverReviewCount: Long?,
+
+    @ApiModelProperty(value = "식당 평점 개수 필터", example = "100", required = false)
     var ratingCount: Long?,
-    @Schema(name = "식당 편의 정보 필터", example = "WIFI", required = false)
-    var facilityInfos: String?,
-    @Schema(name = "식당 운영 정보 필터", example = "APPOINTMENT", required = false)
-    var operationInfos: String?,
-    @Schema(name = "식당 운영 시간 필터", example = "잠깐 뭔가 JSON형태여야하는데..?", required = false)
-    var operationTimes: String?,
-    @Schema(name = "카카오 평점 필터", example = "4.5", required = false)
+    @ApiModelProperty(value = "식당 편의 정보 필터", example = "example", required = false)
+    var facilityInfos: FacilityInfoJsonEntity?,
+    @ApiModelProperty(value = "식당 운영 정보 필터", example = "APPOINTMENT", required = false)
+    var operationInfos: OperationInfoJsonEntity?,
+    @ApiModelProperty(value = "식당 운영 시간 필터", example = "잠깐 뭔가 JSON형태여야하는데..?", required = false)
+    var operationTimes: List<OperationTimeInfosJsonEntity>?,
+
+    @ApiModelProperty(value = "카카오 평점 필터", example = "4.5", required = false)
+
     val kakaoRatingAvg: Double?,
     @Schema(name = "카카오 평점 개수 필터", example = "100", required = false)
     val kakaoRatingCount: Int?,
-    @Schema(name = "찜 필터", example = "false", required = false)
-    val like: Boolean?,
+
+    @ApiModelProperty(value = "메뉴 Json리스트", example = "100", required = false)
+    val menus: List<MenuJsonEntity>?,
+
+    @ApiModelProperty(value = "찜 필터", example = "false", required = false)
+    val bookmark: Boolean?,
+
+    @ApiModelProperty(value = "경도(거리순 정렬 할 때 사용)", example = "126.123456", required = false)
     @Schema(name = "경도(거리순 정렬 할 때 사용)", example = "126.123456", required = false)
     val longitude: Double?,
     @Schema(name = "위도(거리순 정렬 할 때 사용)", example = "37.123456", required = false)

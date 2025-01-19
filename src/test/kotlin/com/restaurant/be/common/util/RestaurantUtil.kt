@@ -1,11 +1,13 @@
 package com.restaurant.be.common.util
 
-import com.restaurant.be.restaurant.domain.entity.Menu
 import com.restaurant.be.restaurant.domain.entity.Restaurant
+import com.restaurant.be.restaurant.domain.entity.jsonentity.MenuJsonEntity
 import com.restaurant.be.restaurant.domain.entity.kakaoinfo.FacilityInfoJsonEntity
 import com.restaurant.be.restaurant.domain.entity.kakaoinfo.OperationInfoJsonEntity
-import com.restaurant.be.restaurant.domain.entity.kakaoinfo.OperationTimeInfoJsonEntity
 import com.restaurant.be.restaurant.domain.entity.kakaoinfo.OperationTimeInfosJsonEntity
+import com.restaurant.be.restaurant.repository.dto.FacilityInfoEsDocument
+import com.restaurant.be.restaurant.repository.dto.OperationInfoEsDocument
+import com.restaurant.be.restaurant.repository.dto.OperationTimeInfosEsDocument
 import org.springframework.data.elasticsearch.core.geo.GeoPoint
 
 object RestaurantUtil {
@@ -27,12 +29,9 @@ object RestaurantUtil {
         menus: List<MenuDocument> = emptyList(),
         latitude: Double = 0.0,
         longitude: Double = 0.0,
-        facilityInfos: FacilityInfoJsonEntity = FacilityInfoJsonEntity("N", "N", "N", "N", "N", "N"),
-        operationInfos: OperationInfoJsonEntity = OperationInfoJsonEntity("N", "N", "N"),
-        operationTimes: OperationTimeInfosJsonEntity = OperationTimeInfosJsonEntity(
-            "월요일",
-            OperationTimeInfoJsonEntity("11:00", "23:00", "15:00", "17:00", "21:00")
-        ),
+        facilityInfos: FacilityInfoEsDocument = FacilityInfoEsDocument("N", "N", "N", "N", "N", "N"),
+        operationInfos: OperationInfoEsDocument = OperationInfoEsDocument("N", "N", "N"),
+        operationTimes: List<OperationTimeInfosEsDocument> = emptyList(),
         kakaoRatingAvg: Double = 0.0,
         kakaoRatingCount: Long = 0,
         ratingCount: Long = 0
@@ -43,14 +42,14 @@ object RestaurantUtil {
             name = name,
             originalCategory = originalCategory,
             address = address,
-            naverReviewCount = naverReviewCount,
-            naverRatingAvg = naverRatingAvg,
             reviewCount = reviewCount,
             ratingAvg = ratingAvg,
-            bookmarkCount = bookmarkCount,
+            ratingCount = ratingCount,
             number = number,
             imageUrl = imageUrl,
             category = category,
+            naverReviewCount = naverReviewCount,
+            naverRatingAvg = naverRatingAvg,
             discountContent = discountContent,
             menus = menus,
             location = GeoPoint(latitude, longitude),
@@ -59,7 +58,7 @@ object RestaurantUtil {
             operationTimes = operationTimes,
             kakaoRatingAvg = kakaoRatingAvg,
             kakaoRatingCount = kakaoRatingCount,
-            ratingCount = ratingCount
+            bookmarkCount = bookmarkCount
         )
     }
 
@@ -75,18 +74,12 @@ object RestaurantUtil {
         representativeImageUrl: String = "default_image_url",
         viewCount: Long = 0,
         discountContent: String? = null,
-        menus: MutableList<Menu> = mutableListOf(),
+        menus: MutableList<MenuJsonEntity> = mutableListOf(),
         longitude: Double = 0.0,
         latitude: Double = 0.0,
         facilityInfos: FacilityInfoJsonEntity = FacilityInfoJsonEntity("N", "N", "N", "N", "N", "N"),
         operationInfos: OperationInfoJsonEntity = OperationInfoJsonEntity("N", "N", "N"),
-        operationTimes: OperationTimeInfosJsonEntity = OperationTimeInfosJsonEntity(
-            "월요일",
-            OperationTimeInfoJsonEntity("11:00", "23:00", "15:00", "17:00", "21:00")
-        ),
-        kakaoRatingAvg: Double = 0.0,
-        kakaoRatingCount: Long = 0,
-        ratingCount: Long = 0
+        operationTimes: MutableList<OperationTimeInfosJsonEntity> = mutableListOf()
     ): Restaurant {
         return Restaurant(
             id = id,
@@ -114,19 +107,15 @@ object RestaurantUtil {
         )
     }
 
-    fun generateMenuEntity(
-        id: Long = 0,
-        restaurantId: Long = 0,
+    fun generateMenuJsonEntity(
         name: String = "default_name",
         price: Int = 0,
         description: String = "default_description",
         isRepresentative: Boolean = false,
         imageUrl: String = "default_image_url"
-    ): Menu {
-        return Menu(
-            id = id,
-            restaurantId = restaurantId,
-            name = name,
+    ): MenuJsonEntity {
+        return MenuJsonEntity(
+            menuName = name,
             price = price,
             description = description,
             isRepresentative = isRepresentative,
@@ -135,7 +124,6 @@ object RestaurantUtil {
     }
 
     fun generateMenuDocument(
-        restaurantId: Long,
         menuName: String = "default_menu_name",
         price: Int = 0,
         description: String = "default_description",
@@ -143,7 +131,6 @@ object RestaurantUtil {
         imageUrl: String = "default_image_url"
     ): MenuDocument {
         return MenuDocument(
-            restaurantId = restaurantId,
             menuName = menuName,
             price = price,
             description = description,
