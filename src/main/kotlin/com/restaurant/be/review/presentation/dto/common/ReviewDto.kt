@@ -2,20 +2,17 @@ package com.restaurant.be.review.presentation.dto.common
 
 import com.restaurant.be.review.domain.entity.Review
 import com.restaurant.be.user.domain.entity.User
-import io.swagger.annotations.ApiModelProperty
 import io.swagger.v3.oas.annotations.media.Schema
 import jakarta.validation.constraints.NotBlank
 import jakarta.validation.constraints.NotNull
 import java.time.LocalDateTime
 
 data class ReviewRequestDto(
-    @Schema(description = "평가 점수")
+    @Schema(description = "평가 점수", name = "별점", example = "5", required = true)
     @field:NotNull(message = "평가 점수를 입력해주세요")
-    @ApiModelProperty(value = "별점", example = "5", required = true)
     val rating: Double,
-    @Schema(description = "리뷰 내용")
+    @Schema(description = "리뷰 내용", example = "사장님이 친절해요", required = true)
     @field:NotBlank(message = "리뷰 내용을 작성해주세요")
-    @ApiModelProperty(value = "리뷰 내용", example = "사장님이 친절해요", required = true)
     val content: String,
     @Schema(description = "이미지 url 리스트")
     val imageUrls: List<String>

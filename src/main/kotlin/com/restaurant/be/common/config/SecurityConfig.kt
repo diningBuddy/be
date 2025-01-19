@@ -50,8 +50,7 @@ class SecurityConfig(
                         "/hello",
                         "/profile",
                         "/swagger-ui/**",
-                        "/swagger-resources/**",
-                        "/v2/api-docs",
+                        "/v3/api-docs/**",
                         "/webjars/**"
                     ).permitAll()
                     .anyRequest()
