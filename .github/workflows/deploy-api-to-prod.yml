@@ -47,7 +47,6 @@ jobs:
         run: |
           docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
           docker buildx build --platform linux/amd64,linux/arm64 -f docker/api.Dockerfile -t camelia9999/dinningbuddy:be --push .
-          docker push camelia9999/dinningbuddy:be
       - name: Debug SSH key
         run: |
           echo "${{ secrets.SSH_PRIVATE_KEY }}" > debug_key
