@@ -87,7 +87,7 @@ jobs:
             echo "> $IDLE_PROFILE 배포"
             docker-compose up -d skku-api-$IDLE_PROFILE
             
-            echo "> 사용하지 않는 Docker Image 삭제 
+            echo "> 사용하지 않는 Docker Image 삭제" 
             docker image prune -f
             
             sleep 60
