@@ -43,11 +43,6 @@ data class RestaurantDto(
     @Schema(description = "latitude")
     val latitude: Double,
 
-    @Schema(description = "네이버 평점 평균")
-    val naverRatingAvg: Double?,
-    @Schema(description = "네이버 리뷰 수")
-    val naverReviewCount: Long?,
-
     @Schema(description = "카카오 평점 평균")
     var kakaoRatingAvg: Double?,
     @Schema(description = "카카오 평점 개수")

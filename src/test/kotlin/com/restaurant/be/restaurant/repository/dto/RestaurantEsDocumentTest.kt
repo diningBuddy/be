@@ -30,8 +30,6 @@ class RestaurantEsDocumentTest : DescribeSpec({
                 operationInfos = OperationInfoEsDocument("N", "N", "N"),
                 operationTimeInfos = mutableListOf(),
                 ratingCount = 100,
-                naverRatingAvg = 4.5,
-                naverReviewCount = 100L,
                 bookmark_count = 0
             )
 
@@ -51,8 +49,6 @@ class RestaurantEsDocumentTest : DescribeSpec({
             restaurantEsDocument.menus[0].menuName shouldBe "Pasta"
             restaurantEsDocument.reviewCount shouldBe 200L
             restaurantEsDocument.ratingAvg shouldBe 4.5
-            restaurantEsDocument.naverRatingAvg shouldBe 4.5
-            restaurantEsDocument.naverReviewCount shouldBe 100L
             restaurantEsDocument.facilityInfos shouldBe FacilityInfoEsDocument("N", "N", "N", "N", "N", "N")
             restaurantEsDocument.operationInfos shouldBe OperationInfoEsDocument("N", "N", "N")
             restaurantEsDocument.operationTimeInfos shouldBe mutableListOf()

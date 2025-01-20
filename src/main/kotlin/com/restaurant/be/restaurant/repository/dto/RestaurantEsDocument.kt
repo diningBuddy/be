@@ -16,8 +16,6 @@ data class RestaurantEsDocument(
     @SerialName("facility_infos") val facilityInfos: FacilityInfoEsDocument,
     @SerialName("operation_infos") val operationInfos: OperationInfoEsDocument,
     @SerialName("operation_times") val operationTimeInfos: List<OperationTimeInfosEsDocument>,
-    @SerialName("naver_review_count") val naverReviewCount: Long?,
-    @SerialName("naver_rating_avg") val naverRatingAvg: Double?,
     @SerialName("kakao_rating_count") val kakaoRatingCount: Long?,
     @SerialName("kakao_rating_avg") val kakaoRatingAvg: Double?,
     @SerialName("image_url") val imageUrl: String?,

@@ -72,12 +72,6 @@ class Restaurant(
     @Column(name = "latitude")
     var latitude: Double,
 
-    @Column(name = "naver_rating_avg")
-    var naverRatingAvg: Double?,
-
-    @Column(name = "naver_review_count")
-    var naverReviewCount: Long?,
-
     @Column(name = "kakao_rating_avg")
     var kakaoRatingAvg: Double?,
 
