@@ -86,20 +86,6 @@ class RestaurantEsRepository(
                 }
             )
         }
-        if (request.naverRatingAvg != null) {
-            termQueries.add(
-                dsl.range("naver_rating_avg") {
-                    gte = request.naverRatingAvg
-                }
-            )
-        }
-        if (request.naverReviewCount != null) {
-            termQueries.add(
-                dsl.range("naver_review_count") {
-                    gte = request.naverReviewCount
-                }
-            )
-        }
         if (request.priceMax != null) {
             termQueries.add(
                 dsl.nested {

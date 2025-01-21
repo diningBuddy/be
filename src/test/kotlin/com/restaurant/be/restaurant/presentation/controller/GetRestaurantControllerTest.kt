@@ -637,164 +637,6 @@ class GetRestaurantControllerTest(
                 actualResult.data!!.restaurants.content[0].name shouldBe "목구멍 율전점"
             }
 
-            it("when naverRatingAvg filter should return restaurant") {
-                // given
-                val restaurantEntity = RestaurantUtil.generateRestaurantEntity(
-                    name = "목구멍 율전점"
-                )
-                restaurantRepository.save(restaurantEntity)
-                val restaurantDocument = RestaurantUtil.generateRestaurantDocument(
-                    id = restaurantEntity.id,
-                    name = "목구멍 율전점",
-                    naverRatingAvg = 4.5
-                )
-                elasticsearchOperations.save(restaurantDocument)
-                elasticsearchOperations.indexOps(RestaurantDocument::class.java).refresh()
-
-                // when
-                val result = mockMvc.perform(
-                    get(restaurantUrl)
-                        .param("query", "목구멍 율전점")
-                        .param("naverRatingAvg", "4.5")
-                )
-                    .also {
-                        println(it.andReturn().response.contentAsString)
-                    }
-                    .andExpect(status().isOk)
-                    .andExpect(jsonPath("$.result").value("SUCCESS"))
-                    .andReturn()
-
-                val responseContent = result.response.getContentAsString(Charset.forName("UTF-8"))
-                val responseType =
-                    object : TypeReference<CommonResponse<GetRestaurantsResponse>>() {}
-                val actualResult: CommonResponse<GetRestaurantsResponse> = objectMapper.readValue(
-                    responseContent,
-                    responseType
-                )
-
-                // then
-                actualResult.data!!.restaurants.content.size shouldBe 1
-                actualResult.data!!.restaurants.content[0].name shouldBe "목구멍 율전점"
-            }
-
-            it("when naverRatingAvg filter should return empty") {
-                // given
-                val restaurantEntity = RestaurantUtil.generateRestaurantEntity(
-                    name = "목구멍 율전점"
-                )
-                restaurantRepository.save(restaurantEntity)
-                val restaurantDocument = RestaurantUtil.generateRestaurantDocument(
-                    id = restaurantEntity.id,
-                    name = "목구멍 율전점",
-                    naverRatingAvg = 4.5
-                )
-                elasticsearchOperations.save(restaurantDocument)
-                elasticsearchOperations.indexOps(RestaurantDocument::class.java).refresh()
-
-                // when
-                val result = mockMvc.perform(
-                    get(restaurantUrl)
-                        .param("query", "목구멍 율전점")
-                        .param("naverRatingAvg", "5.0")
-                )
-                    .also {
-                        println(it.andReturn().response.contentAsString)
-                    }
-                    .andExpect(status().isOk)
-                    .andExpect(jsonPath("$.result").value("SUCCESS"))
-                    .andReturn()
-
-                val responseContent = result.response.getContentAsString(Charset.forName("UTF-8"))
-                val responseType =
-                    object : TypeReference<CommonResponse<GetRestaurantsResponse>>() {}
-                val actualResult: CommonResponse<GetRestaurantsResponse> = objectMapper.readValue(
-                    responseContent,
-                    responseType
-                )
-
-                // then
-                actualResult.data!!.restaurants.content.size shouldBe 0
-            }
-
-            it("when naverReviewCount filter should return restaurant") {
-                // given
-                val restaurantEntity = RestaurantUtil.generateRestaurantEntity(
-                    name = "목구멍 율전점"
-                )
-                restaurantRepository.save(restaurantEntity)
-                val restaurantDocument = RestaurantUtil.generateRestaurantDocument(
-                    id = restaurantEntity.id,
-                    name = "목구멍 율전점",
-                    naverReviewCount = 100
-                )
-                elasticsearchOperations.save(restaurantDocument)
-                elasticsearchOperations.indexOps(RestaurantDocument::class.java).refresh()
-
-                // when
-                val result = mockMvc.perform(
-                    get(restaurantUrl)
-                        .param("query", "목구멍 율전점")
-                        .param("naverReviewCount", "100")
-                )
-                    .also {
-                        println(it.andReturn().response.contentAsString)
-                    }
-                    .andExpect(status().isOk)
-                    .andExpect(jsonPath("$.result").value("SUCCESS"))
-                    .andReturn()
-
-                val responseContent = result.response.getContentAsString(Charset.forName("UTF-8"))
-                val responseType =
-                    object : TypeReference<CommonResponse<GetRestaurantsResponse>>() {}
-                val actualResult: CommonResponse<GetRestaurantsResponse> = objectMapper.readValue(
-                    responseContent,
-                    responseType
-                )
-
-                // then
-                actualResult.data!!.restaurants.content.size shouldBe 1
-                actualResult.data!!.restaurants.content[0].name shouldBe "목구멍 율전점"
-            }
-
-            it("when naverReviewCount filter should return empty") {
-                // given
-                val restaurantEntity = RestaurantUtil.generateRestaurantEntity(
-                    name = "목구멍 율전점"
-                )
-                restaurantRepository.save(restaurantEntity)
-                val restaurantDocument = RestaurantUtil.generateRestaurantDocument(
-                    id = restaurantEntity.id,
-                    name = "목구멍 율전점",
-                    naverReviewCount = 100
-                )
-                elasticsearchOperations.save(restaurantDocument)
-                elasticsearchOperations.indexOps(RestaurantDocument::class.java).refresh()
-
-                // when
-                val result = mockMvc.perform(
-                    get(restaurantUrl)
-                        .param("query", "목구멍 율전점")
-                        .param("naverReviewCount", "200")
-                )
-                    .also {
-                        println(it.andReturn().response.contentAsString)
-                    }
-                    .andExpect(status().isOk)
-                    .andExpect(jsonPath("$.result").value("SUCCESS"))
-                    .andReturn()
-
-                val responseContent = result.response.getContentAsString(Charset.forName("UTF-8"))
-                val responseType =
-                    object : TypeReference<CommonResponse<GetRestaurantsResponse>>() {}
-                val actualResult: CommonResponse<GetRestaurantsResponse> = objectMapper.readValue(
-                    responseContent,
-                    responseType
-                )
-
-                // then
-                actualResult.data!!.restaurants.content.size shouldBe 0
-            }
-
             it("when priceMax filter should return restaurant") {
                 // given
                 val restaurantEntity = RestaurantUtil.generateRestaurantEntity(
@@ -1472,8 +1314,6 @@ class GetRestaurantControllerTest(
                     id = restaurantEntity.id,
                     name = "목구멍 율전점",
                     category = "한식",
-                    naverRatingAvg = 4.0,
-                    naverReviewCount = 50,
                     ratingAvg = 4.5,
                     reviewCount = 100,
                     discountContent = "성대생 할인 10%",
@@ -1496,8 +1336,6 @@ class GetRestaurantControllerTest(
                         .param("categories", "한식")
                         .param("discountContent", "true")
                         .param("like", "true")
-                        .param("naverRatingAvg", "4.0")
-                        .param("naverReviewCount", "50")
                         .param("ratingAvg", "4.5")
                         .param("reviewCount", "100")
                         .param("priceMin", "10000")
@@ -1554,8 +1392,6 @@ class GetRestaurantControllerTest(
                     id = restaurantEntity.id,
                     name = "목구멍 율전점",
                     category = "한식",
-                    naverRatingAvg = 4.0,
-                    naverReviewCount = 50,
                     ratingAvg = 4.4,
                     reviewCount = 100,
                     discountContent = "성대생 할인 10%",
@@ -1578,8 +1414,6 @@ class GetRestaurantControllerTest(
                         .param("categories", "한식")
                         .param("discountContent", "true")
                         .param("like", "true")
-                        .param("naverRatingAvg", "4.0")
-                        .param("naverReviewCount", "50")
                         .param("ratingAvg", "4.5")
                         .param("reviewCount", "100")
                         .param("priceMin", "10000")

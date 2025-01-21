@@ -25,11 +25,6 @@ data class GetRestaurantsRequest(
     val priceMax: Int?,
     @Schema(name = "정렬 기준", example = "BASIC", required = false)
     val customSort: Sort = Sort.BASIC,
-    @Schema(name = "네이버 평점 필터", example = "4.5", required = false)
-    val naverRatingAvg: Double?,
-
-    @Schema(name = "네이버 리뷰 개수 필터", example = "100", required = false)
-    val naverReviewCount: Long?,
 
     @Schema(name = "식당 평점 개수 필터", example = "100", required = false)
     var ratingCount: Long?,

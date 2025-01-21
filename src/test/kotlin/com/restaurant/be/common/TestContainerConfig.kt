@@ -95,7 +95,6 @@ object TestContainerConfig {
               "name": "목구멍 율전점",
               "original_category": "육류,고기요리",
               "address": "경기 수원시 장안구 화산로233번길 46 1층",
-              "naver_review_count": 999,
               "number": "031-293-9294",
               "image_url": "https://search.pstatic.net/common/?autoRotate=true&type=w560_sharpen&src=https://ldb-phinf.pstatic.net/20230615_253/1686790793946ISiOc_JPEG/3%B9%F8.jpg",
               "category": "한식",
