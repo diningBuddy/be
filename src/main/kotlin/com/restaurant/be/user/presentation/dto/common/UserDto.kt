@@ -8,7 +8,7 @@ data class UserDto(
     @Schema(title = "닉네임", example = "닉네임", required = true)
     val nickname: String,
     @Schema(
-        name = "프로필 이미지 URL",
+        title = "프로필 이미지 URL",
         example = "https://test.com/test.jpg",
         required = true,
     )
