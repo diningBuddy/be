@@ -10,7 +10,7 @@ data class GetBookmarkRestaurantsResponse(
 )
 
 data class BookmarkRestaurantRequest(
-    @Schema(name = "현재 좋아요 했는지 여부", example = "false", required = true)
+    @Schema(title = "현재 좋아요 했는지 여부", example = "false", required = true)
     val isLike: Boolean
 )
 

@@ -5,7 +5,7 @@ import com.restaurant.be.review.presentation.dto.common.ReviewResponseDto
 import io.swagger.v3.oas.annotations.media.Schema
 
 data class LikeReviewRequest(
-    @Schema(name = "리뷰 좋아요 여부", required = true)
+    @Schema(title = "리뷰 좋아요 여부", required = true)
     val isLike: Boolean
 ) {
     fun toEntity(

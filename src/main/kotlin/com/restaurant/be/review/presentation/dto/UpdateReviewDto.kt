@@ -5,7 +5,7 @@ import com.restaurant.be.review.presentation.dto.common.ReviewResponseDto
 import io.swagger.v3.oas.annotations.media.Schema
 
 data class UpdateReviewRequest(
-    @Schema(name = "리뷰 정보", required = true)
+    @Schema(title = "리뷰 정보", required = true)
     val review: ReviewRequestDto
 )
 

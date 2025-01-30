@@ -7,7 +7,7 @@ import jakarta.validation.constraints.NotEmpty
 
 data class SignInSocialUserRequest(
 
-    @Schema(name = "code", example = "code", required = true)
+    @Schema(title = "code", example = "code", required = true)
     @field:NotEmpty(message = "code 는 필수 값 입니다.")
     val code: String,
 )
