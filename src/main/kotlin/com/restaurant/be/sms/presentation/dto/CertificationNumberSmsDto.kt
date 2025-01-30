@@ -12,7 +12,7 @@ data class SendCertificationSmsRequest(
         regexp = "^01[016789][0-9]{7,8}\$",
         message = "유효하지 않는 휴대폰 번호 입니다."
     )
-    @Schema(name = "휴대폰 번호", example = "01012341234", required = true)
+    @Schema(title = "휴대폰 번호", example = "01012341234", required = true)
     val phoneNumber: String
 )
 
@@ -22,10 +22,10 @@ data class VerifyCertificationSmsRequest(
         regexp = "^01[016789][0-9]{7,8}\$",
         message = "유효하지 않는 휴대폰 번호 입니다."
     )
-    @Schema(name = "휴대폰 번호", example = "01012341234", required = true)
+    @Schema(title = "휴대폰 번호", example = "01012341234", required = true)
     val phoneNumber: String,
 
     @field:NotEmpty(message = "인증번호는 필수 값 입니다.")
-    @Schema(name = "인증 번호", example = "1111", required = true)
+    @Schema(title = "인증 번호", example = "1111", required = true)
     val certificationNumber: String
 )

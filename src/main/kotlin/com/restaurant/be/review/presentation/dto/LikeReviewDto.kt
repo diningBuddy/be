@@ -5,21 +5,21 @@ import com.restaurant.be.review.presentation.dto.common.ReviewResponseDto
 import io.swagger.v3.oas.annotations.media.Schema
 
 data class LikeReviewRequest(
-    @Schema(name = "리뷰 좋아요 여부", required = true)
-    val isLike: Boolean
+    @Schema(title = "리뷰 좋아요 여부", required = true)
+    val isLike: Boolean,
 ) {
     fun toEntity(
         userId: Long,
-        reviewId: Long
+        reviewId: Long,
     ): ReviewLike {
         return ReviewLike(
             userId = userId,
-            reviewId = reviewId
+            reviewId = reviewId,
         )
     }
 }
 
 data class LikeReviewResponse(
     @Schema(description = "리뷰 정보")
-    val review: ReviewResponseDto
+    val review: ReviewResponseDto,
 )

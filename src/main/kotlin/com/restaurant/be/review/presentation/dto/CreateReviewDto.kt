@@ -6,6 +6,6 @@ import com.restaurant.be.review.presentation.dto.common.ReviewResponseDto
 import io.swagger.v3.oas.annotations.media.Schema
 
 data class CreateReviewResponse(
-    @Schema(name = "리뷰 정보", required = true)
+    @Schema(title = "리뷰 정보", required = true)
     val review: ReviewResponseDto
 )
