@@ -10,7 +10,7 @@ data class UserDto(
     @Schema(
         title = "프로필 이미지 URL",
         example = "https://test.com/test.jpg",
-        required = true,
+        required = true
     )
-    val profileImageUrl: String,
+    val profileImageUrl: String
 )

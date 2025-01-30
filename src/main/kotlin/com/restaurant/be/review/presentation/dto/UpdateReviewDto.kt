@@ -6,10 +6,10 @@ import io.swagger.v3.oas.annotations.media.Schema
 
 data class UpdateReviewRequest(
     @Schema(title = "리뷰 정보", required = true)
-    val review: ReviewRequestDto,
+    val review: ReviewRequestDto
 )
 
 data class UpdateReviewResponse(
     @Schema(description = "리뷰 정보")
-    val review: ReviewResponseDto,
+    val review: ReviewResponseDto
 )

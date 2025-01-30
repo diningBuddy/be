@@ -6,15 +6,15 @@ import org.springframework.data.domain.Page
 
 data class GetBookmarkRestaurantsResponse(
     @Schema(description = "좋아요한 식당 리스트")
-    val restaurants: Page<RestaurantDto>,
+    val restaurants: Page<RestaurantDto>
 )
 
 data class BookmarkRestaurantRequest(
     @Schema(title = "현재 좋아요 했는지 여부", example = "false", required = true)
-    val isLike: Boolean,
+    val isLike: Boolean
 )
 
 data class BookmarkRestaurantResponse(
     @Schema(description = "좋아요한 식당 정보")
-    val restaurant: RestaurantDto,
+    val restaurant: RestaurantDto
 )
