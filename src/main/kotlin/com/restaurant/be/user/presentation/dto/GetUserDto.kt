@@ -14,7 +14,8 @@ data class GetUserResponse(
         userDto = UserDto(
             id = user.id ?: 0,
             nickname = user.nickname,
-            profileImageUrl = user.profileImageUrl ?: ""
+            profileImageUrl = user.profileImageUrl ?: "",
+            point = 1000
         )
     )
 }

@@ -40,6 +40,33 @@ class GetUserControllerTest(
         }
 
         describe("#getUser basic test") {
+            it("로그인 한 유저 정보 조회") {
+                // given
+                val user = userRepository.findByPhoneNumber("01012345678") ?: throw Exception("User not found")
+
+                // when
+                val result = mockMvc.perform(
+                    get("$baseUrl")
+                ).also {
+                    println(it.andReturn().response.contentAsString)
+                }
+                    .andExpect(status().isOk)
+                    .andExpect(jsonPath("$.result").value("SUCCESS"))
+                    .andReturn()
+
+                val responseContent = result.response.getContentAsString(Charset.forName("UTF-8"))
+                val responseType =
+                    object : TypeReference<CommonResponse<GetUserResponse>>() {}
+                val actualResult: CommonResponse<GetUserResponse> = objectMapper.readValue(
+                    responseContent,
+                    responseType
+                )
+
+                // then
+                actualResult.data!!.userDto.id shouldBe user.id
+                actualResult.data!!.userDto.nickname shouldBe user.nickname
+            }
+
             it("when existed user should return user info") {
                 // given
                 val user = userRepository.findByPhoneNumber("01012345678") ?: throw Exception("User not found")

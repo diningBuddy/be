@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
+import java.security.Principal
 
 @Tag(name = "01. User Info", description = "유저 서비스")
 @RestController
@@ -20,9 +21,24 @@ import org.springframework.web.bind.annotation.RestController
 class GetUserController(
     private val getUserService: GetUserService
 ) {
+    @GetMapping
+    @PreAuthorize("hasRole('USER')")
+    @Operation(summary = "로그인 한 유저 정보 조회 API")
+    @ApiResponse(
+        responseCode = "200",
+        description = "성공",
+        content = [Content(schema = Schema(implementation = GetUserResponse::class))]
+    )
+    fun getMyUser(
+        principal: Principal
+    ): CommonResponse<GetUserResponse> {
+        val response = getUserService.getUser(principal.name.toLong())
+        return CommonResponse.success(response)
+    }
+
     @GetMapping("/{userId}")
     @PreAuthorize("hasRole('USER')")
-    @Operation(summary = "유저 정보 조회 API")
+    @Operation(summary = "타 유저 정보 조회 API")
     @ApiResponse(
         responseCode = "200",
         description = "성공",
