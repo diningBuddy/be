@@ -12,7 +12,7 @@ import org.springframework.transaction.annotation.Transactional
 @Transactional(readOnly = true)
 class CertificationSmsService(
     private val smsRepository: SmsRepository,
-    private val redisRepository: RedisRepository,
+    private val redisRepository: RedisRepository
 ) {
     fun sendCertificationNumber(request: SendCertificationSmsRequest) {
 //        val certificationNumber = (1000..9999).random()
