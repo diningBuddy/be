@@ -4,7 +4,6 @@ import com.restaurant.be.common.response.CommonResponse
 import com.restaurant.be.home.domain.service.HomeService
 import com.restaurant.be.home.presentation.dto.HomeRequest
 import com.restaurant.be.home.presentation.dto.HomeResponse
-import com.restaurant.be.restaurant.presentation.controller.dto.GetRestaurantsResponse
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.media.Content
 import io.swagger.v3.oas.annotations.media.Schema
@@ -20,9 +19,9 @@ import java.security.Principal
 @Tag(name = "99. Home Info", description = "홈 서비스")
 @RestController
 @RequestMapping("/v1/home")
-class HomeController (
+class HomeController(
     private val homeService: HomeService
-){
+) {
 
     @GetMapping
     @PreAuthorize("hasRole('USER')")
@@ -45,6 +44,6 @@ class HomeController (
     /*
     * 큰 페이지들이 나올 수 있도록하자
     * */
-    //TODO 랭킹 페이지 나오도록 하는 API ???
-    //TODO 홈 하단 섹션 자세히 나오도록하는 API // 처음 20개, 이후 10개씩
+    // TODO 랭킹 페이지 나오도록 하는 API ???
+    // TODO 홈 하단 섹션 자세히 나오도록하는 API // 처음 20개, 이후 10개씩
 }

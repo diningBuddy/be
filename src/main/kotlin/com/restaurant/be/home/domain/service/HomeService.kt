@@ -30,12 +30,12 @@ class HomeService(
 //            ratingAvg = 4.0,
 //            categories =
 //        )
-        //paging propose:5 pagnation객체
+        // paging propose:5 pagnation객체
 
 //        val lunchResponse = restaurantService.getRestaurants(lunchRequest,5,userId)
 //        val yasikResponse = restaurantService.getRestaurants(midNightRequest,5,userId)
-        //배너관련...별도서비스?배너서비스..!
-        //TODO: 가짜객체는 반환되게-> 식당을 먼저 이후 여기
+        // 배너관련...별도서비스?배너서비스..!
+        // TODO: 가짜객체는 반환되게-> 식당을 먼저 이후 여기
 
         val testHomeResponse = HomeResponse(
             restaurantBanner = listOf(
@@ -45,7 +45,7 @@ class HomeService(
                     subtitle = "맛있는 고기를 파는 율전점의 고깃집입니다."
                 )
             ),
-            //null이면 충분하다.
+            // null이면 충분하다.
             restaurantRecommendations = listOf(
                 GetRecommendationRestaurantsResponse(
                     recommendationType = RecommendationType.LAUNCH,
@@ -89,7 +89,7 @@ class HomeService(
                                 price = 8000,
                                 description = "맛있는 하이볼",
                                 isRepresentative = false,
-                                imageUrl = "https://example.com/image1.jpg",
+                                imageUrl = "https://example.com/image1.jpg"
                             ),
                             representativeReviewContent = "정말 맛있어요! 또 방문하고 싶은 맛집입니다.",
                             isBookmarked = false,
@@ -107,7 +107,7 @@ class HomeService(
                                         price = 8000,
                                         description = "맛있는 하이볼",
                                         isRepresentative = false,
-                                        imageUrl = "https://example.com/image1.jpg",
+                                        imageUrl = "https://example.com/image1.jpg"
                                     )
                                 )
                             )
@@ -156,7 +156,7 @@ class HomeService(
                                 price = 8000,
                                 description = "맛있는 하이볼",
                                 isRepresentative = false,
-                                imageUrl = "https://example.com/image1.jpg",
+                                imageUrl = "https://example.com/image1.jpg"
                             ),
                             representativeReviewContent = "새벽에도 맛있는 음식을 먹을 수 있어요!",
                             isBookmarked = true,
@@ -174,7 +174,7 @@ class HomeService(
                                         price = 8000,
                                         description = "맛있는 하이볼",
                                         isRepresentative = false,
-                                        imageUrl = "https://example.com/image1.jpg",
+                                        imageUrl = "https://example.com/image1.jpg"
                                     )
                                 )
                             )
@@ -185,6 +185,4 @@ class HomeService(
         )
         return testHomeResponse
     }
-
-
 }
