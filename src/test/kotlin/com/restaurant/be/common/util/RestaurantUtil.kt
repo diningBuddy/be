@@ -97,7 +97,8 @@ object RestaurantUtil {
             operationTimes = operationTimes,
             kakaoRatingAvg = 0.0,
             kakaoRatingCount = 0,
-            ratingCount = 0
+            ratingCount = 0,
+            description = "예제 소개입니다."
         )
     }
 
