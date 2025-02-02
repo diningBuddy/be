@@ -26,7 +26,7 @@ import org.springframework.stereotype.Repository
 class RestaurantEsRepository(
     private val client: SearchClient
 ) {
-
+    // TODO : 이 클래스 로직 추가 필요 kakao_rating_count, kakao_rating_avg, operation_times,day_of_the_week,operation_time_info , facility_infos, operation_infos
     private val searchIndex = "restaurant"
 
     fun searchRestaurants(
@@ -59,6 +59,7 @@ class RestaurantEsRepository(
                 dsl.terms("category", *request.categories.toTypedArray())
             )
         }
+
         if (request.discountForSkku == true) {
             termQueries.add(
                 dsl.exists("discount_content")

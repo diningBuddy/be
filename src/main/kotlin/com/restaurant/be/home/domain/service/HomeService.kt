@@ -39,7 +39,7 @@ class HomeService(
 //        val lunchResponse = restaurantService.getRestaurants(lunchRequest,5,userId)
 //        val yasikResponse = restaurantService.getRestaurants(midNightRequest,5,userId)
         // 배너관련...별도서비스?배너서비스..!
-        // TODO: 가짜객체는 반환되게-> 식당을 먼저 이후 여기
+        // TODO: 식당을 먼저 이후 여기
 
         val testHomeResponse = HomeResponse(
             restaurantBanner = listOf(
