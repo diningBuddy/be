@@ -32,7 +32,8 @@ class RestaurantTest : DescribeSpec({
                 latitude = 0.0,
                 kakaoRatingAvg = 0.0,
                 kakaoRatingCount = 0,
-                menus = mutableListOf()
+                menus = mutableListOf(),
+                description = "예제 소개입니다."
             )
         }
         context("should create a correct Restaurant instance") {
@@ -57,6 +58,7 @@ class RestaurantTest : DescribeSpec({
                 restaurant.menus shouldBe mutableListOf()
                 restaurant.kakaoRatingAvg shouldBe 0.0
                 restaurant.kakaoRatingCount shouldBe 0
+                restaurant.description shouldBe "예제 소개입니다."
             }
         }
 
