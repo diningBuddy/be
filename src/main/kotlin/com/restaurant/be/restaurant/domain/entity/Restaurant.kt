@@ -80,7 +80,10 @@ class Restaurant(
 
     @JdbcTypeCode(SqlTypes.JSON)
     @Column(name = "menus")
-    var menus: List<MenuJsonEntity> = mutableListOf()
+    var menus: List<MenuJsonEntity> = mutableListOf(),
+
+    @Column(name = "description")
+    var description: String?
 
 ) {
     fun createReview(newRating: Double) {
