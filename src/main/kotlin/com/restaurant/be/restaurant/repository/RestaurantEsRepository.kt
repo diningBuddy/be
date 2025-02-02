@@ -119,9 +119,6 @@ class RestaurantEsRepository(
             val res = client.search(
                 target = searchIndex,
                 block = {
-                    if (request.cursor != null) {
-                        searchAfter = request.cursor
-                    }
                     query = bool {
                         filter(
                             termQueries
@@ -176,7 +173,7 @@ class RestaurantEsRepository(
                     }
                 },
                 size = pageable.pageSize,
-                from = if (request.cursor != null) null else pageable.offset.toInt(),
+                from = pageable.offset.toInt(),
                 trackTotalHits = true
             )
 
