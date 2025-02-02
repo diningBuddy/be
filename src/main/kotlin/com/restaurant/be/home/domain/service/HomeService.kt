@@ -20,7 +20,7 @@ class HomeService(
     private val restaurantService: GetRestaurantService
 ) {
 
-    fun getHomePage(
+    fun getHome(
         request: HomeRequest,
         userId: Long
     ): HomeResponse {
@@ -44,7 +44,7 @@ class HomeService(
         val testHomeResponse = HomeResponse(
             restaurantBanner = listOf(
                 GetBannerResponse(
-                    imageUrl = "https://example.com/image1.jpg",
+                    imageUrl = "http://t1.daumcdn.net/place/F3A68FC964E949C4828CBF47A6297921",
                     title = "율전점 고깃집",
                     subtitle = "맛있는 고기를 파는 율전점의 고깃집입니다."
                 )
@@ -56,7 +56,7 @@ class HomeService(
                     restaurants = listOf(
                         RestaurantDto(
                             id = 1L,
-                            representativeImageUrl = "https://example.com/image1.jpg",
+                            representativeImageUrl = "http://t1.daumcdn.net/place/F3A68FC964E949C4828CBF47A6297921",
                             name = "맛있는 식당",
                             ratingAvg = 4.5,
                             ratingCount = 100L,
@@ -93,7 +93,7 @@ class HomeService(
                                 price = 8000,
                                 description = "맛있는 하이볼",
                                 isRepresentative = false,
-                                imageUrl = "https://example.com/image1.jpg"
+                                imageUrl = "https://search.pstatic.net/common/?autoRotate=true&quality=95&type=f320_320&src=https://ldb-phinf.pstatic.net/20230525_34/16849976756701d50P_JPEG/Screenshot_20230525_095732_Samsung_Internet.jpg"
                             ),
                             representativeReviewContent = "정말 맛있어요! 또 방문하고 싶은 맛집입니다.",
                             isBookmarked = false,
@@ -111,7 +111,7 @@ class HomeService(
                                         price = 8000,
                                         description = "맛있는 하이볼",
                                         isRepresentative = false,
-                                        imageUrl = "https://example.com/image1.jpg"
+                                        imageUrl = "https://search.pstatic.net/common/?autoRotate=true&quality=95&type=f320_320&src=https://ldb-phinf.pstatic.net/20230525_34/16849976756701d50P_JPEG/Screenshot_20230525_095732_Samsung_Internet.jpg"
                                     )
                                 )
                             )
@@ -123,7 +123,7 @@ class HomeService(
                     restaurants = listOf(
                         RestaurantDto(
                             id = 2L,
-                            representativeImageUrl = "https://example.com/image2.jpg",
+                            representativeImageUrl = "http://t1.daumcdn.net/place/F3A68FC964E949C4828CBF47A6297921",
                             name = "야식의 신",
                             ratingAvg = 4.7,
                             ratingCount = 150L,
@@ -160,7 +160,7 @@ class HomeService(
                                 price = 8000,
                                 description = "맛있는 하이볼",
                                 isRepresentative = false,
-                                imageUrl = "https://example.com/image1.jpg"
+                                imageUrl = "https://search.pstatic.net/common/?autoRotate=true&quality=95&type=f320_320&src=https://ldb-phinf.pstatic.net/20230525_34/16849976756701d50P_JPEG/Screenshot_20230525_095732_Samsung_Internet.jpg"
                             ),
                             representativeReviewContent = "새벽에도 맛있는 음식을 먹을 수 있어요!",
                             isBookmarked = true,
@@ -178,7 +178,7 @@ class HomeService(
                                         price = 8000,
                                         description = "맛있는 하이볼",
                                         isRepresentative = false,
-                                        imageUrl = "https://example.com/image1.jpg"
+                                        imageUrl = "https://search.pstatic.net/common/?autoRotate=true&quality=95&type=f320_320&src=https://ldb-phinf.pstatic.net/20230525_34/16849976756701d50P_JPEG/Screenshot_20230525_095732_Samsung_Internet.jpg"
                                     )
                                 )
                             )

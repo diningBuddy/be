@@ -35,7 +35,7 @@ class HomeController(
         principal: Principal,
         @ModelAttribute request: HomeRequest
     ): CommonResponse<HomeResponse> {
-        val response = homeService.getHomePage(
+        val response = homeService.getHome(
             request,
             principal.name.toLong()
         )
