@@ -10,6 +10,7 @@ import com.restaurant.be.common.PageDeserializer
 import com.restaurant.be.common.response.CommonResponse
 import com.restaurant.be.common.util.setUpUser
 import com.restaurant.be.restaurant.presentation.controller.dto.common.RestaurantDto
+import com.restaurant.be.user.presentation.dto.GetMyUserResponse
 import com.restaurant.be.user.presentation.dto.GetUserResponse
 import com.restaurant.be.user.repository.UserRepository
 import io.kotest.matchers.shouldBe
@@ -56,15 +57,15 @@ class GetUserControllerTest(
 
                 val responseContent = result.response.getContentAsString(Charset.forName("UTF-8"))
                 val responseType =
-                    object : TypeReference<CommonResponse<GetUserResponse>>() {}
-                val actualResult: CommonResponse<GetUserResponse> = objectMapper.readValue(
+                    object : TypeReference<CommonResponse<GetMyUserResponse>>() {}
+                val actualResult: CommonResponse<GetMyUserResponse> = objectMapper.readValue(
                     responseContent,
                     responseType
                 )
 
                 // then
-                actualResult.data!!.userDto.id shouldBe user.id
-                actualResult.data!!.userDto.nickname shouldBe user.nickname
+                actualResult.data!!.id shouldBe user.id
+                actualResult.data!!.nickname shouldBe user.nickname
             }
 
             it("when existed user should return user info") {
@@ -90,8 +91,8 @@ class GetUserControllerTest(
                 )
 
                 // then
-                actualResult.data!!.userDto.id shouldBe user.id
-                actualResult.data!!.userDto.nickname shouldBe user.nickname
+                actualResult.data!!.id shouldBe user.id
+                actualResult.data!!.nickname shouldBe user.nickname
             }
 
             it("when not existed user should fail") {

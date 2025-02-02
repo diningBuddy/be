@@ -2,6 +2,7 @@ package com.restaurant.be.user.presentation.controller
 
 import com.restaurant.be.common.response.CommonResponse
 import com.restaurant.be.user.domain.service.GetUserService
+import com.restaurant.be.user.presentation.dto.GetMyUserResponse
 import com.restaurant.be.user.presentation.dto.GetUserResponse
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.media.Content
@@ -27,12 +28,12 @@ class GetUserController(
     @ApiResponse(
         responseCode = "200",
         description = "성공",
-        content = [Content(schema = Schema(implementation = GetUserResponse::class))]
+        content = [Content(schema = Schema(implementation = GetMyUserResponse::class))]
     )
     fun getMyUser(
         principal: Principal
-    ): CommonResponse<GetUserResponse> {
-        val response = getUserService.getUser(principal.name.toLong())
+    ): CommonResponse<GetMyUserResponse> {
+        val response = getUserService.getMyUser(principal.name.toLong())
         return CommonResponse.success(response)
     }
 
