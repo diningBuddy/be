@@ -10,6 +10,7 @@ import com.restaurant.be.common.PageDeserializer
 import com.restaurant.be.common.response.CommonResponse
 import com.restaurant.be.common.util.setUpUser
 import com.restaurant.be.restaurant.presentation.controller.dto.common.RestaurantDto
+import com.restaurant.be.user.presentation.dto.GetMyUserResponse
 import com.restaurant.be.user.presentation.dto.GetUserResponse
 import com.restaurant.be.user.repository.UserRepository
 import io.kotest.matchers.shouldBe
@@ -40,6 +41,33 @@ class GetUserControllerTest(
         }
 
         describe("#getUser basic test") {
+            it("로그인 한 유저 정보 조회") {
+                // given
+                val user = userRepository.findByPhoneNumber("01012345678") ?: throw Exception("User not found")
+
+                // when
+                val result = mockMvc.perform(
+                    get("$baseUrl")
+                ).also {
+                    println(it.andReturn().response.contentAsString)
+                }
+                    .andExpect(status().isOk)
+                    .andExpect(jsonPath("$.result").value("SUCCESS"))
+                    .andReturn()
+
+                val responseContent = result.response.getContentAsString(Charset.forName("UTF-8"))
+                val responseType =
+                    object : TypeReference<CommonResponse<GetMyUserResponse>>() {}
+                val actualResult: CommonResponse<GetMyUserResponse> = objectMapper.readValue(
+                    responseContent,
+                    responseType
+                )
+
+                // then
+                actualResult.data!!.id shouldBe user.id
+                actualResult.data!!.nickname shouldBe user.nickname
+            }
+
             it("when existed user should return user info") {
                 // given
                 val user = userRepository.findByPhoneNumber("01012345678") ?: throw Exception("User not found")
@@ -63,8 +91,8 @@ class GetUserControllerTest(
                 )
 
                 // then
-                actualResult.data!!.userDto.id shouldBe user.id
-                actualResult.data!!.userDto.nickname shouldBe user.nickname
+                actualResult.data!!.id shouldBe user.id
+                actualResult.data!!.nickname shouldBe user.nickname
             }
 
             it("when not existed user should fail") {

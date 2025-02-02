@@ -21,7 +21,7 @@ class SignUpSocialUserController(
     private val signUpSocialUserService: SignUpSocialUserService
 ) {
     @PostMapping("/kakao")
-    @Operation(summary = "카카오 로그인 API")
+    @Operation(summary = "카카오 회원가입 API")
     @ApiResponse(
         responseCode = "200",
         description = "성공",

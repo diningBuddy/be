@@ -12,5 +12,8 @@ data class UserDto(
         example = "https://test.com/test.jpg",
         required = true
     )
-    val profileImageUrl: String
+    val profileImageUrl: String,
+
+    @Schema(title = "포인트", example = "1000", required = true)
+    val point: Long
 )
