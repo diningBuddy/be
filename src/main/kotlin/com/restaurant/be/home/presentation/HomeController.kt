@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 import java.security.Principal
 
-@Tag(name = "99. Home Info", description = "홈 서비스")
+@Tag(name = "06. Home Info", description = "홈 서비스")
 @RestController
 @RequestMapping("/v1/home")
 class HomeController(
