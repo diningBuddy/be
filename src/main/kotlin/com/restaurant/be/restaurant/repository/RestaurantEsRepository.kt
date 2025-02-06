@@ -3,7 +3,17 @@ package com.restaurant.be.restaurant.repository
 import com.jillesvangurp.ktsearch.SearchClient
 import com.jillesvangurp.ktsearch.parseHits
 import com.jillesvangurp.ktsearch.search
-import com.jillesvangurp.searchdsls.querydsl.*
+import com.jillesvangurp.searchdsls.querydsl.ESQuery
+import com.jillesvangurp.searchdsls.querydsl.SearchDSL
+import com.jillesvangurp.searchdsls.querydsl.SortOrder
+import com.jillesvangurp.searchdsls.querydsl.bool
+import com.jillesvangurp.searchdsls.querydsl.exists
+import com.jillesvangurp.searchdsls.querydsl.match
+import com.jillesvangurp.searchdsls.querydsl.nested
+import com.jillesvangurp.searchdsls.querydsl.range
+import com.jillesvangurp.searchdsls.querydsl.sort
+import com.jillesvangurp.searchdsls.querydsl.term
+import com.jillesvangurp.searchdsls.querydsl.terms
 import com.restaurant.be.restaurant.presentation.controller.dto.GetRestaurantsRequest
 import com.restaurant.be.restaurant.presentation.controller.dto.Sort
 import com.restaurant.be.restaurant.repository.dto.RestaurantEsDocument
@@ -76,11 +86,13 @@ class RestaurantEsRepository(
                 DayOfWeek.SUNDAY -> "일요일"
             }
 
-            termQueries.add(createTimeBasedQuery(
-                request,
-                dayOfWeek,
-                dsl
-            ))
+            termQueries.add(
+                createTimeBasedQuery(
+                    request,
+                    dayOfWeek,
+                    dsl
+                )
+            )
         }
 
         if (request.hasWifi != null) {
@@ -139,7 +151,7 @@ class RestaurantEsRepository(
 
         if (request.kakaoRatingAvg != null) {
             termQueries.add(
-                dsl.range("kakao_rating_avg"){
+                dsl.range("kakao_rating_avg") {
                     gte = request.kakaoRatingAvg
                 }
             )
@@ -147,7 +159,7 @@ class RestaurantEsRepository(
 
         if (request.kakaoRatingCount != null) {
             termQueries.add(
-                dsl.range("kakao_rating_count"){
+                dsl.range("kakao_rating_count") {
                     gte = request.kakaoRatingCount
                 }
             )
@@ -267,11 +279,6 @@ class RestaurantEsRepository(
         }
 
         return result
-    }
-
-    fun convertTimeToMinutes(time: String): Int {
-        val (hours, minutes) = time.split(":").map { it.toInt() }
-        return hours * 60 + minutes
     }
 
     private fun createTimeBasedQuery(

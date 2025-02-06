@@ -5,16 +5,9 @@ import com.restaurant.be.home.presentation.dto.GetRecommendationRestaurantsRespo
 import com.restaurant.be.home.presentation.dto.HomeRequest
 import com.restaurant.be.home.presentation.dto.HomeResponse
 import com.restaurant.be.home.presentation.dto.RecommendationType
-import com.restaurant.be.restaurant.domain.entity.kakaoinfo.FacilityInfoJsonEntity
-import com.restaurant.be.restaurant.domain.entity.kakaoinfo.OperationInfoJsonEntity
-import com.restaurant.be.restaurant.domain.entity.kakaoinfo.OperationTimeInfoJsonEntity
-import com.restaurant.be.restaurant.domain.entity.kakaoinfo.OperationTimeInfosJsonEntity
 import com.restaurant.be.restaurant.domain.service.GetRestaurantService
 import com.restaurant.be.restaurant.presentation.controller.dto.GetRestaurantsRequest
 import com.restaurant.be.restaurant.presentation.controller.dto.Sort
-import com.restaurant.be.restaurant.presentation.controller.dto.common.MenuDto
-import com.restaurant.be.restaurant.presentation.controller.dto.common.RestaurantDetailDto
-import com.restaurant.be.restaurant.presentation.controller.dto.common.RestaurantDto
 import org.springframework.data.domain.PageRequest
 import org.springframework.stereotype.Service
 
@@ -80,21 +73,21 @@ class HomeService(
         ).toList()
         val lunchRequest = baseRequest.copy(
             categories = categories,
-            ratingAvg = 4.0,
+            kakaoRatingAvg = 4.0,
             operationStartTime = "11:00",
             operationEndTime = "15:00"
         )
 
         val midNightRequest = baseRequest.copy(
             categories = categoriesForMidNight,
-            ratingAvg = 3.5,
+            kakaoRatingAvg = 3.5,
             operationEndTime = "02:00"
         )
 
         val pageable = PageRequest.of(0, RECOMMENDATION_SIZE)
         val lunchResponse = restaurantService.getRestaurants(lunchRequest, pageable, userId)
         val midNightResponse = restaurantService.getRestaurants(midNightRequest, pageable, userId)
-        val testHomeResponse = HomeResponse(
+        return HomeResponse(
             restaurantBanner = listOf(
                 GetBannerResponse(
                     imageUrl = "http://t1.daumcdn.net/place/F3A68FC964E949C4828CBF47A6297921",
@@ -113,6 +106,5 @@ class HomeService(
                 )
             )
         )
-        return testHomeResponse
     }
 }
