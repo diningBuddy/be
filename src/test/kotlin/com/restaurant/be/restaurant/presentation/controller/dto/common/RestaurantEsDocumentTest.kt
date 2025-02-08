@@ -16,7 +16,7 @@ class RestaurantEsDocumentTest : DescribeSpec({
                 originalCategory = "Italian",
                 address = "Seoul",
                 imageUrl = "http://example.com/pizza.jpg",
-                category = listOf("Italian"),
+                categories = listOf("Italian"),
                 discountContent = "10% off",
                 menus = mutableListOf(),
                 reviewCount = 1L,
@@ -27,7 +27,7 @@ class RestaurantEsDocumentTest : DescribeSpec({
                 facilityInfos = FacilityInfoEsDocument("N", "N", "N", "N", "N", "N"),
                 operationInfos = OperationInfoEsDocument("N", "N", "N"),
                 operationTimeInfos = mutableListOf(),
-                bookmark_count = 0
+                bookmarkCount = 0
             )
 
             // When
@@ -38,7 +38,7 @@ class RestaurantEsDocumentTest : DescribeSpec({
             restaurantEsDocument.originalCategory shouldBe "Italian"
             restaurantEsDocument.address shouldBe "Seoul"
             restaurantEsDocument.imageUrl shouldBe "http://example.com/pizza.jpg"
-            restaurantEsDocument.category shouldBe listOf("Italian")
+            restaurantEsDocument.categories shouldBe listOf("Italian")
             restaurantEsDocument.discountContent shouldBe "10% off"
             restaurantEsDocument.menus shouldBe mutableListOf()
             restaurantEsDocument.reviewCount shouldBe 1L
@@ -49,7 +49,7 @@ class RestaurantEsDocumentTest : DescribeSpec({
             restaurantEsDocument.operationInfos shouldBe OperationInfoEsDocument("N", "N", "N")
             restaurantEsDocument.operationTimeInfos shouldBe mutableListOf()
             restaurantEsDocument.ratingCount shouldBe 100
-            restaurantEsDocument.bookmark_count shouldBe 0
+            restaurantEsDocument.bookmarkCount shouldBe 0
         }
 
         it("should create a correct MenuDto instance") {

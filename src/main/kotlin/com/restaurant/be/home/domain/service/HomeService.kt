@@ -23,7 +23,7 @@ class HomeService(
         request: HomeRequest,
         userId: Long
     ): HomeResponse {
-        val categories = arrayOf(
+        val categoriesForLunch = arrayOf(
             "한식", "갈비", "감자탕", "곱창", "막창", "국밥", "국수", "닭강정", "닭요리", "도시락",
             "떡볶이", "매운탕", "해물탕", "분식", "삼겹살", "설렁탕", "순대", "실내포장마차", "육류",
             "고기", "족발", "보쌈", "주먹밥", "찌개", "전골", "치킨", "칼국수", "해물", "생선",
@@ -72,7 +72,7 @@ class HomeService(
             "일본식주점", "오뎅바", "참치회", "초밥", "롤"
         ).toList()
         val lunchRequest = baseRequest.copy(
-            categories = categories,
+            categories = categoriesForLunch,
             kakaoRatingAvg = 4.0,
             operationStartTime = "11:00",
             operationEndTime = "15:00"

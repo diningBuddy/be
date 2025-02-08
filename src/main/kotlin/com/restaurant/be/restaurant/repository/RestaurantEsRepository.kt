@@ -57,7 +57,7 @@ class RestaurantEsRepository(
 
         if (!request.categories.isNullOrEmpty()) {
             termQueries.add(
-                dsl.terms("category", *request.categories.toTypedArray())
+                dsl.terms("categories", *request.categories.toTypedArray())
             )
         }
 
@@ -221,7 +221,7 @@ class RestaurantEsRepository(
                                 match("name", request.query) {
                                     boost = 0.1
                                 },
-                                match("category", request.query) {
+                                match("categories", request.query) {
                                     boost = 0.03
                                 },
                                 match("original_category", request.query) {
