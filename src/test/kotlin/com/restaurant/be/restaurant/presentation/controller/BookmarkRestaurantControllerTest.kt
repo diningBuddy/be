@@ -59,7 +59,7 @@ class BookmarkRestaurantControllerTest(
                 val result =
                     mockMvc
                         .perform(
-                            get("$baseUrl/my-like")
+                            get("$baseUrl/bookmarks")
                         ).also {
                             println(it.andReturn().response.contentAsString)
                         }.andExpect(status().isOk)
@@ -99,7 +99,7 @@ class BookmarkRestaurantControllerTest(
                 val result =
                     mockMvc
                         .perform(
-                            get("$baseUrl/my-like")
+                            get("$baseUrl/bookmarks")
                         ).also {
                             println(it.andReturn().response.contentAsString)
                         }.andExpect(status().isOk)
@@ -155,7 +155,7 @@ class BookmarkRestaurantControllerTest(
                 val result =
                     mockMvc
                         .perform(
-                            get("$baseUrl/my-like")
+                            get("$baseUrl/bookmarks")
                         ).also {
                             println(it.andReturn().response.contentAsString)
                         }.andExpect(status().isOk)
@@ -197,7 +197,7 @@ class BookmarkRestaurantControllerTest(
                 val result =
                     mockMvc
                         .perform(
-                            get("$baseUrl/my-like?page=0&size=1")
+                            get("$baseUrl/bookmarks?page=0&size=1")
                         ).also {
                             println(it.andReturn().response.contentAsString)
                         }.andExpect(status().isOk)
@@ -254,7 +254,7 @@ class BookmarkRestaurantControllerTest(
                 val result =
                     mockMvc
                         .perform(
-                            get("$baseUrl/my-like")
+                            get("$baseUrl/bookmarks")
                                 .param("page", "0")
                                 .param("size", "1")
                         ).also {
@@ -313,7 +313,7 @@ class BookmarkRestaurantControllerTest(
                 val result =
                     mockMvc
                         .perform(
-                            get("$baseUrl/my-like")
+                            get("$baseUrl/bookmarks")
                                 .param("page", "0")
                                 .param("size", "1")
                         ).also {
@@ -372,7 +372,7 @@ class BookmarkRestaurantControllerTest(
                 val result =
                     mockMvc
                         .perform(
-                            get("$baseUrl/my-like")
+                            get("$baseUrl/bookmarks")
                                 .param("page", "1")
                                 .param("size", "1")
                         ).also {
@@ -440,7 +440,7 @@ class BookmarkRestaurantControllerTest(
                 val result =
                     mockMvc
                         .perform(
-                            get("$baseUrl/my-like")
+                            get("$baseUrl/bookmarks")
                         ).also {
                             println(it.andReturn().response.contentAsString)
                         }.andExpect(status().isOk)
@@ -473,7 +473,7 @@ class BookmarkRestaurantControllerTest(
 
                 // when
                 val result = mockMvc.perform(
-                    post("$baseUrl/${restaurantEntity.id}/like")
+                    post("$baseUrl/${restaurantEntity.id}/bookmark")
                         .content(
                             objectMapper.writeValueAsString(
                                 mapOf("isLike" to true)
@@ -522,7 +522,7 @@ class BookmarkRestaurantControllerTest(
                 val result =
                     mockMvc
                         .perform(
-                            post("$baseUrl/${restaurantEntity.id}/like")
+                            post("$baseUrl/${restaurantEntity.id}/bookmark")
                                 .content(
                                     objectMapper.writeValueAsString(
                                         mapOf(
@@ -558,7 +558,7 @@ class BookmarkRestaurantControllerTest(
                 val result =
                     mockMvc
                         .perform(
-                            post("$baseUrl/1/like")
+                            post("$baseUrl/1/bookmark")
                                 .content(
                                     objectMapper.writeValueAsString(
                                         mapOf(

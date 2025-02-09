@@ -27,7 +27,7 @@ import java.security.Principal
 class BookmarkRestaurantController(
     private val bookmarkRestaurantService: BookmarkRestaurantService
 ) {
-    @GetMapping("/my-like")
+    @GetMapping("/bookmarks")
     @PreAuthorize("hasRole('USER')")
     @Operation(summary = "좋아요한 음식점 리스트 조회 API")
     @ApiResponse(
@@ -39,12 +39,14 @@ class BookmarkRestaurantController(
         principal: Principal,
         pageable: Pageable
     ): CommonResponse<GetBookmarkRestaurantsResponse> {
-        val response =
-            bookmarkRestaurantService.getMyLikeRestaurant(pageable, principal.name.toLong())
+        val response = bookmarkRestaurantService.getMyLikeRestaurant(
+                pageable,
+                principal.name.toLong()
+            )
         return CommonResponse.success(response)
     }
 
-    @PostMapping("/{restaurantId}/like")
+    @PostMapping("/{restaurantId}/bookmark")
     @PreAuthorize("hasRole('USER')")
     @Operation(summary = "음식점 좋아요 API")
     @ApiResponse(
