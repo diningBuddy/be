@@ -62,8 +62,8 @@ class RestaurantRepositoryCustomImpl(
                 .select(category)
                 .from(restaurantCategory)
                 .leftJoin(category)
-                .on(restaurantCategory.name.eq(category.name))
-                .where(restaurantCategory.restaurantId.eq(restaurantId))
+                .on(restaurantCategory.category.id.eq(category.id))
+                .where(restaurantCategory.restaurant.id.eq(restaurantId))
                 .fetch()
 
         return if (restaurantInfo != null) {
@@ -121,8 +121,8 @@ class RestaurantRepositoryCustomImpl(
                 .select(restaurantCategory, category)
                 .from(restaurantCategory)
                 .leftJoin(category)
-                .on(restaurantCategory.name.eq(category.name))
-                .where(restaurantCategory.restaurantId.`in`(restaurantIds))
+                .on(restaurantCategory.category.id.eq(category.id))
+                .where(restaurantCategory.restaurant.id.`in`(restaurantIds))
                 .fetch()
 
         val restaurantDtos =
@@ -133,7 +133,7 @@ class RestaurantRepositoryCustomImpl(
                 val review = reviews.firstOrNull { it.restaurantId == restaurantInfo.id }
                 val categoryList =
                     categories
-                        .filter { it.get(restaurantCategory)?.restaurantId == restaurantInfo.id }
+                        .filter { it.get(restaurantCategory)?.restaurant!!.id == restaurantInfo.id }
                         .mapNotNull { it.get(category) }
                 RestaurantProjectionDto(
                     restaurantInfo,
@@ -199,8 +199,8 @@ class RestaurantRepositoryCustomImpl(
                 .select(restaurantCategory, category)
                 .from(restaurantCategory)
                 .leftJoin(category)
-                .on(restaurantCategory.name.eq(category.name))
-                .where(restaurantCategory.restaurantId.`in`(restaurantIds))
+                .on(restaurantCategory.category.id.eq(category.id))
+                .where(restaurantCategory.restaurant.id.`in`(restaurantIds))
                 .fetch()
 
         val restaurantDtos =
@@ -210,7 +210,7 @@ class RestaurantRepositoryCustomImpl(
                 val review = reviews.firstOrNull { it.restaurantId == restaurantInfo.id }
                 val categoryList =
                     categories
-                        .filter { it.get(restaurantCategory)?.restaurantId == restaurantInfo.id }
+                        .filter { it.get(restaurantCategory)?.restaurant!!.id == restaurantInfo.id }
                         .mapNotNull { it.get(category) }
                 RestaurantProjectionDto(
                     restaurantInfo,

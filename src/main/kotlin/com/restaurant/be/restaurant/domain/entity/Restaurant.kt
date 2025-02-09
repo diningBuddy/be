@@ -1,16 +1,14 @@
 package com.restaurant.be.restaurant.domain.entity
 
+import com.restaurant.be.restaurant.domain.entity.jsonentity.MenuJsonEntity
 import com.restaurant.be.restaurant.domain.entity.kakaoinfo.FacilityInfoJsonEntity
 import com.restaurant.be.restaurant.domain.entity.kakaoinfo.OperationInfoJsonEntity
 import com.restaurant.be.restaurant.domain.entity.kakaoinfo.OperationTimeInfosJsonEntity
-import jakarta.persistence.CascadeType
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
-import jakarta.persistence.FetchType
 import jakarta.persistence.GeneratedValue
 import jakarta.persistence.GenerationType
 import jakarta.persistence.Id
-import jakarta.persistence.OneToMany
 import jakarta.persistence.Table
 import org.hibernate.annotations.JdbcTypeCode
 import org.hibernate.type.SqlTypes
@@ -42,19 +40,22 @@ class Restaurant(
     var contactNumber: String,
 
     @Column(name = "rating_avg")
-    var ratingAvg: Double,
+    var ratingAvg: Double? = 1.0,
 
     @Column(name = "rating_count")
-    var ratingCount: Long,
+    var ratingCount: Long?,
 
     @JdbcTypeCode(SqlTypes.JSON)
+    @Column(name = "facility_infos")
     var facilityInfos: FacilityInfoJsonEntity,
 
     @JdbcTypeCode(SqlTypes.JSON)
+    @Column(name = "operation_infos")
     var operationInfos: OperationInfoJsonEntity,
 
     @JdbcTypeCode(SqlTypes.JSON)
-    var operationTimes: OperationTimeInfosJsonEntity,
+    @Column(name = "operation_times")
+    var operationTimes: List<OperationTimeInfosJsonEntity> = mutableListOf(),
 
     @Column(name = "representative_image_url", length = 300)
     var representativeImageUrl: String,
@@ -71,25 +72,24 @@ class Restaurant(
     @Column(name = "latitude")
     var latitude: Double,
 
-    @Column(name = "naver_rating_avg")
-    var naverRatingAvg: Double,
-
-    @Column(name = "naver_review_count")
-    var naverReviewCount: Int,
-
     @Column(name = "kakao_rating_avg")
-    var kakaoRatingAvg: Double,
+    var kakaoRatingAvg: Double?,
 
     @Column(name = "kakao_rating_count")
-    var kakaoRatingCount: Long,
+    var kakaoRatingCount: Long?,
 
-    @OneToMany(mappedBy = "restaurantId", cascade = [CascadeType.ALL], fetch = FetchType.LAZY)
-    var menus: MutableList<Menu> = mutableListOf()
+    @JdbcTypeCode(SqlTypes.JSON)
+    @Column(name = "menus")
+    var menus: List<MenuJsonEntity> = mutableListOf(),
+
+    @Column(name = "description")
+    var description: String?
+
 ) {
     fun createReview(newRating: Double) {
         val beforeCount = reviewCount
         reviewCount++
-        ratingAvg = (ratingAvg * beforeCount + newRating) / (beforeCount + 1)
+        ratingAvg = ((ratingAvg ?: 0.0) * beforeCount + newRating) / (beforeCount + 1)
     }
 
     fun deleteReview(beforeRating: Double) {
@@ -98,12 +98,12 @@ class Restaurant(
             ratingAvg = 0.0
             reviewCount = 0
         } else {
-            ratingAvg = (ratingAvg * beforeCount - beforeRating) / (beforeCount - 1)
+            ratingAvg = ((ratingAvg ?: 0.0) * beforeCount - beforeRating) / (beforeCount - 1)
             reviewCount = beforeCount - 1
         }
     }
 
     fun updateReview(beforeRating: Double, newRating: Double) {
-        ratingAvg = ((ratingAvg * reviewCount) - beforeRating + newRating) / reviewCount
+        ratingAvg = (((ratingAvg ?: 0.0) * reviewCount) - beforeRating + newRating) / reviewCount
     }
 }

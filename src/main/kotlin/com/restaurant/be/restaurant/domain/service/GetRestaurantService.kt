@@ -26,8 +26,9 @@ class GetRestaurantService(
         pageable: Pageable,
         userId: Long
     ): GetRestaurantsResponse {
+        // TODO:테마, 소개 관련 필터링등 그리고 각종 내가 만든 것들에 대한 필터링들.
         val restaurantIds =
-            if (request.like != null) {
+            if (request.bookmark != null) {
                 restaurantLikeRepository
                     .findAllByUserId(userId)
                     .map { it.restaurantId }
@@ -40,7 +41,7 @@ class GetRestaurantService(
                 request,
                 pageable,
                 restaurantIds,
-                request.like
+                request.bookmark
             )
 
         if (!request.query.isNullOrEmpty()) {

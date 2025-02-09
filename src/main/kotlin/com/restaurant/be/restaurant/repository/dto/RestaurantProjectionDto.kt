@@ -29,12 +29,10 @@ data class RestaurantProjectionDto(
             categories = categories.map { it.name },
             representativeMenu = menus.firstOrNull()?.toDto(),
             representativeReviewContent = review?.content,
-            isLike = isLike,
+            isBookmarked = isLike,
             discountContent = restaurant.discountContent,
             longitude = restaurant.longitude,
             latitude = restaurant.latitude,
-            naverRatingAvg = restaurant.naverRatingAvg,
-            naverReviewCount = restaurant.naverReviewCount,
             kakaoRatingAvg = restaurant.kakaoRatingAvg,
             kakaoRatingCount = restaurant.kakaoRatingCount,
             detailInfo = RestaurantDetailDto(

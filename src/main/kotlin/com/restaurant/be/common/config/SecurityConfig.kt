@@ -38,7 +38,9 @@ class SecurityConfig(
                 auth
                     .requestMatchers(
                         "/v1/users/sign-up",
+                        "/v1/users/sign-up/social/kakao",
                         "/v1/users/sign-in",
+                        "/v1/users/sign-in/social/kakao",
                         "/v1/users/token-reissue",
                         "/v1/users/refresh-token-reissue",
                         "/v1/users/email/send",
@@ -49,8 +51,7 @@ class SecurityConfig(
                         "/hello",
                         "/profile",
                         "/swagger-ui/**",
-                        "/swagger-resources/**",
-                        "/v2/api-docs",
+                        "/v3/api-docs/**",
                         "/webjars/**"
                     ).permitAll()
                     .anyRequest()

@@ -41,7 +41,7 @@ class GetRestaurantControllerTest(
     private val restaurantRepository: RestaurantRepository,
     private val categoryRepository: CategoryRepository,
     private val restaurantCategoryRepository: RestaurantCategoryRepository,
-    private val restaurantLikeRepository: RestaurantBookmarkRepository
+    private val restaurantBookmarkRepository: RestaurantBookmarkRepository
 ) : CustomDescribeSpec() {
     private val restaurantUrl = "/v1/restaurants"
     private val objectMapper: ObjectMapper = ObjectMapper().registerModule(KotlinModule()).apply {
@@ -141,10 +141,8 @@ class GetRestaurantControllerTest(
                 restaurantRepository.save(restaurantEntity)
                 restaurantCategoryRepository.save(
                     RestaurantCategory(
-                        name = category.name,
-                        groupId = 1L,
-                        restaurantId = 1L,
-                        categoryGroup = "default_group"
+                        restaurant = restaurantEntity,
+                        category = category
                     )
                 )
                 val restaurantDocument = RestaurantUtil.generateRestaurantDocument(
@@ -190,10 +188,8 @@ class GetRestaurantControllerTest(
                 restaurantRepository.save(restaurantEntity)
                 restaurantCategoryRepository.save(
                     RestaurantCategory(
-                        name = category.name,
-                        groupId = 1L,
-                        restaurantId = 1L,
-                        categoryGroup = "default_group"
+                        restaurant = restaurantEntity,
+                        category = category
                     )
                 )
                 val restaurantDocument = RestaurantUtil.generateRestaurantDocument(
@@ -439,7 +435,7 @@ class GetRestaurantControllerTest(
                 elasticsearchOperations.save(restaurantDocument)
                 elasticsearchOperations.indexOps(RestaurantDocument::class.java).refresh()
 
-                restaurantLikeRepository.save(
+                restaurantBookmarkRepository.save(
                     RestaurantBookmark(
                         userId = newUser?.id ?: 0,
                         restaurantId = restaurantEntity.id
@@ -528,7 +524,7 @@ class GetRestaurantControllerTest(
                 val result = mockMvc.perform(
                     get(restaurantUrl)
                         .param("query", "목구멍 율전점")
-                        .param("like", "true")
+                        .param("bookmark", "true")
                 )
                     .also {
                         println(it.andReturn().response.contentAsString)
@@ -563,7 +559,7 @@ class GetRestaurantControllerTest(
                 elasticsearchOperations.save(restaurantDocument)
                 elasticsearchOperations.indexOps(RestaurantDocument::class.java).refresh()
 
-                restaurantLikeRepository.save(
+                restaurantBookmarkRepository.save(
                     RestaurantBookmark(
                         userId = newUser?.id ?: 0,
                         restaurantId = restaurantEntity.id
@@ -574,7 +570,7 @@ class GetRestaurantControllerTest(
                 val result = mockMvc.perform(
                     get(restaurantUrl)
                         .param("query", "목구멍 율전점")
-                        .param("like", "false")
+                        .param("bookmark", "false")
                 )
                     .also {
                         println(it.andReturn().response.contentAsString)
@@ -609,7 +605,7 @@ class GetRestaurantControllerTest(
                 elasticsearchOperations.save(restaurantDocument)
                 elasticsearchOperations.indexOps(RestaurantDocument::class.java).refresh()
 
-                restaurantLikeRepository.save(
+                restaurantBookmarkRepository.save(
                     RestaurantBookmark(
                         userId = newUser?.id ?: 0,
                         restaurantId = restaurantEntity.id
@@ -641,171 +637,13 @@ class GetRestaurantControllerTest(
                 actualResult.data!!.restaurants.content[0].name shouldBe "목구멍 율전점"
             }
 
-            it("when naverRatingAvg filter should return restaurant") {
-                // given
-                val restaurantEntity = RestaurantUtil.generateRestaurantEntity(
-                    name = "목구멍 율전점"
-                )
-                restaurantRepository.save(restaurantEntity)
-                val restaurantDocument = RestaurantUtil.generateRestaurantDocument(
-                    id = restaurantEntity.id,
-                    name = "목구멍 율전점",
-                    naverRatingAvg = 4.5
-                )
-                elasticsearchOperations.save(restaurantDocument)
-                elasticsearchOperations.indexOps(RestaurantDocument::class.java).refresh()
-
-                // when
-                val result = mockMvc.perform(
-                    get(restaurantUrl)
-                        .param("query", "목구멍 율전점")
-                        .param("naverRatingAvg", "4.5")
-                )
-                    .also {
-                        println(it.andReturn().response.contentAsString)
-                    }
-                    .andExpect(status().isOk)
-                    .andExpect(jsonPath("$.result").value("SUCCESS"))
-                    .andReturn()
-
-                val responseContent = result.response.getContentAsString(Charset.forName("UTF-8"))
-                val responseType =
-                    object : TypeReference<CommonResponse<GetRestaurantsResponse>>() {}
-                val actualResult: CommonResponse<GetRestaurantsResponse> = objectMapper.readValue(
-                    responseContent,
-                    responseType
-                )
-
-                // then
-                actualResult.data!!.restaurants.content.size shouldBe 1
-                actualResult.data!!.restaurants.content[0].name shouldBe "목구멍 율전점"
-            }
-
-            it("when naverRatingAvg filter should return empty") {
-                // given
-                val restaurantEntity = RestaurantUtil.generateRestaurantEntity(
-                    name = "목구멍 율전점"
-                )
-                restaurantRepository.save(restaurantEntity)
-                val restaurantDocument = RestaurantUtil.generateRestaurantDocument(
-                    id = restaurantEntity.id,
-                    name = "목구멍 율전점",
-                    naverRatingAvg = 4.5
-                )
-                elasticsearchOperations.save(restaurantDocument)
-                elasticsearchOperations.indexOps(RestaurantDocument::class.java).refresh()
-
-                // when
-                val result = mockMvc.perform(
-                    get(restaurantUrl)
-                        .param("query", "목구멍 율전점")
-                        .param("naverRatingAvg", "5.0")
-                )
-                    .also {
-                        println(it.andReturn().response.contentAsString)
-                    }
-                    .andExpect(status().isOk)
-                    .andExpect(jsonPath("$.result").value("SUCCESS"))
-                    .andReturn()
-
-                val responseContent = result.response.getContentAsString(Charset.forName("UTF-8"))
-                val responseType =
-                    object : TypeReference<CommonResponse<GetRestaurantsResponse>>() {}
-                val actualResult: CommonResponse<GetRestaurantsResponse> = objectMapper.readValue(
-                    responseContent,
-                    responseType
-                )
-
-                // then
-                actualResult.data!!.restaurants.content.size shouldBe 0
-            }
-
-            it("when naverReviewCount filter should return restaurant") {
-                // given
-                val restaurantEntity = RestaurantUtil.generateRestaurantEntity(
-                    name = "목구멍 율전점"
-                )
-                restaurantRepository.save(restaurantEntity)
-                val restaurantDocument = RestaurantUtil.generateRestaurantDocument(
-                    id = restaurantEntity.id,
-                    name = "목구멍 율전점",
-                    naverReviewCount = 100
-                )
-                elasticsearchOperations.save(restaurantDocument)
-                elasticsearchOperations.indexOps(RestaurantDocument::class.java).refresh()
-
-                // when
-                val result = mockMvc.perform(
-                    get(restaurantUrl)
-                        .param("query", "목구멍 율전점")
-                        .param("naverReviewCount", "100")
-                )
-                    .also {
-                        println(it.andReturn().response.contentAsString)
-                    }
-                    .andExpect(status().isOk)
-                    .andExpect(jsonPath("$.result").value("SUCCESS"))
-                    .andReturn()
-
-                val responseContent = result.response.getContentAsString(Charset.forName("UTF-8"))
-                val responseType =
-                    object : TypeReference<CommonResponse<GetRestaurantsResponse>>() {}
-                val actualResult: CommonResponse<GetRestaurantsResponse> = objectMapper.readValue(
-                    responseContent,
-                    responseType
-                )
-
-                // then
-                actualResult.data!!.restaurants.content.size shouldBe 1
-                actualResult.data!!.restaurants.content[0].name shouldBe "목구멍 율전점"
-            }
-
-            it("when naverReviewCount filter should return empty") {
-                // given
-                val restaurantEntity = RestaurantUtil.generateRestaurantEntity(
-                    name = "목구멍 율전점"
-                )
-                restaurantRepository.save(restaurantEntity)
-                val restaurantDocument = RestaurantUtil.generateRestaurantDocument(
-                    id = restaurantEntity.id,
-                    name = "목구멍 율전점",
-                    naverReviewCount = 100
-                )
-                elasticsearchOperations.save(restaurantDocument)
-                elasticsearchOperations.indexOps(RestaurantDocument::class.java).refresh()
-
-                // when
-                val result = mockMvc.perform(
-                    get(restaurantUrl)
-                        .param("query", "목구멍 율전점")
-                        .param("naverReviewCount", "200")
-                )
-                    .also {
-                        println(it.andReturn().response.contentAsString)
-                    }
-                    .andExpect(status().isOk)
-                    .andExpect(jsonPath("$.result").value("SUCCESS"))
-                    .andReturn()
-
-                val responseContent = result.response.getContentAsString(Charset.forName("UTF-8"))
-                val responseType =
-                    object : TypeReference<CommonResponse<GetRestaurantsResponse>>() {}
-                val actualResult: CommonResponse<GetRestaurantsResponse> = objectMapper.readValue(
-                    responseContent,
-                    responseType
-                )
-
-                // then
-                actualResult.data!!.restaurants.content.size shouldBe 0
-            }
-
             it("when priceMax filter should return restaurant") {
                 // given
                 val restaurantEntity = RestaurantUtil.generateRestaurantEntity(
                     name = "목구멍 율전점",
                     menus = mutableListOf(
-                        RestaurantUtil.generateMenuEntity(price = 10000),
-                        RestaurantUtil.generateMenuEntity(price = 20000)
+                        RestaurantUtil.generateMenuJsonEntity(price = 10000),
+                        RestaurantUtil.generateMenuJsonEntity(price = 20000)
                     )
                 )
                 restaurantRepository.save(restaurantEntity)
@@ -814,11 +652,9 @@ class GetRestaurantControllerTest(
                     name = "목구멍 율전점",
                     menus = listOf(
                         RestaurantUtil.generateMenuDocument(
-                            restaurantId = restaurantEntity.id,
                             price = 10000
                         ),
                         RestaurantUtil.generateMenuDocument(
-                            restaurantId = restaurantEntity.id,
                             price = 20000
                         )
                     )
@@ -857,8 +693,8 @@ class GetRestaurantControllerTest(
                 val restaurantEntity = RestaurantUtil.generateRestaurantEntity(
                     name = "목구멍 율전점",
                     menus = mutableListOf(
-                        RestaurantUtil.generateMenuEntity(price = 10000),
-                        RestaurantUtil.generateMenuEntity(price = 20000)
+                        RestaurantUtil.generateMenuJsonEntity(price = 10000),
+                        RestaurantUtil.generateMenuJsonEntity(price = 20000)
                     )
                 )
                 restaurantRepository.save(restaurantEntity)
@@ -867,11 +703,9 @@ class GetRestaurantControllerTest(
                     name = "목구멍 율전점",
                     menus = listOf(
                         RestaurantUtil.generateMenuDocument(
-                            restaurantId = restaurantEntity.id,
                             price = 10000
                         ),
                         RestaurantUtil.generateMenuDocument(
-                            restaurantId = restaurantEntity.id,
                             price = 20000
                         )
                     )
@@ -910,8 +744,8 @@ class GetRestaurantControllerTest(
                 val restaurantEntity = RestaurantUtil.generateRestaurantEntity(
                     name = "목구멍 율전점",
                     menus = mutableListOf(
-                        RestaurantUtil.generateMenuEntity(price = 10000),
-                        RestaurantUtil.generateMenuEntity(price = 20000)
+                        RestaurantUtil.generateMenuJsonEntity(price = 10000),
+                        RestaurantUtil.generateMenuJsonEntity(price = 20000)
                     )
                 )
                 restaurantRepository.save(restaurantEntity)
@@ -920,11 +754,9 @@ class GetRestaurantControllerTest(
                     name = "목구멍 율전점",
                     menus = listOf(
                         RestaurantUtil.generateMenuDocument(
-                            restaurantId = restaurantEntity.id,
                             price = 10000
                         ),
                         RestaurantUtil.generateMenuDocument(
-                            restaurantId = restaurantEntity.id,
                             price = 20000
                         )
                     )
@@ -962,8 +794,8 @@ class GetRestaurantControllerTest(
                 val restaurantEntity = RestaurantUtil.generateRestaurantEntity(
                     name = "목구멍 율전점",
                     menus = mutableListOf(
-                        RestaurantUtil.generateMenuEntity(price = 10000),
-                        RestaurantUtil.generateMenuEntity(price = 20000)
+                        RestaurantUtil.generateMenuJsonEntity(price = 10000),
+                        RestaurantUtil.generateMenuJsonEntity(price = 20000)
                     )
                 )
                 restaurantRepository.save(restaurantEntity)
@@ -972,11 +804,9 @@ class GetRestaurantControllerTest(
                     name = "목구멍 율전점",
                     menus = listOf(
                         RestaurantUtil.generateMenuDocument(
-                            restaurantId = restaurantEntity.id,
                             price = 10000
                         ),
                         RestaurantUtil.generateMenuDocument(
-                            restaurantId = restaurantEntity.id,
                             price = 20000
                         )
                     )
@@ -1015,8 +845,8 @@ class GetRestaurantControllerTest(
                 val restaurantEntity = RestaurantUtil.generateRestaurantEntity(
                     name = "목구멍 율전점",
                     menus = mutableListOf(
-                        RestaurantUtil.generateMenuEntity(price = 10000),
-                        RestaurantUtil.generateMenuEntity(price = 20000)
+                        RestaurantUtil.generateMenuJsonEntity(price = 10000),
+                        RestaurantUtil.generateMenuJsonEntity(price = 20000)
                     )
                 )
                 restaurantRepository.save(restaurantEntity)
@@ -1025,11 +855,9 @@ class GetRestaurantControllerTest(
                     name = "목구멍 율전점",
                     menus = listOf(
                         RestaurantUtil.generateMenuDocument(
-                            restaurantId = restaurantEntity.id,
                             price = 10000
                         ),
                         RestaurantUtil.generateMenuDocument(
-                            restaurantId = restaurantEntity.id,
                             price = 20000
                         )
                     )
@@ -1068,8 +896,8 @@ class GetRestaurantControllerTest(
                 val restaurantEntity = RestaurantUtil.generateRestaurantEntity(
                     name = "목구멍 율전점",
                     menus = mutableListOf(
-                        RestaurantUtil.generateMenuEntity(price = 10000),
-                        RestaurantUtil.generateMenuEntity(price = 20000)
+                        RestaurantUtil.generateMenuJsonEntity(price = 10000),
+                        RestaurantUtil.generateMenuJsonEntity(price = 20000)
                     )
                 )
                 restaurantRepository.save(restaurantEntity)
@@ -1078,11 +906,9 @@ class GetRestaurantControllerTest(
                     name = "목구멍 율전점",
                     menus = listOf(
                         RestaurantUtil.generateMenuDocument(
-                            restaurantId = restaurantEntity.id,
                             price = 10000
                         ),
                         RestaurantUtil.generateMenuDocument(
-                            restaurantId = restaurantEntity.id,
                             price = 20000
                         )
                     )
@@ -1120,8 +946,8 @@ class GetRestaurantControllerTest(
                 val restaurantEntity = RestaurantUtil.generateRestaurantEntity(
                     name = "목구멍 율전점",
                     menus = mutableListOf(
-                        RestaurantUtil.generateMenuEntity(price = 10000),
-                        RestaurantUtil.generateMenuEntity(price = 20000)
+                        RestaurantUtil.generateMenuJsonEntity(price = 10000),
+                        RestaurantUtil.generateMenuJsonEntity(price = 20000)
                     )
                 )
                 restaurantRepository.save(restaurantEntity)
@@ -1130,11 +956,9 @@ class GetRestaurantControllerTest(
                     name = "목구멍 율전점",
                     menus = listOf(
                         RestaurantUtil.generateMenuDocument(
-                            restaurantId = restaurantEntity.id,
                             price = 10000
                         ),
                         RestaurantUtil.generateMenuDocument(
-                            restaurantId = restaurantEntity.id,
                             price = 20000
                         )
                     )
@@ -1174,8 +998,8 @@ class GetRestaurantControllerTest(
                 val restaurantEntity = RestaurantUtil.generateRestaurantEntity(
                     name = "목구멍 율전점",
                     menus = mutableListOf(
-                        RestaurantUtil.generateMenuEntity(price = 10000),
-                        RestaurantUtil.generateMenuEntity(price = 20000)
+                        RestaurantUtil.generateMenuJsonEntity(price = 10000),
+                        RestaurantUtil.generateMenuJsonEntity(price = 20000)
                     )
                 )
                 restaurantRepository.save(restaurantEntity)
@@ -1184,11 +1008,9 @@ class GetRestaurantControllerTest(
                     name = "목구멍 율전점",
                     menus = listOf(
                         RestaurantUtil.generateMenuDocument(
-                            restaurantId = restaurantEntity.id,
                             price = 10000
                         ),
                         RestaurantUtil.generateMenuDocument(
-                            restaurantId = restaurantEntity.id,
                             price = 20000
                         )
                     )
@@ -1471,20 +1293,18 @@ class GetRestaurantControllerTest(
                     reviewCount = 100,
                     discountContent = "성대생 할인 10%",
                     menus = mutableListOf(
-                        RestaurantUtil.generateMenuEntity(price = 10000),
-                        RestaurantUtil.generateMenuEntity(price = 20000)
+                        RestaurantUtil.generateMenuJsonEntity(price = 10000),
+                        RestaurantUtil.generateMenuJsonEntity(price = 20000)
                     )
                 )
                 restaurantRepository.save(restaurantEntity)
                 restaurantCategoryRepository.save(
                     RestaurantCategory(
-                        name = category.name,
-                        groupId = 1L,
-                        restaurantId = 1L,
-                        categoryGroup = "default_group"
+                        restaurant = restaurantEntity,
+                        category = category
                     )
                 )
-                restaurantLikeRepository.save(
+                restaurantBookmarkRepository.save(
                     RestaurantBookmark(
                         userId = user?.id ?: 0,
                         restaurantId = restaurantEntity.id
@@ -1494,18 +1314,14 @@ class GetRestaurantControllerTest(
                     id = restaurantEntity.id,
                     name = "목구멍 율전점",
                     category = "한식",
-                    naverRatingAvg = 4.0,
-                    naverReviewCount = 50,
                     ratingAvg = 4.5,
                     reviewCount = 100,
                     discountContent = "성대생 할인 10%",
                     menus = listOf(
                         RestaurantUtil.generateMenuDocument(
-                            restaurantId = restaurantEntity.id,
                             price = 10000
                         ),
                         RestaurantUtil.generateMenuDocument(
-                            restaurantId = restaurantEntity.id,
                             price = 20000
                         )
                     )
@@ -1520,8 +1336,6 @@ class GetRestaurantControllerTest(
                         .param("categories", "한식")
                         .param("discountContent", "true")
                         .param("like", "true")
-                        .param("naverRatingAvg", "4.0")
-                        .param("naverReviewCount", "50")
                         .param("ratingAvg", "4.5")
                         .param("reviewCount", "100")
                         .param("priceMin", "10000")
@@ -1557,20 +1371,18 @@ class GetRestaurantControllerTest(
                     reviewCount = 100,
                     discountContent = "성대생 할인 10%",
                     menus = mutableListOf(
-                        RestaurantUtil.generateMenuEntity(price = 10000),
-                        RestaurantUtil.generateMenuEntity(price = 20000)
+                        RestaurantUtil.generateMenuJsonEntity(price = 10000),
+                        RestaurantUtil.generateMenuJsonEntity(price = 20000)
                     )
                 )
                 restaurantRepository.save(restaurantEntity)
                 restaurantCategoryRepository.save(
                     RestaurantCategory(
-                        name = category.name,
-                        groupId = 1L,
-                        restaurantId = 1L,
-                        categoryGroup = "default_group"
+                        restaurant = restaurantEntity,
+                        category = category
                     )
                 )
-                restaurantLikeRepository.save(
+                restaurantBookmarkRepository.save(
                     RestaurantBookmark(
                         userId = user?.id ?: 0,
                         restaurantId = restaurantEntity.id
@@ -1580,18 +1392,14 @@ class GetRestaurantControllerTest(
                     id = restaurantEntity.id,
                     name = "목구멍 율전점",
                     category = "한식",
-                    naverRatingAvg = 4.0,
-                    naverReviewCount = 50,
                     ratingAvg = 4.4,
                     reviewCount = 100,
                     discountContent = "성대생 할인 10%",
                     menus = listOf(
                         RestaurantUtil.generateMenuDocument(
-                            restaurantId = restaurantEntity.id,
                             price = 10000
                         ),
                         RestaurantUtil.generateMenuDocument(
-                            restaurantId = restaurantEntity.id,
                             price = 20000
                         )
                     )
@@ -1606,8 +1414,6 @@ class GetRestaurantControllerTest(
                         .param("categories", "한식")
                         .param("discountContent", "true")
                         .param("like", "true")
-                        .param("naverRatingAvg", "4.0")
-                        .param("naverReviewCount", "50")
                         .param("ratingAvg", "4.5")
                         .param("reviewCount", "100")
                         .param("priceMin", "10000")
@@ -2034,7 +1840,7 @@ class GetRestaurantControllerTest(
                 elasticsearchOperations.indexOps(RestaurantDocument::class.java).refresh()
 
                 val user = userRepository.findByPhoneNumber("01012345678")
-                restaurantLikeRepository.save(
+                restaurantBookmarkRepository.save(
                     RestaurantBookmark(
                         userId = user?.id ?: 0,
                         restaurantId = restaurantEntity2.id
@@ -2064,80 +1870,6 @@ class GetRestaurantControllerTest(
                 // then
                 actualResult.data!!.restaurants.content[0].name shouldBe "목구멍 율전점2"
                 actualResult.data!!.restaurants.content[1].name shouldBe "목구멍 율전점1"
-            }
-        }
-
-        describe("#get restaurants search after test") {
-            it("when search after should return next page") {
-                // given
-                val restaurantEntity1 = RestaurantUtil.generateRestaurantEntity(
-                    name = "목구멍 율전점1"
-                )
-                restaurantRepository.save(restaurantEntity1)
-                val restaurantDocument1 = RestaurantUtil.generateRestaurantDocument(
-                    id = restaurantEntity1.id,
-                    name = "목구멍 율전점1"
-                )
-                elasticsearchOperations.save(restaurantDocument1)
-
-                val restaurantEntity2 = RestaurantUtil.generateRestaurantEntity(
-                    name = "목구멍 율전점2"
-                )
-                restaurantRepository.save(restaurantEntity2)
-                val restaurantDocument2 = RestaurantUtil.generateRestaurantDocument(
-                    id = restaurantEntity2.id,
-                    name = "목구멍 율전점2"
-                )
-                elasticsearchOperations.save(restaurantDocument2)
-                elasticsearchOperations.indexOps(RestaurantDocument::class.java).refresh()
-
-                // when
-                val result = mockMvc.perform(
-                    get(restaurantUrl)
-                        .param("size", "1")
-                        .param("customSort", "ID_ASC")
-                )
-                    .also {
-                        println(it.andReturn().response.contentAsString)
-                    }
-                    .andExpect(status().isOk)
-                    .andExpect(jsonPath("$.result").value("SUCCESS"))
-                    .andExpect(jsonPath("$.data.restaurants.content[0].name").value("목구멍 율전점1"))
-                    .andReturn()
-
-                val responseContent = result.response.getContentAsString(Charset.forName("UTF-8"))
-                val responseType =
-                    object : TypeReference<CommonResponse<GetRestaurantsResponse>>() {}
-                val firstPageResult: CommonResponse<GetRestaurantsResponse> =
-                    objectMapper.readValue(
-                        responseContent,
-                        responseType
-                    )
-
-                // when
-                val result2 = mockMvc.perform(
-                    get(restaurantUrl)
-                        .param("size", "1")
-                        .param("customSort", "ID_ASC")
-                        .param("cursor", firstPageResult.data!!.nextCursor?.joinToString(","))
-                )
-                    .also {
-                        println(it.andReturn().response.contentAsString)
-                    }
-                    .andExpect(status().isOk)
-                    .andExpect(jsonPath("$.result").value("SUCCESS"))
-                    .andExpect(jsonPath("$.data.restaurants.content[0].name").value("목구멍 율전점2"))
-                    .andReturn()
-
-                val responseContent2 = result2.response.getContentAsString(Charset.forName("UTF-8"))
-                val secondPageResult: CommonResponse<GetRestaurantsResponse> =
-                    objectMapper.readValue(
-                        responseContent2,
-                        responseType
-                    )
-
-                // then
-                secondPageResult.data!!.restaurants.content[0].name shouldBe "목구멍 율전점2"
             }
         }
 
@@ -2211,7 +1943,7 @@ class GetRestaurantControllerTest(
                     name = "목구멍 율전점"
                 )
                 restaurantRepository.save(restaurantEntity)
-                restaurantLikeRepository.save(
+                restaurantBookmarkRepository.save(
                     RestaurantBookmark(
                         userId = user?.id ?: 0,
                         restaurantId = restaurantEntity.id
@@ -2237,7 +1969,7 @@ class GetRestaurantControllerTest(
                 )
 
                 // then
-                actualResult.data!!.restaurant.isLike shouldBe true
+                actualResult.data!!.restaurant.isBookmarked shouldBe true
             }
 
             it("when not liked restaurant should return liked false") {
@@ -2266,7 +1998,7 @@ class GetRestaurantControllerTest(
                 )
 
                 // then
-                actualResult.data!!.restaurant.isLike shouldBe false
+                actualResult.data!!.restaurant.isBookmarked shouldBe false
             }
         }
     }

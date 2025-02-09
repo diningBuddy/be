@@ -33,13 +33,13 @@ class RestaurantEsRepository(
         request: GetRestaurantsRequest,
         pageable: Pageable,
         restaurantIds: List<Long>?,
-        like: Boolean?
+        bookmark: Boolean?
     ): Pair<List<RestaurantEsDocument>, List<Double>?> {
         val dsl = SearchDSL()
         val termQueries: MutableList<ESQuery> = mutableListOf()
 
         if (restaurantIds != null) {
-            if (like == true) {
+            if (bookmark == true) {
                 termQueries.add(
                     dsl.terms("id", *restaurantIds.map { it.toString() }.toTypedArray())
                 )
@@ -86,20 +86,6 @@ class RestaurantEsRepository(
                 }
             )
         }
-        if (request.naverRatingAvg != null) {
-            termQueries.add(
-                dsl.range("naver_rating_avg") {
-                    gte = request.naverRatingAvg
-                }
-            )
-        }
-        if (request.naverReviewCount != null) {
-            termQueries.add(
-                dsl.range("naver_review_count") {
-                    gte = request.naverReviewCount
-                }
-            )
-        }
         if (request.priceMax != null) {
             termQueries.add(
                 dsl.nested {
@@ -133,9 +119,6 @@ class RestaurantEsRepository(
             val res = client.search(
                 target = searchIndex,
                 block = {
-                    if (request.cursor != null) {
-                        searchAfter = request.cursor
-                    }
                     query = bool {
                         filter(
                             termQueries
@@ -190,7 +173,7 @@ class RestaurantEsRepository(
                     }
                 },
                 size = pageable.pageSize,
-                from = if (request.cursor != null) null else pageable.offset.toInt(),
+                from = pageable.offset.toInt(),
                 trackTotalHits = true
             )
 
