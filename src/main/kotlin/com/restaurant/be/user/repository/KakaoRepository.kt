@@ -4,7 +4,6 @@ import com.restaurant.be.common.exception.KaKaoGetTokenException
 import com.restaurant.be.user.repository.dto.KakaoTokenResponse
 import com.restaurant.be.user.repository.dto.KakaoUserInfo
 import org.springframework.beans.factory.annotation.Value
-import org.springframework.http.MediaType
 import org.springframework.stereotype.Repository
 import org.springframework.transaction.annotation.Transactional
 import org.springframework.util.LinkedMultiValueMap
@@ -36,7 +35,7 @@ class KakaoRepository(
         return restClient
             .post()
             .uri("https://kauth.kakao.com/oauth/token")
-            .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+            .header("Content-Type", "application/x-www-form-urlencoded;charset=utf-8")
             .body(
                 LinkedMultiValueMap<String, String>().apply {
                     add("grant_type", "authorization_code")
