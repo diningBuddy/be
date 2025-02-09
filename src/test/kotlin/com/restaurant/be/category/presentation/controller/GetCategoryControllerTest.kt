@@ -29,7 +29,7 @@ class GetCategoryControllerTest(
     private val userRepository: UserRepository,
     private val categoryRepository: CategoryRepository
 ) : CustomDescribeSpec() {
-    private val baseUrl = "/v1/restaurants/category"
+    private val baseUrl = "/v1/restaurants/categories"
     private val objectMapper: ObjectMapper =
         ObjectMapper().registerModule(KotlinModule()).apply {
             val module = SimpleModule()

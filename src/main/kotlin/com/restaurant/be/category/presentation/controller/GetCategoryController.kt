@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController
 
 @Tag(name = "02. Restaurant Info", description = "음식점 서비스")
 @RestController
-@RequestMapping("/v1/restaurants/category")
+@RequestMapping("/v1/restaurants/categories")
 class GetCategoryController(
     private val getCategoryService: GetCategoryService
 ) {
