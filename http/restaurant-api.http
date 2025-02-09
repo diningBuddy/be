@@ -1,0 +1,18 @@
+### 음식점 전체 조회
+GET http://localhost:8080/v1/restaurants
+Content-Type: application/json
+Authorization: {{auth_token}}
+
+### 음식점 단건 조회
+GET http://localhost:8080/v1/restaurants/1
+Content-Type: application/json
+Authorization: {{auth_token}}
+
+### 전체 카테고리
+GET http://localhost:8080/v1/restaurants/categories
+Authorization: {{auth_token}}
+
+### 메뉴 조회
+GET http://localhost:8080/v1/restaurants/1/menus
+Content-Type: application/json
+Authorization: {{auth_token}}
