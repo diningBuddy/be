@@ -1,5 +1,7 @@
 package com.restaurant.be.home.presentation.dto
 
+import com.restaurant.be.category.presentation.controller.dto.GetCategoriesResponse
+import com.restaurant.be.popular.presentation.dto.GetPopularRestaurantResponse
 import com.restaurant.be.restaurant.presentation.controller.dto.common.RestaurantDto
 import io.swagger.v3.oas.annotations.media.Schema
 
@@ -11,9 +13,10 @@ data class HomeRequest(
 )
 
 data class HomeResponse(
-    val restaurantBanner: List<GetBannerResponse>, // TODO: 배너는 랭킹 상위 6개 표기
-    // TODO: 카테고리List
-    val restaurantRecommendations: List<GetRecommendationRestaurantsResponse>
+    val restaurantBanner: List<GetBannerResponse>,
+    val popularRestaurants: List<GetPopularRestaurantResponse>,
+    val restaurantRecommendations: List<GetRecommendationRestaurantsResponse>,
+    val restaurantCategories: List<GetCategoriesResponse>
 )
 
 data class GetBannerResponse(

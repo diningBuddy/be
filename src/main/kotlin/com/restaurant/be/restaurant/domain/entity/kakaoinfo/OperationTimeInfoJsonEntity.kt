@@ -2,7 +2,7 @@ package com.restaurant.be.restaurant.domain.entity.kakaoinfo
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.fasterxml.jackson.annotation.JsonProperty
-// TODO:entity -> dto 필터... ;;
+
 @JsonIgnoreProperties(ignoreUnknown = true)
 data class OperationTimeInfoJsonEntity(
     @JsonProperty("start_time")
