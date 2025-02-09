@@ -5,6 +5,7 @@ import com.restaurant.be.common.redis.RedisRepository
 import com.restaurant.be.restaurant.presentation.controller.dto.GetRestaurantResponse
 import com.restaurant.be.restaurant.presentation.controller.dto.GetRestaurantsRequest
 import com.restaurant.be.restaurant.presentation.controller.dto.GetRestaurantsResponse
+import com.restaurant.be.restaurant.presentation.controller.dto.common.MenuDto
 import com.restaurant.be.restaurant.repository.RestaurantBookmarkRepository
 import com.restaurant.be.restaurant.repository.RestaurantEsRepository
 import com.restaurant.be.restaurant.repository.RestaurantRepository
@@ -73,8 +74,23 @@ class GetRestaurantService(
         userId: Long
     ): GetRestaurantResponse {
         val restaurant =
-            restaurantRepository.findDtoById(restaurantId, userId)
+            restaurantRepository.findDtoById(
+                restaurantId,
+                userId
+            )
                 ?: throw NotFoundRestaurantException()
         return GetRestaurantResponse(restaurant.toDto())
+    }
+
+    fun getMenus(
+        restaurantId: Long,
+        userId: Long
+    ): List<MenuDto> {
+        val restaurant = restaurantRepository.findDtoById(
+            restaurantId,
+            userId
+        )
+            ?: throw NotFoundRestaurantException()
+        return restaurant.menus.map { menu -> menu.toDto() }
     }
 }

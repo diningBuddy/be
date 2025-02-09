@@ -5,6 +5,7 @@ import com.restaurant.be.restaurant.domain.service.GetRestaurantService
 import com.restaurant.be.restaurant.presentation.controller.dto.GetRestaurantResponse
 import com.restaurant.be.restaurant.presentation.controller.dto.GetRestaurantsRequest
 import com.restaurant.be.restaurant.presentation.controller.dto.GetRestaurantsResponse
+import com.restaurant.be.restaurant.presentation.controller.dto.common.MenuDto
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.media.Content
 import io.swagger.v3.oas.annotations.media.Schema
@@ -55,7 +56,29 @@ class GetRestaurantController(
         principal: Principal,
         @PathVariable restaurantId: Long
     ): CommonResponse<GetRestaurantResponse> {
-        val response = getRestaurantService.getRestaurant(restaurantId, principal.name.toLong())
+        val response = getRestaurantService.getRestaurant(
+            restaurantId,
+            principal.name.toLong()
+        )
+        return CommonResponse.success(response)
+    }
+
+    @GetMapping("/{restaurantId}/menus")
+    @PreAuthorize("hasRole('USER')")
+    @Operation(summary = "음식점 메뉴 전체 조회 API")
+    @ApiResponse(
+        responseCode = "200",
+        description = "성공",
+        content = [Content(schema = Schema(implementation = MenuDto::class))]
+    )
+    fun getRestaurantMenus(
+        principal: Principal,
+        @PathVariable restaurantId: Long
+    ): CommonResponse<List<MenuDto>> {
+        val response = getRestaurantService.getMenus(
+            restaurantId,
+            principal.name.toLong()
+        )
         return CommonResponse.success(response)
     }
 }
