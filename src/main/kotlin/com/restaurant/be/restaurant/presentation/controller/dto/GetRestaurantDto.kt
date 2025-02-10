@@ -1,12 +1,11 @@
 package com.restaurant.be.restaurant.presentation.controller.dto
 
-import com.restaurant.be.restaurant.domain.entity.jsonentity.MenuJsonEntity
-import com.restaurant.be.restaurant.domain.entity.kakaoinfo.FacilityInfoJsonEntity
-import com.restaurant.be.restaurant.domain.entity.kakaoinfo.OperationInfoJsonEntity
-import com.restaurant.be.restaurant.domain.entity.kakaoinfo.OperationTimeInfosJsonEntity
 import com.restaurant.be.restaurant.presentation.controller.dto.common.RestaurantDto
+import com.restaurant.be.restaurant.presentation.controller.dto.jsonentity.FacilityInfoDto
+import com.restaurant.be.restaurant.presentation.controller.dto.jsonentity.OperationInfoDto
 import io.swagger.v3.oas.annotations.media.Schema
 import org.springframework.data.domain.Page
+import java.time.DayOfWeek
 
 data class GetRestaurantsRequest(
     @Schema(title = "식당 이름 검색", example = "맛집", required = false)
@@ -27,25 +26,74 @@ data class GetRestaurantsRequest(
     val customSort: Sort = Sort.BASIC,
     @Schema(title = "식당 평점 개수 필터", example = "100", required = false)
     var ratingCount: Long?,
-    @Schema(title = "식당 편의 정보 필터", example = "example", required = false)
-    var facilityInfos: FacilityInfoJsonEntity?,
-    @Schema(title = "식당 운영 정보 필터", example = "APPOINTMENT", required = false)
-    var operationInfos: OperationInfoJsonEntity?,
-    @Schema(title = "식당 운영 시간 필터", example = "잠깐 뭔가 JSON형태여야하는데..?", required = false)
-    var operationTimes: List<OperationTimeInfosJsonEntity>?,
+    @Schema(title = "와이파이 제공 여부", example = "true", required = false)
+    val hasWifi: Boolean?,
+    @Schema(title = "반려동물 동반 가능 여부", example = "true", required = false)
+    val hasPet: Boolean?,
+    @Schema(title = "주차 가능 여부", example = "true", required = false)
+    val hasParking: Boolean?,
+    @Schema(title = "수유실 보유 여부", example = "true", required = false)
+    val hasNursery: Boolean?,
+    @Schema(title = "흡연실 보유 여부", example = "true", required = false)
+    val hasSmokingRoom: Boolean?,
+    @Schema(title = "장애인 편의시설 보유 여부", example = "true", required = false)
+    val hasDisabledFacility: Boolean?,
+    @Schema(title = "예약 가능 여부", example = "true", required = false)
+    val hasAppointment: Boolean?,
+    @Schema(title = "배달 가능 여부", example = "true", required = false)
+    val hasDelivery: Boolean?,
+    @Schema(title = "포장 가능 여부", example = "true", required = false)
+    val hasPackagee: Boolean?,
+    @Schema(title = "영업 요일", example = "MONDAY", required = false)
+    val operationDay: DayOfWeek?,
+    @Schema(title = "영업 시작 시간", example = "09:00", required = false)
+    val operationStartTime: String?,
+    @Schema(title = "영업 종료 시간", example = "22:00", required = false)
+    val operationEndTime: String?,
+    @Schema(title = "영업 휴식 시작 시간", example = "15:00", required = false)
+    val breakStartTime: String?,
+    @Schema(title = "영업 휴식 종료 시간", example = "17:00", required = false)
+    val breakEndTime: String?,
+    @Schema(title = "영업 마지막 주문 시간", example = "21:30", required = false)
+    val lastOrder: String?,
     @Schema(title = "카카오 평점 필터", example = "4.5", required = false)
     val kakaoRatingAvg: Double?,
     @Schema(title = "카카오 평점 개수 필터", example = "100", required = false)
     val kakaoRatingCount: Int?,
-    @Schema(title = "메뉴 Json리스트", example = "100", required = false)
-    val menus: List<MenuJsonEntity>?,
     @Schema(title = "찜 필터", example = "false", required = false)
     val bookmark: Boolean?,
     @Schema(title = "경도(거리순 정렬 할 때 사용)", example = "126.123456", required = false)
     val longitude: Double?,
     @Schema(title = "위도(거리순 정렬 할 때 사용)", example = "37.123456", required = false)
     val latitude: Double?
-)
+) {
+    fun toFacilityInfoDto(): FacilityInfoDto? {
+        if (hasWifi == null && hasPet == null && hasParking == null &&
+            hasNursery == null && hasSmokingRoom == null && hasDisabledFacility == null
+        ) {
+            return null
+        }
+        return FacilityInfoDto(
+            wifi = hasWifi,
+            pet = hasPet,
+            parking = hasParking,
+            nursery = hasNursery,
+            smokingRoom = hasSmokingRoom,
+            forDisabled = hasDisabledFacility
+        )
+    }
+
+    fun toOperationInfoDto(): OperationInfoDto? {
+        if (hasAppointment == null && hasDelivery == null && hasPackagee == null) {
+            return null
+        }
+        return OperationInfoDto(
+            appointment = hasAppointment,
+            delivery = hasDelivery,
+            packagee = hasPackagee
+        )
+    }
+}
 
 enum class Sort {
     BASIC,

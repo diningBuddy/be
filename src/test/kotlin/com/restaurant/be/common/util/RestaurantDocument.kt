@@ -22,7 +22,7 @@ data class RestaurantDocument(
     @Field(type = FieldType.Text, name = "address")
     val address: String,
 
-    @Field(type = FieldType.Text, name = "original_category")
+    @Field(type = FieldType.Keyword, name = "original_category")
     val originalCategory: String,
 
     @Field(type = FieldType.Long, name = "review_count")
@@ -55,8 +55,8 @@ data class RestaurantDocument(
     @Field(type = FieldType.Text, name = "image_url")
     val imageUrl: String?,
 
-    @Field(type = FieldType.Text, name = "category")
-    val category: String,
+    @Field(type = FieldType.Text, name = "categories")
+    val categories: List<String>,
 
     @Field(type = FieldType.Text, name = "discount_content")
     val discountContent: String?,

@@ -5,43 +5,89 @@ import com.restaurant.be.home.presentation.dto.GetRecommendationRestaurantsRespo
 import com.restaurant.be.home.presentation.dto.HomeRequest
 import com.restaurant.be.home.presentation.dto.HomeResponse
 import com.restaurant.be.home.presentation.dto.RecommendationType
-import com.restaurant.be.restaurant.domain.entity.kakaoinfo.FacilityInfoJsonEntity
-import com.restaurant.be.restaurant.domain.entity.kakaoinfo.OperationInfoJsonEntity
-import com.restaurant.be.restaurant.domain.entity.kakaoinfo.OperationTimeInfoJsonEntity
-import com.restaurant.be.restaurant.domain.entity.kakaoinfo.OperationTimeInfosJsonEntity
 import com.restaurant.be.restaurant.domain.service.GetRestaurantService
-import com.restaurant.be.restaurant.presentation.controller.dto.common.MenuDto
-import com.restaurant.be.restaurant.presentation.controller.dto.common.RestaurantDetailDto
-import com.restaurant.be.restaurant.presentation.controller.dto.common.RestaurantDto
+import com.restaurant.be.restaurant.presentation.controller.dto.GetRestaurantsRequest
+import com.restaurant.be.restaurant.presentation.controller.dto.Sort
+import org.springframework.data.domain.PageRequest
 import org.springframework.stereotype.Service
 
 @Service
 class HomeService(
     private val restaurantService: GetRestaurantService
 ) {
+    companion object {
+        const val RECOMMENDATION_SIZE = 5
+    }
 
     fun getHome(
         request: HomeRequest,
         userId: Long
     ): HomeResponse {
-//        val lunchRequest: GetRestaurantsRequest = GetRestaurantsRequest(
-//            //필요한 필터.
-//            ratingAvg = 4.0,
-//            categories = //포하만 가능
-//        )
-//        val midNightRequest: GetRestaurantsRequest = GetRestaurantsRequest(
-//            //필요한 필터.
-//            ratingAvg = 4.0,
-//            categories =
-//        )
-        // paging propose:5 pagnation객체
+        val categoriesForLunch = arrayOf(
+            "한식", "갈비", "감자탕", "곱창", "막창", "국밥", "국수", "닭강정", "닭요리", "도시락",
+            "떡볶이", "매운탕", "해물탕", "분식", "삼겹살", "설렁탕", "순대", "실내포장마차", "육류",
+            "고기", "족발", "보쌈", "주먹밥", "찌개", "전골", "치킨", "칼국수", "해물", "생선",
+            "해장국", "조개", "회", "양식", "이탈리안", "멕시칸", "브라질", "샌드위치", "샐러드",
+            "양꼬치", "피자", "패스트푸드", "햄버거", "일식", "돈까스", "우동", "일본식라면",
+            "일본식주점", "오뎅바", "참치회", "초밥", "롤", "중식", "중국요리", "아시안", "베트남음식",
+            "동남아음식", "카페", "디저트카페", "아이스크림", "제과", "베이커리", "커피전문점", "간식",
+            "장어", "철판요리", "호프", "요리주점", "술집", "퓨전요리", "퓨전한식", "온천", "음식점"
+        ).distinct()
+        val baseRequest = GetRestaurantsRequest(
+            query = null,
+            categories = null,
+            discountForSkku = null,
+            ratingAvg = null,
+            reviewCount = null,
+            priceMin = null,
+            priceMax = null,
+            customSort = Sort.CLOSELY_DESC,
+            ratingCount = null,
+            hasWifi = null,
+            hasPet = null,
+            hasParking = null,
+            hasNursery = null,
+            hasSmokingRoom = null,
+            hasDisabledFacility = null,
+            hasAppointment = null,
+            hasDelivery = null,
+            hasPackagee = null,
+            operationDay = null,
+            operationStartTime = null,
+            operationEndTime = null,
+            breakStartTime = null,
+            breakEndTime = null,
+            lastOrder = null,
+            kakaoRatingAvg = null,
+            kakaoRatingCount = null,
+            bookmark = null,
+            longitude = request.userLongitude,
+            latitude = request.userLatitude
+        )
+        val categoriesForMidNight = arrayOf(
+            "한식", "갈비", "감자탕", "곱창", "막창", "국밥", "국수", "닭강정", "닭요리", "도시락",
+            "떡볶이", "매운탕", "해물탕", "분식", "삼겹살", "설렁탕", "순대", "실내포장마차", "육류",
+            "고기", "족발", "보쌈", "주먹밥", "찌개", "전골", "치킨", "칼국수", "해물", "생선",
+            "해장국", "조개", "회", "피자", "패스트푸드", "햄버거", "일식", "돈까스", "우동", "일본식라면",
+            "일본식주점", "오뎅바", "참치회", "초밥", "롤"
+        ).toList()
+        val lunchRequest = baseRequest.copy(
+            categories = categoriesForLunch,
+            kakaoRatingAvg = 4.0,
+            operationStartTime = "11:00",
+            operationEndTime = "15:00"
+        )
 
-//        val lunchResponse = restaurantService.getRestaurants(lunchRequest,5,userId)
-//        val yasikResponse = restaurantService.getRestaurants(midNightRequest,5,userId)
-        // 배너관련...별도서비스?배너서비스..!
-        // TODO: 가짜객체는 반환되게-> 식당을 먼저 이후 여기
+        val midNightRequest = baseRequest.copy(
+            categories = categoriesForMidNight,
+            kakaoRatingAvg = 3.5,
+            operationEndTime = "02:00"
+        )
 
-        val testHomeResponse = HomeResponse(
+        val pageable = PageRequest.of(0, RECOMMENDATION_SIZE)
+        val lunchResponse = restaurantService.getRestaurants(lunchRequest, pageable, userId)
+        val midNightResponse = restaurantService.getRestaurants(midNightRequest, pageable, userId)
+        return HomeResponse(
             restaurantBanner = listOf(
                 GetBannerResponse(
                     imageUrl = "http://t1.daumcdn.net/place/F3A68FC964E949C4828CBF47A6297921",
@@ -49,144 +95,16 @@ class HomeService(
                     subtitle = "맛있는 고기를 파는 율전점의 고깃집입니다."
                 )
             ),
-            // null이면 충분하다.
             restaurantRecommendations = listOf(
                 GetRecommendationRestaurantsResponse(
-                    recommendationType = RecommendationType.LAUNCH,
-                    restaurants = listOf(
-                        RestaurantDto(
-                            id = 1L,
-                            representativeImageUrl = "http://t1.daumcdn.net/place/F3A68FC964E949C4828CBF47A6297921",
-                            name = "맛있는 식당",
-                            ratingAvg = 4.5,
-                            ratingCount = 100L,
-                            facilityInfos = FacilityInfoJsonEntity(
-                                "Y",
-                                "Y",
-                                "Y",
-                                "Y",
-                                "Y",
-                                "Y"
-                            ),
-                            operationInfos = OperationInfoJsonEntity(
-                                "Y",
-                                "Y",
-                                "Y"
-                            ),
-                            operationTimes = listOf(
-                                OperationTimeInfosJsonEntity(
-                                    dayOfTheWeek = "월요일",
-                                    operationTimeInfo = OperationTimeInfoJsonEntity(
-                                        startTime = "11:00",
-                                        endTime = "12:30",
-                                        breakStartTime = null,
-                                        breakEndTime = null,
-                                        lastOrder = null
-                                    )
-                                )
-                            ),
-                            reviewCount = 50L,
-                            bookmarkCount = 30L,
-                            categories = listOf("한식", "분식"),
-                            representativeMenu = MenuDto(
-                                name = "하이볼",
-                                price = 8000,
-                                description = "맛있는 하이볼",
-                                isRepresentative = false,
-                                imageUrl = "https://search.pstatic.net/common/?autoRotate=true&quality=95&type=f320_320&src=https://ldb-phinf.pstatic.net/20230525_34/16849976756701d50P_JPEG/Screenshot_20230525_095732_Samsung_Internet.jpg"
-                            ),
-                            representativeReviewContent = "정말 맛있어요! 또 방문하고 싶은 맛집입니다.",
-                            isBookmarked = false,
-                            discountContent = "런치 메뉴 10% 할인",
-                            longitude = 127.1086228,
-                            latitude = 37.4012191,
-                            kakaoRatingAvg = 4.3,
-                            kakaoRatingCount = 200L,
-                            detailInfo = RestaurantDetailDto(
-                                contactNumber = "0507-1464-9295",
-                                address = "경기 수원시 장안구 화산로233번길 46 1층",
-                                menus = listOf(
-                                    MenuDto(
-                                        name = "하이볼",
-                                        price = 8000,
-                                        description = "맛있는 하이볼",
-                                        isRepresentative = false,
-                                        imageUrl = "https://search.pstatic.net/common/?autoRotate=true&quality=95&type=f320_320&src=https://ldb-phinf.pstatic.net/20230525_34/16849976756701d50P_JPEG/Screenshot_20230525_095732_Samsung_Internet.jpg"
-                                    )
-                                )
-                            )
-                        )
-                    )
+                    RecommendationType.LAUNCH,
+                    lunchResponse.restaurants.content
                 ),
                 GetRecommendationRestaurantsResponse(
-                    recommendationType = RecommendationType.LATE_NIGHT,
-                    restaurants = listOf(
-                        RestaurantDto(
-                            id = 2L,
-                            representativeImageUrl = "http://t1.daumcdn.net/place/F3A68FC964E949C4828CBF47A6297921",
-                            name = "야식의 신",
-                            ratingAvg = 4.7,
-                            ratingCount = 150L,
-                            facilityInfos = FacilityInfoJsonEntity(
-                                "Y",
-                                "Y",
-                                "Y",
-                                "Y",
-                                "Y",
-                                "Y"
-                            ),
-                            operationInfos = OperationInfoJsonEntity(
-                                "Y",
-                                "Y",
-                                "Y"
-                            ),
-                            operationTimes = listOf(
-                                OperationTimeInfosJsonEntity(
-                                    dayOfTheWeek = "월요일",
-                                    operationTimeInfo = OperationTimeInfoJsonEntity(
-                                        startTime = "11:00",
-                                        endTime = "12:30",
-                                        breakStartTime = null,
-                                        breakEndTime = null,
-                                        lastOrder = null
-                                    )
-                                )
-                            ),
-                            reviewCount = 75L,
-                            bookmarkCount = 45L,
-                            categories = listOf("치킨", "야식"),
-                            representativeMenu = MenuDto(
-                                name = "하이볼",
-                                price = 8000,
-                                description = "맛있는 하이볼",
-                                isRepresentative = false,
-                                imageUrl = "https://search.pstatic.net/common/?autoRotate=true&quality=95&type=f320_320&src=https://ldb-phinf.pstatic.net/20230525_34/16849976756701d50P_JPEG/Screenshot_20230525_095732_Samsung_Internet.jpg"
-                            ),
-                            representativeReviewContent = "새벽에도 맛있는 음식을 먹을 수 있어요!",
-                            isBookmarked = true,
-                            discountContent = "배달비 무료",
-                            longitude = 127.1087228,
-                            latitude = 37.4013191,
-                            kakaoRatingAvg = 4.5,
-                            kakaoRatingCount = 300L,
-                            detailInfo = RestaurantDetailDto(
-                                contactNumber = "0507-1464-9295",
-                                address = "경기 수원시 장안구 화산로233번길 46 1층",
-                                menus = listOf(
-                                    MenuDto(
-                                        name = "하이볼",
-                                        price = 8000,
-                                        description = "맛있는 하이볼",
-                                        isRepresentative = false,
-                                        imageUrl = "https://search.pstatic.net/common/?autoRotate=true&quality=95&type=f320_320&src=https://ldb-phinf.pstatic.net/20230525_34/16849976756701d50P_JPEG/Screenshot_20230525_095732_Samsung_Internet.jpg"
-                                    )
-                                )
-                            )
-                        )
-                    )
+                    RecommendationType.LATE_NIGHT,
+                    midNightResponse.restaurants.content
                 )
             )
         )
-        return testHomeResponse
     }
 }
