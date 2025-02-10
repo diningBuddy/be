@@ -40,9 +40,9 @@ class BookmarkRestaurantController(
         pageable: Pageable
     ): CommonResponse<GetBookmarkRestaurantsResponse> {
         val response = bookmarkRestaurantService.getMyLikeRestaurant(
-                pageable,
-                principal.name.toLong()
-            )
+            pageable,
+            principal.name.toLong()
+        )
         return CommonResponse.success(response)
     }
 
