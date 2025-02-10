@@ -1,6 +1,6 @@
 
 ### 리뷰 생성
-POST http://localhost:8080/v1/restaurants/1/reviews
+POST {{host}}/v1/restaurants/1/reviews
 Content-Type: application/json
 Authorization: {{auth_token}}
 
@@ -11,7 +11,7 @@ Authorization: {{auth_token}}
 }
 
 ### 리뷰 삭제
-DELETE http://127.0.0.1:8080/v1/restaurants/reviews/1
+DELETE {{host}}/v1/restaurants/reviews/1
 Content-Type: application/json
 Authorization: {{auth_token}}
 
@@ -22,12 +22,12 @@ Authorization: {{auth_token}}
 }
 
 ### 내 리뷰 조회
-GET http://localhost:8080/v1/restaurants/my-reviews
+GET {{host}}/v1/restaurants/my-reviews
 Content-Type: application/json
 Authorization: {{auth_token}}
 
 ### 식당의 모든 리뷰 조회
-GET http://localhost:8080/v1/restaurants/1/reviews
+GET {{host}}/v1/restaurants/1/reviews
 Content-Type: application/json
 Authorization: {{auth_token}}
 
@@ -38,7 +38,7 @@ Authorization: {{auth_token}}
 }
 
 ### 리뷰 단건 조회
-GET http://localhost:8080/v1/restaurants/reviews/1
+GET {{host}}/v1/restaurants/reviews/1
 Content-Type: application/json
 Authorization: {{auth_token}}
 
@@ -47,7 +47,7 @@ Authorization: {{auth_token}}
 }
 
 ### 리뷰 변경
-PATCH http://localhost:8080/v1/restaurants/reviews/1/reviews/1
+PATCH {{host}}/v1/restaurants/reviews/1/reviews/1
 Content-Type: application/json
 Authorization: {{auth_token}}
 
@@ -56,7 +56,7 @@ Authorization: {{auth_token}}
 }
 
 ### 리뷰 좋아요
-POST http://localhost:8080/v1/restaurants/reviews/1/like
+POST {{host}}/v1/restaurants/reviews/1/like
 Content-Type: application/json
 Authorization: {{auth_token}}
 

@@ -8,7 +8,7 @@ Content-Type: application/json
 Authorization: Bearer {{token}}
 
 ### POST 요청
-POST http://localhost:8080/v1/users/sign-up
+POST http://{{host}}/v1/users/sign-up
 Content-Type: application/json
 
 {
@@ -19,7 +19,7 @@ Content-Type: application/json
 }
 
 ### POST 요청
-POST http://localhost:8080/v1/users/sign-in
+POST http://{{host}}/v1/users/sign-in
 Content-Type: application/json
 
 {

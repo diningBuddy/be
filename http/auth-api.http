@@ -1,5 +1,5 @@
 ### 로그인 요청
-POST http://localhost:8080/v1/users/sign-in
+POST {{host}}/v1/users/sign-in
 Content-Type: application/json
 
 {
@@ -13,7 +13,7 @@ client.log(client.global.get("auth_token"))
 %}
 
 ### 회원가입
-POST http://localhost:8080/v1/users/sign-up
+POST {{host}}/v1/users/sign-up
 Content-Type: application/json
 
 {
