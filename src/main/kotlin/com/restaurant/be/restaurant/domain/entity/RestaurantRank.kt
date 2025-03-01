@@ -4,7 +4,7 @@ import jakarta.persistence.*
 
 @Entity
 @Table(name = "restaurant_ranks")
-class RestaurantRank (
+class RestaurantRank(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id: Long,
