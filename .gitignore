@@ -46,5 +46,6 @@ docker/redis/**
 ### IDEA run ###
 /.run
 .env
+http-client.env.json
 
 **/.DS_Store/**

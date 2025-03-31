@@ -12,6 +12,7 @@ import com.jillesvangurp.searchdsls.querydsl.match
 import com.jillesvangurp.searchdsls.querydsl.nested
 import com.jillesvangurp.searchdsls.querydsl.range
 import com.jillesvangurp.searchdsls.querydsl.sort
+import com.jillesvangurp.searchdsls.querydsl.term
 import com.jillesvangurp.searchdsls.querydsl.terms
 import com.restaurant.be.restaurant.presentation.controller.dto.GetRestaurantsRequest
 import com.restaurant.be.restaurant.presentation.controller.dto.Sort
@@ -21,6 +22,7 @@ import kotlinx.serialization.json.contentOrNull
 import kotlinx.serialization.json.jsonPrimitive
 import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Repository
+import java.time.DayOfWeek
 
 @Repository
 class RestaurantEsRepository(
@@ -37,7 +39,6 @@ class RestaurantEsRepository(
     ): Pair<List<RestaurantEsDocument>, List<Double>?> {
         val dsl = SearchDSL()
         val termQueries: MutableList<ESQuery> = mutableListOf()
-
         if (restaurantIds != null) {
             if (bookmark == true) {
                 termQueries.add(
@@ -56,9 +57,10 @@ class RestaurantEsRepository(
 
         if (!request.categories.isNullOrEmpty()) {
             termQueries.add(
-                dsl.terms("category", *request.categories.toTypedArray())
+                dsl.terms("categories", *request.categories.toTypedArray())
             )
         }
+
         if (request.discountForSkku == true) {
             termQueries.add(
                 dsl.exists("discount_content")
@@ -72,6 +74,97 @@ class RestaurantEsRepository(
                 }
             )
         }
+
+        if (request.operationDay != null) {
+            val dayOfWeek = when (request.operationDay) {
+                DayOfWeek.MONDAY -> "월요일"
+                DayOfWeek.TUESDAY -> "화요일"
+                DayOfWeek.WEDNESDAY -> "수요일"
+                DayOfWeek.THURSDAY -> "목요일"
+                DayOfWeek.FRIDAY -> "금요일"
+                DayOfWeek.SATURDAY -> "토요일"
+                DayOfWeek.SUNDAY -> "일요일"
+            }
+
+            termQueries.add(
+                createTimeBasedQuery(
+                    request,
+                    dayOfWeek,
+                    dsl
+                )
+            )
+        }
+
+        if (request.hasWifi != null) {
+            termQueries.add(
+                dsl.match("facility_infos.wifi", if (request.hasWifi) "Y" else "N")
+            )
+        }
+
+        if (request.hasPet != null) {
+            termQueries.add(
+                dsl.match("facility_infos.pet", if (request.hasPet) "Y" else "N")
+            )
+        }
+
+        if (request.hasParking != null) {
+            termQueries.add(
+                dsl.match("facility_infos.parking", if (request.hasParking) "Y" else "N")
+            )
+        }
+
+        if (request.hasNursery != null) {
+            termQueries.add(
+                dsl.match("facility_infos.nursery", if (request.hasNursery) "Y" else "N")
+            )
+        }
+
+        if (request.hasSmokingRoom != null) {
+            termQueries.add(
+                dsl.match("facility_infos.smokingroom", if (request.hasSmokingRoom) "Y" else "N")
+            )
+        }
+
+        if (request.hasDisabledFacility != null) {
+            termQueries.add(
+                dsl.match("facility_infos.fordisabled", if (request.hasDisabledFacility) "Y" else "N")
+            )
+        }
+
+        if (request.hasAppointment != null) {
+            termQueries.add(
+                dsl.match("operation_infos.appointment", if (request.hasAppointment) "Y" else "N")
+            )
+        }
+
+        if (request.hasDelivery != null) {
+            termQueries.add(
+                dsl.match("operation_infos.delivery", if (request.hasDelivery) "Y" else "N")
+            )
+        }
+
+        if (request.hasPackagee != null) {
+            termQueries.add(
+                dsl.match("operation_infos.package", if (request.hasPackagee) "Y" else "N")
+            )
+        }
+
+        if (request.kakaoRatingAvg != null) {
+            termQueries.add(
+                dsl.range("kakao_rating_avg") {
+                    gte = request.kakaoRatingAvg
+                }
+            )
+        }
+
+        if (request.kakaoRatingCount != null) {
+            termQueries.add(
+                dsl.range("kakao_rating_count") {
+                    gte = request.kakaoRatingCount
+                }
+            )
+        }
+
         if (request.ratingAvg != null) {
             termQueries.add(
                 dsl.range("rating_avg") {
@@ -128,7 +221,7 @@ class RestaurantEsRepository(
                                 match("name", request.query) {
                                     boost = 0.1
                                 },
-                                match("category", request.query) {
+                                match("categories", request.query) {
                                     boost = 0.03
                                 },
                                 match("original_category", request.query) {
@@ -186,5 +279,97 @@ class RestaurantEsRepository(
         }
 
         return result
+    }
+
+    private fun createTimeBasedQuery(
+        request: GetRestaurantsRequest,
+        dayOfWeek: String,
+        dsl: SearchDSL
+    ): ESQuery {
+        return dsl.nested {
+            path = "operation_times"
+            query = dsl.bool {
+                must(dsl.term("operation_times.day_of_the_week", dayOfWeek))
+
+                request.operationStartTime?.let { searchTime ->
+                    must(
+                        dsl.bool {
+                            must(
+                                dsl.range("operation_times.operation_time_info.start_time.keyword") {
+                                    lte = searchTime
+                                },
+                                dsl.bool {
+                                    should(
+                                        dsl.range("operation_times.operation_time_info.end_time.keyword") {
+                                            gt = searchTime
+                                        },
+                                        dsl.term("operation_times.operation_time_info.end_time.keyword", "24:00")
+                                    )
+                                }
+                            )
+                        }
+                    )
+                }
+
+                if (request.breakStartTime != null || request.breakEndTime != null) {
+                    must(createBreakTimeQuery(request.breakStartTime, request.breakEndTime, dsl))
+                }
+
+                request.lastOrder?.let { lastOrderTime ->
+                    must(createLastOrderQuery(lastOrderTime, dsl))
+                }
+            }
+        }
+    }
+
+    private fun createBreakTimeQuery(
+        breakStartTime: String?,
+        breakEndTime: String?,
+        dsl: SearchDSL
+    ): ESQuery {
+        return dsl.bool {
+            should(
+                dsl.bool {
+                    mustNot(dsl.exists("operation_times.operation_time_info.break_start_time.keyword"))
+                },
+                dsl.bool {
+                    breakStartTime?.let { startTime ->
+                        must(
+                            dsl.range("operation_times.operation_time_info.break_start_time.keyword") {
+                                gte = startTime
+                            }
+                        )
+                    }
+                    breakEndTime?.let { endTime ->
+                        must(
+                            dsl.range("operation_times.operation_time_info.break_end_time.keyword") {
+                                lte = endTime
+                            }
+                        )
+                    }
+                }
+            )
+        }
+    }
+
+    private fun createLastOrderQuery(
+        lastOrderTime: String,
+        dsl: SearchDSL
+    ): ESQuery {
+        return dsl.bool {
+            should(
+                dsl.bool {
+                    mustNot(dsl.exists("operation_times.operation_time_info.last_order.keyword"))
+                },
+                dsl.bool {
+                    must(
+                        dsl.exists("operation_times.operation_time_info.last_order.keyword"),
+                        dsl.range("operation_times.operation_time_info.last_order.keyword") {
+                            gte = lastOrderTime
+                        }
+                    )
+                }
+            )
+        }
     }
 }

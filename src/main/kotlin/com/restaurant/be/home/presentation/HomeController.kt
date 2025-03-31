@@ -5,14 +5,12 @@ import com.restaurant.be.home.domain.service.HomeService
 import com.restaurant.be.home.presentation.dto.HomeRequest
 import com.restaurant.be.home.presentation.dto.HomeResponse
 import io.swagger.v3.oas.annotations.Operation
-import io.swagger.v3.oas.annotations.media.Content
-import io.swagger.v3.oas.annotations.media.Schema
-import io.swagger.v3.oas.annotations.responses.ApiResponse
+import io.swagger.v3.oas.annotations.Parameter
 import io.swagger.v3.oas.annotations.tags.Tag
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.ModelAttribute
 import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 import java.security.Principal
 
@@ -25,16 +23,32 @@ class HomeController(
 
     @GetMapping
     @PreAuthorize("hasRole('USER')")
-    @Operation(summary = "메인 페이지 API")
-    @ApiResponse(
-        responseCode = "200",
-        description = "성공",
-        content = [Content(schema = Schema(implementation = HomeResponse::class))]
+    @Operation(
+        summary = "메인 페이지 API",
+        parameters = [
+            Parameter(
+                name = "userLatitude",
+                description = "사용자 위치 - 위도",
+                required = true,
+                example = "37.2977142440725"
+            ),
+            Parameter(
+                name = "userLongitude",
+                description = "사용자 위치 - 경도",
+                required = true,
+                example = "126.970140339367"
+            )
+        ]
     )
     fun getRecommendations(
         principal: Principal,
-        @ModelAttribute request: HomeRequest
+        @RequestParam userLatitude: Double,
+        @RequestParam userLongitude: Double
     ): CommonResponse<HomeResponse> {
+        val request = HomeRequest(
+            userLatitude,
+            userLongitude
+        )
         val response = homeService.getHome(
             request,
             principal.name.toLong()

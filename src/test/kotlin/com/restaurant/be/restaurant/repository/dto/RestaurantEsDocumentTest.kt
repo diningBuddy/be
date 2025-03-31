@@ -21,7 +21,7 @@ class RestaurantEsDocumentTest : DescribeSpec({
                 address = "123 Test St",
                 kakaoRatingAvg = 4.5,
                 imageUrl = "http://example.com/restaurant.jpg",
-                category = "Italian, Pizza",
+                categories = listOf("Italian, Pizza"),
                 discountContent = "10% off",
                 menus = listOf(menuEsDocument),
                 reviewCount = 200L,
@@ -30,7 +30,7 @@ class RestaurantEsDocumentTest : DescribeSpec({
                 operationInfos = OperationInfoEsDocument("N", "N", "N"),
                 operationTimeInfos = mutableListOf(),
                 ratingCount = 100,
-                bookmark_count = 0
+                bookmarkCount = 0
             )
 
             // When
@@ -43,7 +43,7 @@ class RestaurantEsDocumentTest : DescribeSpec({
             restaurantEsDocument.address shouldBe "123 Test St"
             restaurantEsDocument.kakaoRatingAvg shouldBe 4.5
             restaurantEsDocument.imageUrl shouldBe "http://example.com/restaurant.jpg"
-            restaurantEsDocument.category shouldBe "Italian, Pizza"
+            restaurantEsDocument.categories shouldBe listOf("Italian, Pizza")
             restaurantEsDocument.discountContent shouldBe "10% off"
             restaurantEsDocument.menus.size shouldBe 1
             restaurantEsDocument.menus[0].menuName shouldBe "Pasta"
@@ -52,7 +52,7 @@ class RestaurantEsDocumentTest : DescribeSpec({
             restaurantEsDocument.facilityInfos shouldBe FacilityInfoEsDocument("N", "N", "N", "N", "N", "N")
             restaurantEsDocument.operationInfos shouldBe OperationInfoEsDocument("N", "N", "N")
             restaurantEsDocument.operationTimeInfos shouldBe mutableListOf()
-            restaurantEsDocument.bookmark_count shouldBe 0
+            restaurantEsDocument.bookmarkCount shouldBe 0
         }
     }
 

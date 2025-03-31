@@ -1,0 +1,26 @@
+### 로그인 요청
+POST {{host}}/v1/users/sign-in
+Content-Type: application/json
+
+{
+  "phoneNumber": "{{phoneNumber}}",
+  "certificationNumber": "{{certificationNumber}}"
+}
+
+> {%
+  client.global.set("auth_token", response.headers.valueOf("Authorization"));
+client.log(client.global.get("auth_token"))
+%}
+
+### 회원가입
+POST {{host}}/v1/users/sign-up
+Content-Type: application/json
+
+{
+  "phoneNumber":"{{phoneNumber}}",
+  "name":"lee",
+  "birthday": "1999-01-01",
+  "gender": "MAN"
+}
+
+
