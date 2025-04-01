@@ -66,6 +66,42 @@ class GetRestaurantService(
         )
     }
 
+    fun getPopularRestaurants(
+        request: GetRestaurantsRequest,
+        pageable: Pageable,
+        userId: Long,
+        restaurantIds: List<Long>
+    ): String {
+        val (restaurants, nextCursor) =
+            restaurantEsRepository.searchPopularRestaurants(
+                request,
+                pageable,
+                restaurantIds
+            )
+
+        if (!request.query.isNullOrEmpty()) {
+            redisRepository.addSearchQuery(userId, request.query)
+        }
+
+        val restaurantProjections =
+            restaurantRepository.findDtoByIds(
+                restaurants.map { it.id },
+                userId
+            )
+
+        val restaurantMap = restaurantProjections.associateBy { it.restaurant.id }
+        val sortedRestaurantProjections = restaurants.mapNotNull { restaurantMap[it.id] }
+
+        return GetRestaurantsResponse(
+            PageImpl(
+                sortedRestaurantProjections.map { it.toDto() },
+                pageable,
+                sortedRestaurantProjections.size.toLong()
+            ),
+            nextCursor
+        )
+    }
+
     @Transactional(readOnly = true)
     fun getRestaurant(
         restaurantId: Long,

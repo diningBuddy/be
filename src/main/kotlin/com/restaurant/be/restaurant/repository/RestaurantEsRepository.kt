@@ -372,4 +372,24 @@ class RestaurantEsRepository(
             )
         }
     }
+
+    fun searchPopularRestaurants(
+        request: GetRestaurantsRequest,
+        pageable: Pageable,
+        restaurantIds: List<Long>
+    ): Pair<List<RestaurantEsDocument>, List<Double>?> {
+        val dsl = SearchDSL()
+        val termQueries: MutableList<ESQuery> = mutableListOf()
+        if (restaurantIds != null) {
+            termQueries.add(
+                dsl.terms("id", *restaurantIds.map { it.toString() }.toTypedArray())
+            )
+        }
+
+        if (!request.categories.isNullOrEmpty()) {
+            termQueries.add(
+                dsl.terms("categories", *request.categories.toTypedArray())
+            )
+        }
+    }
 }
