@@ -1,4 +1,4 @@
-package com.restaurant.be.restaurant.domain.entity
+package com.restaurant.be.kakao.domain.entity
 
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
@@ -18,5 +18,5 @@ class RestaurantRank(
     var restaurantId: Long,
 
     @Column(name = "rank_number", nullable = false)
-    var rank: Int
+    var rank: Int,
 )
