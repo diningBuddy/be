@@ -1,0 +1,4 @@
+### 식당 랭킹 조회
+GET {{host}}/v1/kakao/popular-restaurants
+Content-Type: application/json
+Authorization: {{auth_token}}

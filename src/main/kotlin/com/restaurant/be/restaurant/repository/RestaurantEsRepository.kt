@@ -254,8 +254,22 @@ class RestaurantEsRepository(
                     }
 
                     sort {
-                        add("bookmark_count", SortOrder.DESC)
-                        add("id", SortOrder.ASC)
+                        when (request.customSort) {
+                            Sort.BASIC -> add("_score", SortOrder.DESC)
+                            Sort.CLOSELY_DESC -> add("_geo_distance", SortOrder.ASC) {
+                                this["location"] = mapOf(
+                                    "lat" to request.latitude,
+                                    "lon" to request.longitude
+                                )
+                                this["unit"] = "m"
+                                this["mode"] = "min"
+                                this["distance_type"] = "arc"
+                            }
+                            Sort.RATING_DESC -> add("rating_avg", SortOrder.DESC)
+                            Sort.REVIEW_COUNT_DESC -> add("review_count", SortOrder.DESC)
+                            Sort.BOOKMARK_COUNT_DESC -> add("bookmark_count", SortOrder.DESC)
+                            Sort.ID_ASC -> add("id", SortOrder.ASC)
+                        }
                     }
                 },
                 size = pageable.pageSize,
