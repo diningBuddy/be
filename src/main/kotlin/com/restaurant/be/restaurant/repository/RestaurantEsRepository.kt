@@ -91,25 +91,23 @@ class RestaurantEsRepository(
                             )
                             minimumShouldMatch(1)
                         }
-                        sort {
-                            when (request.customSort) {
-                                Sort.BASIC -> add("_score", SortOrder.DESC)
-                                Sort.CLOSELY_DESC -> add("_geo_distance", SortOrder.ASC) {
-                                    this["location"] = mapOf(
-                                        "lat" to request.latitude,
-                                        "lon" to request.longitude
-                                    )
-                                    this["unit"] = "m"
-                                    this["mode"] = "min"
-                                    this["distance_type"] = "arc"
-                                }
-                                Sort.RATING_DESC -> add("rating_avg", SortOrder.DESC)
-                                Sort.REVIEW_COUNT_DESC -> add("review_count", SortOrder.DESC)
-                                Sort.BOOKMARK_COUNT_DESC -> add("bookmark_count", SortOrder.DESC)
-                                Sort.ID_ASC -> null
+                    }
+                    sort {
+                        when (request.customSort) {
+                            Sort.BASIC -> add("_score", SortOrder.DESC)
+                            Sort.CLOSELY_DESC -> add("_geo_distance", SortOrder.ASC) {
+                                this["location"] = mapOf(
+                                    "lat" to request.latitude,
+                                    "lon" to request.longitude
+                                )
+                                this["unit"] = "m"
+                                this["mode"] = "min"
+                                this["distance_type"] = "arc"
                             }
-
-                            add("id", SortOrder.ASC)
+                            Sort.RATING_DESC -> add("rating_avg", SortOrder.DESC)
+                            Sort.REVIEW_COUNT_DESC -> add("review_count", SortOrder.DESC)
+                            Sort.BOOKMARK_COUNT_DESC -> add("bookmark_count", SortOrder.DESC)
+                            Sort.ID_ASC -> add("id", SortOrder.ASC)
                         }
                     }
                 },
@@ -308,59 +306,16 @@ class RestaurantEsRepository(
             termQueries.add(createTimeBasedQuery(request, dayOfWeek, dsl))
         }
 
-        if (request.hasWifi != null) {
-            termQueries.add(
-                dsl.match("facility_infos.wifi", if (request.hasWifi) "Y" else "N")
-            )
-        }
+        addFacilityMatch(termQueries, dsl, "wifi", request.hasWifi)
+        addFacilityMatch(termQueries, dsl, "pet", request.hasPet)
+        addFacilityMatch(termQueries, dsl, "parking", request.hasParking)
+        addFacilityMatch(termQueries, dsl, "nursery", request.hasNursery)
+        addFacilityMatch(termQueries, dsl, "smokingroom", request.hasSmokingRoom)
+        addFacilityMatch(termQueries, dsl, "fordisabled", request.hasDisabledFacility)
 
-        if (request.hasPet != null) {
-            termQueries.add(
-                dsl.match("facility_infos.pet", if (request.hasPet) "Y" else "N")
-            )
-        }
-
-        if (request.hasParking != null) {
-            termQueries.add(
-                dsl.match("facility_infos.parking", if (request.hasParking) "Y" else "N")
-            )
-        }
-
-        if (request.hasNursery != null) {
-            termQueries.add(
-                dsl.match("facility_infos.nursery", if (request.hasNursery) "Y" else "N")
-            )
-        }
-
-        if (request.hasSmokingRoom != null) {
-            termQueries.add(
-                dsl.match("facility_infos.smokingroom", if (request.hasSmokingRoom) "Y" else "N")
-            )
-        }
-
-        if (request.hasDisabledFacility != null) {
-            termQueries.add(
-                dsl.match("facility_infos.fordisabled", if (request.hasDisabledFacility) "Y" else "N")
-            )
-        }
-
-        if (request.hasAppointment != null) {
-            termQueries.add(
-                dsl.match("operation_infos.appointment", if (request.hasAppointment) "Y" else "N")
-            )
-        }
-
-        if (request.hasDelivery != null) {
-            termQueries.add(
-                dsl.match("operation_infos.delivery", if (request.hasDelivery) "Y" else "N")
-            )
-        }
-
-        if (request.hasPackagee != null) {
-            termQueries.add(
-                dsl.match("operation_infos.package", if (request.hasPackagee) "Y" else "N")
-            )
-        }
+        addOperationInfoMatch(termQueries, dsl, "appointment", request.hasAppointment)
+        addOperationInfoMatch(termQueries, dsl, "delivery", request.hasDelivery)
+        addOperationInfoMatch(termQueries, dsl, "package", request.hasPackagee)
 
         if (request.kakaoRatingAvg != null) {
             termQueries.add(
@@ -420,8 +375,18 @@ class RestaurantEsRepository(
                 }
             )
         }
-
         return termQueries
     }
 
+    private fun addFacilityMatch(termQueries: MutableList<ESQuery>, dsl: SearchDSL, field: String, value: Boolean?) {
+        value?.let {
+            termQueries.add(dsl.match("facility_infos.$field", if (it) "Y" else "N"))
+        }
+    }
+
+    private fun addOperationInfoMatch(termQueries: MutableList<ESQuery>, dsl: SearchDSL, field: String, value: Boolean?) {
+        value?.let {
+            termQueries.add(dsl.match("operation_infos.$field", if (it) "Y" else "N"))
+        }
+    }
 }
