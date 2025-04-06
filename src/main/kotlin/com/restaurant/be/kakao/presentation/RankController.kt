@@ -21,10 +21,10 @@ import java.security.Principal
 @RestController
 @RequestMapping("/v1/kakao")
 @Tag(name = "07. Restaurant Rank Info", description = "음식점 랭킹 서비스")
-class RankController (
+class RankController(
     private val getPopularRestaurantService: GetPopularRestaurantService,
-    private val getRestaurantService: GetRestaurantService,
-){
+    private val getRestaurantService: GetRestaurantService
+) {
     @GetMapping("/popular-restaurants")
     @PreAuthorize("hasRole('USER')")
     @Operation(summary = "카카오 맛집 랭킹 조회 API")
@@ -38,13 +38,13 @@ class RankController (
         @ModelAttribute request: GetRestaurantsRequest,
         pageable: Pageable
     ): CommonResponse<GetRestaurantsResponse> {
-        val restaurantIds = getPopularRestaurantService.getRestaurantIds();
+        val restaurantIds = getPopularRestaurantService.getRestaurantIds()
         val response =
             getRestaurantService.getPopularRestaurants(
                 request,
                 pageable,
                 principal.name.toLong(),
-                restaurantIds,
+                restaurantIds
             )
         return CommonResponse.success(response)
     }

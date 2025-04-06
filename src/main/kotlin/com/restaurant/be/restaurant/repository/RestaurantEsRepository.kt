@@ -38,7 +38,7 @@ class RestaurantEsRepository(
         bookmark: Boolean?
     ): Pair<List<RestaurantEsDocument>, List<Double>?> {
         val dsl = SearchDSL()
-        val termQueries: MutableList<ESQuery> = buildCommonRestaurantFilters(request, dsl);
+        val termQueries: MutableList<ESQuery> = buildCommonRestaurantFilters(request, dsl)
         if (restaurantIds != null) {
             if (bookmark == true) {
                 termQueries.add(
@@ -54,7 +54,6 @@ class RestaurantEsRepository(
                 )
             }
         }
-
 
         val result = runBlocking {
             val res = client.search(
@@ -378,8 +377,11 @@ class RestaurantEsRepository(
     private fun buildCategoryFilters(request: GetRestaurantsRequest, dsl: SearchDSL): List<ESQuery> {
         return if (!request.categories.isNullOrEmpty()) {
             listOf(
-                dsl.terms("categories", *request.categories.toTypedArray()))
-        }else emptyList()
+                dsl.terms("categories", *request.categories.toTypedArray())
+            )
+        } else {
+            emptyList()
+        }
     }
 
     private fun buildDiscountFilters(request: GetRestaurantsRequest, dsl: SearchDSL): List<ESQuery> {

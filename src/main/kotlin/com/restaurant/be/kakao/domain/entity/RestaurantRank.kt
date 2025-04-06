@@ -17,5 +17,5 @@ class RestaurantRank(
     var scrapCategory: ScrapCategory,
 
     @Column(name = "rank_number", nullable = false)
-    var rank: Int,
+    var rank: Int
 )
