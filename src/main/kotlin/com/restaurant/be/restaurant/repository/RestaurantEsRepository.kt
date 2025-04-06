@@ -279,21 +279,75 @@ class RestaurantEsRepository(
     ): MutableList<ESQuery> {
         val termQueries = mutableListOf<ESQuery>()
 
-        if (!request.categories.isNullOrEmpty()) {
-            termQueries.add(
-                dsl.terms("categories", *request.categories.toTypedArray())
-            )
-        }
+        termQueries += buildCategoryFilters(request, dsl)
+        termQueries += buildDiscountFilters(request, dsl)
+        termQueries += buildOperationDayFilter(request, dsl)
+        termQueries += buildFacilityFilters(request, dsl)
+        termQueries += buildOperationInfoFilters(request, dsl)
+        termQueries += buildRatingFilters(request, dsl)
+        termQueries += buildPriceFilters(request, dsl)
 
-        if (request.discountForSkku == true) {
-            termQueries.add(dsl.exists("discount_content"))
-        } else if (request.discountForSkku == false) {
-            termQueries.add(dsl.bool {
-                mustNot(dsl.exists("discount_content"))
-            })
-        }
+        return termQueries
+    }
 
-        request.operationDay?.let {
+    private fun buildPriceFilters(request: GetRestaurantsRequest, dsl: SearchDSL): List<ESQuery> {
+        if (request.priceMin == null && request.priceMax == null) return emptyList()
+
+        return listOf(
+            dsl.nested {
+                path = "menus"
+                query = dsl.bool {
+                    val rangeQuery = dsl.range("menus.price") {
+                        request.priceMin?.let { gte = it }
+                        request.priceMax?.let { lte = it }
+                    }
+                    filter(rangeQuery)
+                }
+            }
+        )
+    }
+
+    private fun buildRatingFilters(request: GetRestaurantsRequest, dsl: SearchDSL): List<ESQuery> {
+        val result = mutableListOf<ESQuery>()
+        request.kakaoRatingAvg?.let {
+            result.add(dsl.range("kakao_rating_avg") { gte = it })
+        }
+        request.kakaoRatingCount?.let {
+            result.add(dsl.range("kakao_rating_count") { gte = it })
+        }
+        request.ratingAvg?.let {
+            result.add(dsl.range("rating_avg") { gte = it })
+        }
+        request.reviewCount?.let {
+            result.add(dsl.range("review_count") { gte = it })
+        }
+        return result
+    }
+
+    private fun buildOperationInfoFilters(
+        request: GetRestaurantsRequest,
+        dsl: SearchDSL
+    ): List<ESQuery> {
+        val result = mutableListOf<ESQuery>()
+        addOperationInfoMatch(result, dsl, "appointment", request.hasAppointment)
+        addOperationInfoMatch(result, dsl, "delivery", request.hasDelivery)
+        addOperationInfoMatch(result, dsl, "package", request.hasPackagee)
+        return result
+    }
+
+    private fun buildFacilityFilters(request: GetRestaurantsRequest, dsl: SearchDSL): List<ESQuery> {
+        val result = mutableListOf<ESQuery>()
+        addFacilityMatch(result, dsl, "wifi", request.hasWifi)
+        addFacilityMatch(result, dsl, "pet", request.hasPet)
+        addFacilityMatch(result, dsl, "parking", request.hasParking)
+        addFacilityMatch(result, dsl, "nursery", request.hasNursery)
+        addFacilityMatch(result, dsl, "smokingroom", request.hasSmokingRoom)
+        addFacilityMatch(result, dsl, "fordisabled", request.hasDisabledFacility)
+        return result
+    }
+
+    private fun buildOperationDayFilter(request: GetRestaurantsRequest, dsl: SearchDSL): List<ESQuery> {
+        return request.operationDay?.let {
             val dayOfWeek = when (it) {
                 DayOfWeek.MONDAY -> "월요일"
                 DayOfWeek.TUESDAY -> "화요일"
@@ -303,79 +357,23 @@ class RestaurantEsRepository(
                 DayOfWeek.SATURDAY -> "토요일"
                 DayOfWeek.SUNDAY -> "일요일"
             }
-            termQueries.add(createTimeBasedQuery(request, dayOfWeek, dsl))
-        }
+            listOf(createTimeBasedQuery(request, dayOfWeek, dsl))
+        } ?: emptyList()
+    }
 
-        addFacilityMatch(termQueries, dsl, "wifi", request.hasWifi)
-        addFacilityMatch(termQueries, dsl, "pet", request.hasPet)
-        addFacilityMatch(termQueries, dsl, "parking", request.hasParking)
-        addFacilityMatch(termQueries, dsl, "nursery", request.hasNursery)
-        addFacilityMatch(termQueries, dsl, "smokingroom", request.hasSmokingRoom)
-        addFacilityMatch(termQueries, dsl, "fordisabled", request.hasDisabledFacility)
+    private fun buildCategoryFilters(request: GetRestaurantsRequest, dsl: SearchDSL): List<ESQuery> {
+        return if (!request.categories.isNullOrEmpty()) {
+            listOf(
+                dsl.terms("categories", *request.categories.toTypedArray()))
+        }else emptyList()
+    }
 
-        addOperationInfoMatch(termQueries, dsl, "appointment", request.hasAppointment)
-        addOperationInfoMatch(termQueries, dsl, "delivery", request.hasDelivery)
-        addOperationInfoMatch(termQueries, dsl, "package", request.hasPackagee)
-
-        if (request.kakaoRatingAvg != null) {
-            termQueries.add(
-                dsl.range("kakao_rating_avg") {
-                    gte = request.kakaoRatingAvg
-                }
-            )
+    private fun buildDiscountFilters(request: GetRestaurantsRequest, dsl: SearchDSL): List<ESQuery> {
+        return when (request.discountForSkku) {
+            true -> listOf(dsl.exists("discount_content"))
+            false -> listOf(dsl.bool { mustNot(dsl.exists("discount_content")) })
+            else -> emptyList()
         }
-
-        if (request.kakaoRatingCount != null) {
-            termQueries.add(
-                dsl.range("kakao_rating_count") {
-                    gte = request.kakaoRatingCount
-                }
-            )
-        }
-
-        if (request.ratingAvg != null) {
-            termQueries.add(
-                dsl.range("rating_avg") {
-                    gte = request.ratingAvg
-                }
-            )
-        }
-        if (request.reviewCount != null) {
-            termQueries.add(
-                dsl.range("review_count") {
-                    gte = request.reviewCount
-                }
-            )
-        }
-        if (request.priceMax != null) {
-            termQueries.add(
-                dsl.nested {
-                    path = "menus"
-                    query = dsl.bool {
-                        filter(
-                            dsl.range("menus.price") {
-                                lte = request.priceMax
-                            }
-                        )
-                    }
-                }
-            )
-        }
-        if (request.priceMin != null) {
-            termQueries.add(
-                dsl.nested {
-                    path = "menus"
-                    query = dsl.bool {
-                        filter(
-                            dsl.range("menus.price") {
-                                gte = request.priceMin
-                            }
-                        )
-                    }
-                }
-            )
-        }
-        return termQueries
     }
 
     private fun addFacilityMatch(termQueries: MutableList<ESQuery>, dsl: SearchDSL, field: String, value: Boolean?) {
