@@ -71,7 +71,7 @@ class GetRestaurantService(
         pageable: Pageable,
         userId: Long,
         restaurantIds: List<Long>
-    ): String {
+    ): GetRestaurantsResponse {
         val (restaurants, nextCursor) =
             restaurantEsRepository.searchPopularRestaurants(
                 request,
