@@ -12,7 +12,19 @@ Authorization: {{auth_token}}
 GET {{host}}/v1/restaurants/categories
 Authorization: {{auth_token}}
 
-### 메뉴 조회
-GET {{host}}/v1/restaurants/1/menus
-Content-Type: application/json
+### 찜한 음식점 조회 API
+GET {{host}}/v1/restaurants/bookmarks
 Authorization: {{auth_token}}
+
+### 찜한 음식점 조회 API(페이징)
+GET {{host}}/v1/restaurants/bookmarks?page=1&size=10
+Authorization: {{auth_token}}
+
+### 음식점 찜 혹은 취소 API
+POST {{host}}/v1/restaurants/1/bookmark
+Authorization: {{auth_token}}
+Content-Type: application/json
+
+{
+  "isLike": true
+}
