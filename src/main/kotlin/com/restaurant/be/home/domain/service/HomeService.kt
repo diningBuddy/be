@@ -5,6 +5,8 @@ import com.restaurant.be.home.presentation.dto.GetRecommendationRestaurantsRespo
 import com.restaurant.be.home.presentation.dto.HomeRequest
 import com.restaurant.be.home.presentation.dto.HomeResponse
 import com.restaurant.be.home.presentation.dto.RecommendationType
+import com.restaurant.be.kakao.domain.entity.ScrapCategory
+import com.restaurant.be.kakao.domain.service.GetPopularRestaurantService
 import com.restaurant.be.restaurant.domain.service.GetRestaurantService
 import com.restaurant.be.restaurant.presentation.controller.dto.GetRestaurantsRequest
 import com.restaurant.be.restaurant.presentation.controller.dto.Sort
@@ -13,7 +15,8 @@ import org.springframework.stereotype.Service
 
 @Service
 class HomeService(
-    private val restaurantService: GetRestaurantService
+    private val restaurantService: GetRestaurantService,
+    private val getPopularRestaurantService: GetPopularRestaurantService
 ) {
     companion object {
         const val RECOMMENDATION_SIZE = 5
@@ -85,16 +88,25 @@ class HomeService(
         )
 
         val pageable = PageRequest.of(0, RECOMMENDATION_SIZE)
+
         val lunchResponse = restaurantService.getRestaurants(lunchRequest, pageable, userId)
         val midNightResponse = restaurantService.getRestaurants(midNightRequest, pageable, userId)
+
+        val bannerRestaurants = restaurantService.getPopularRestaurants(
+            baseRequest,
+            pageable,
+            userId,
+            getPopularRestaurantService
+                .getHomeBannerRestaurants(ScrapCategory.ALL)
+        )
         return HomeResponse(
-            restaurantBanner = listOf(
+            restaurantBanner = bannerRestaurants.restaurants.content.map { restaurant ->
                 GetBannerResponse(
-                    imageUrl = "http://t1.daumcdn.net/place/F3A68FC964E949C4828CBF47A6297921",
-                    title = "율전점 고깃집",
-                    subtitle = "맛있는 고기를 파는 율전점의 고깃집입니다."
+                    imageUrl = restaurant.name,
+                    title = restaurant.name,
+                    subtitle = "맛있는 ${restaurant.name}입니다."
                 )
-            ),
+            },
             restaurantRecommendations = listOf(
                 GetRecommendationRestaurantsResponse(
                     RecommendationType.LAUNCH,
