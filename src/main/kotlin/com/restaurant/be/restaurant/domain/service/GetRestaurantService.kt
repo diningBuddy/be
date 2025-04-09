@@ -66,6 +66,7 @@ class GetRestaurantService(
         )
     }
 
+    @Transactional(readOnly = true)
     fun getPopularRestaurants(
         request: GetRestaurantsRequest,
         pageable: Pageable,

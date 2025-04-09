@@ -21,7 +21,7 @@ import java.security.Principal
 @RestController
 @RequestMapping("/v1/kakao")
 @Tag(name = "07. Restaurant Rank Info", description = "음식점 랭킹 서비스")
-class RankController(
+class PopularRestaurantController(
     private val getPopularRestaurantService: GetPopularRestaurantService,
     private val getRestaurantService: GetRestaurantService
 ) {
