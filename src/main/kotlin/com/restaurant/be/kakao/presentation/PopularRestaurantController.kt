@@ -1,20 +1,19 @@
 package com.restaurant.be.kakao.presentation
 
 import com.restaurant.be.common.response.CommonResponse
+import com.restaurant.be.kakao.domain.entity.ScrapCategory
 import com.restaurant.be.kakao.domain.service.GetPopularRestaurantService
 import com.restaurant.be.restaurant.domain.service.GetRestaurantService
 import com.restaurant.be.restaurant.presentation.controller.dto.GetRestaurantsRequest
 import com.restaurant.be.restaurant.presentation.controller.dto.GetRestaurantsResponse
 import io.swagger.v3.oas.annotations.Operation
-import io.swagger.v3.oas.annotations.media.Content
-import io.swagger.v3.oas.annotations.media.Schema
-import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.tags.Tag
 import org.springframework.data.domain.Pageable
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.ModelAttribute
 import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 import java.security.Principal
 
@@ -28,24 +27,21 @@ class PopularRestaurantController(
     @GetMapping("/popular-restaurants")
     @PreAuthorize("hasRole('USER')")
     @Operation(summary = "카카오 맛집 랭킹 조회 API")
-    @ApiResponse(
-        responseCode = "200",
-        description = "성공",
-        content = [Content(schema = Schema(implementation = GetRestaurantsResponse::class))]
-    )
     fun getPopularRestaurants(
         principal: Principal,
         @ModelAttribute request: GetRestaurantsRequest,
-        pageable: Pageable
+        pageable: Pageable,
+        @RequestParam(required = false, defaultValue = "전체") scrapCategoryParam: String
     ): CommonResponse<GetRestaurantsResponse> {
-        val restaurantIds = getPopularRestaurantService.getRestaurantIds()
-        val response =
-            getRestaurantService.getPopularRestaurants(
-                request,
-                pageable,
-                principal.name.toLong(),
-                restaurantIds
-            )
+        val scrapCategory = ScrapCategory.fromDisplayName(scrapCategoryParam) ?: ScrapCategory.ALL
+        val restaurantIds = getPopularRestaurantService.getRestaurantIdsByScrapCategory(scrapCategory)
+
+        val response = getRestaurantService.getPopularRestaurants(
+            request = request,
+            pageable = pageable,
+            userId = principal.name.toLong(),
+            restaurantIds = restaurantIds
+        )
         return CommonResponse.success(response)
     }
 }
