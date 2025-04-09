@@ -24,5 +24,5 @@ class PopularRestaurant(
     var scrapCategory: ScrapCategory,
 
     @Column(name = "rank_number", nullable = false)
-    var rank: Int
+    var rankNumber: Int
 )
