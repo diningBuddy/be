@@ -1,0 +1,4 @@
+### 인기 식당 리스트 가져오기
+GET {{host}}/v1/home?userLatitude=37.2977142440725&userLongitude=126.970140339367
+Content-Type: application/json
+Authorization: {{auth_token}}

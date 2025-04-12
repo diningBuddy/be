@@ -20,6 +20,7 @@ class HomeService(
 ) {
     companion object {
         const val RECOMMENDATION_SIZE = 5
+        const val BANNER_SIZE = 10
     }
 
     fun getHome(
@@ -94,15 +95,17 @@ class HomeService(
 
         val bannerRestaurants = restaurantService.getPopularRestaurants(
             baseRequest,
-            pageable,
+            PageRequest.of(0, BANNER_SIZE),
             userId,
             getPopularRestaurantService
                 .getHomeBannerRestaurants(ScrapCategory.ALL)
         )
         return HomeResponse(
-            restaurantBanner = bannerRestaurants.restaurants.content.map { restaurant ->
+            restaurantBanner = bannerRestaurants.restaurants.content
+                .filter { !it.representativeImageUrl.isNullOrEmpty() && it.representativeImageUrl != "{}"}
+                .map { restaurant ->
                 GetBannerResponse(
-                    imageUrl = restaurant.name,
+                    imageUrl = requireNotNull(restaurant.representativeImageUrl) {"대표 이미지가 없습니다."},
                     title = restaurant.name,
                     subtitle = "맛있는 ${restaurant.name}입니다."
                 )
