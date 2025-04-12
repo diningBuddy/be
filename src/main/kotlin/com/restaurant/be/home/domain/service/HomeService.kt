@@ -102,14 +102,14 @@ class HomeService(
         )
         return HomeResponse(
             restaurantBanner = bannerRestaurants.restaurants.content
-                .filter { !it.representativeImageUrl.isNullOrEmpty() && it.representativeImageUrl != "{}"}
+                .filter { !it.representativeImageUrl.isNullOrEmpty() && it.representativeImageUrl != "{}" }
                 .map { restaurant ->
-                GetBannerResponse(
-                    imageUrl = requireNotNull(restaurant.representativeImageUrl) {"대표 이미지가 없습니다."},
-                    title = restaurant.name,
-                    subtitle = "맛있는 ${restaurant.name}입니다."
-                )
-            }.take(3),
+                    GetBannerResponse(
+                        imageUrl = requireNotNull(restaurant.representativeImageUrl) { "대표 이미지가 없습니다." },
+                        title = restaurant.name,
+                        subtitle = "맛있는 ${restaurant.name}입니다."
+                    )
+                }.take(3),
             restaurantRecommendations = listOf(
                 GetRecommendationRestaurantsResponse(
                     RecommendationType.LAUNCH,
