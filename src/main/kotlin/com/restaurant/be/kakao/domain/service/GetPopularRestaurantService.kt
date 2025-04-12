@@ -18,7 +18,7 @@ class GetPopularRestaurantService(
     @Transactional(readOnly = true)
     fun getHomeBannerRestaurants(
         category: ScrapCategory,
-        limit: Int = 6
+        limit: Int = 10
     ): List<Long> {
         return popularRestaurantRepository
             .findTopRankedByScrapCategory(category, PageRequest.of(0, limit))

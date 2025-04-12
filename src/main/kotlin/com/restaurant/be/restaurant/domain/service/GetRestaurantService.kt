@@ -20,9 +20,6 @@ class GetRestaurantService(
     private val restaurantRepository: RestaurantRepository,
     private val restaurantLikeRepository: RestaurantBookmarkRepository
 ) {
-    companion object{
-        const val INQUIRE_BANNER_SIZE = 3;
-    }
     @Transactional(readOnly = true)
     fun getRestaurants(
         request: GetRestaurantsRequest,
@@ -90,7 +87,7 @@ class GetRestaurantService(
             restaurantRepository.findDtoByIds(
                 restaurants.map { it.id },
                 userId
-            ).filter { it.restaurant.representativeImageUrl != "{}" }.take(INQUIRE_BANNER_SIZE)
+            ).filter { it.restaurant.representativeImageUrl != "{}" }
 
         val restaurantMap = restaurantProjections.associateBy { it.restaurant.id }
         val sortedRestaurantProjections = restaurants.mapNotNull { restaurantMap[it.id] }

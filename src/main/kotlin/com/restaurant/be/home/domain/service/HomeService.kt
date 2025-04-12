@@ -20,7 +20,7 @@ class HomeService(
 ) {
     companion object {
         const val RECOMMENDATION_SIZE = 5
-        const val BANNER_SIZE = 10
+        const val BANNER_MAX_SIZE = 10
     }
 
     fun getHome(
@@ -95,7 +95,7 @@ class HomeService(
 
         val bannerRestaurants = restaurantService.getPopularRestaurants(
             baseRequest,
-            PageRequest.of(0, BANNER_SIZE),
+            PageRequest.of(0, BANNER_MAX_SIZE),
             userId,
             getPopularRestaurantService
                 .getHomeBannerRestaurants(ScrapCategory.ALL)
@@ -109,7 +109,7 @@ class HomeService(
                     title = restaurant.name,
                     subtitle = "맛있는 ${restaurant.name}입니다."
                 )
-            },
+            }.take(3),
             restaurantRecommendations = listOf(
                 GetRecommendationRestaurantsResponse(
                     RecommendationType.LAUNCH,
