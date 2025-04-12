@@ -10,8 +10,8 @@ import jakarta.persistence.Id
 import jakarta.persistence.Table
 
 @Entity
-@Table(name = "restaurant_ranks")
-class RestaurantRank(
+@Table(name = "popular_restaurants")
+class PopularRestaurant(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id: Long,
@@ -24,5 +24,5 @@ class RestaurantRank(
     var scrapCategory: ScrapCategory,
 
     @Column(name = "rank_number", nullable = false)
-    var rank: Int
+    var rankNumber: Int
 )

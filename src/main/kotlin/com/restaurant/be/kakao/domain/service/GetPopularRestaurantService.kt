@@ -11,8 +11,9 @@ class GetPopularRestaurantService(
     private val popularRestaurantRepository: PopularRestaurantRepository
 ) {
     @Transactional(readOnly = true)
-    fun getRestaurantIds(): List<Long> {
-        return popularRestaurantRepository.findAll().map { it.restaurantId }
+    fun getRestaurantIdsByScrapCategory(scrapCategory: ScrapCategory): List<Long> {
+        return popularRestaurantRepository.findAllByScrapCategory(scrapCategory)
+            .mapNotNull { it.restaurantId }
     }
 
     @Transactional(readOnly = true)

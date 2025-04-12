@@ -1,13 +1,14 @@
 package com.restaurant.be.kakao.repository
 
-import com.restaurant.be.kakao.domain.entity.RestaurantRank
+import com.restaurant.be.kakao.domain.entity.PopularRestaurant
 import com.restaurant.be.kakao.domain.entity.ScrapCategory
 import org.springframework.data.domain.Pageable
 import org.springframework.data.jpa.repository.JpaRepository
 
-interface PopularRestaurantRepository : JpaRepository<RestaurantRank, Long> {
+interface PopularRestaurantRepository : JpaRepository<PopularRestaurant, Long> {
+    fun findAllByScrapCategory(scrapCategory: ScrapCategory): List<PopularRestaurant>
     fun findTopRankedByScrapCategory(
         scrapCategory: ScrapCategory,
         pageable: Pageable
-    ): List<RestaurantRank>
+    ): List<PopularRestaurant>
 }
