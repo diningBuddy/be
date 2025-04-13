@@ -6,7 +6,6 @@ import org.springframework.data.domain.Pageable
 import org.springframework.data.jpa.repository.JpaRepository
 
 interface PopularRestaurantRepository : JpaRepository<PopularRestaurant, Long> {
-    fun findAllByScrapCategory(scrapCategory: ScrapCategory): List<PopularRestaurant>
     fun findTopRankedByScrapCategory(
         scrapCategory: ScrapCategory,
         pageable: Pageable

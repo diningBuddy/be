@@ -10,19 +10,17 @@ import org.springframework.transaction.annotation.Transactional
 class GetPopularRestaurantService(
     private val popularRestaurantRepository: PopularRestaurantRepository
 ) {
-    @Transactional(readOnly = true)
-    fun getRestaurantIdsByScrapCategory(scrapCategory: ScrapCategory): List<Long> {
-        return popularRestaurantRepository.findAllByScrapCategory(scrapCategory)
-            .mapNotNull { it.restaurantId }
+    companion object {
+        private const val DEFAULT_MAX_RESULTS = 100
     }
 
     @Transactional(readOnly = true)
-    fun getHomeBannerRestaurants(
-        category: ScrapCategory,
-        limit: Int = 10
+    fun getRestaurantIdsByScrapCategory(
+        scrapCategory: ScrapCategory,
+        limit: Int = DEFAULT_MAX_RESULTS
     ): List<Long> {
         return popularRestaurantRepository
-            .findTopRankedByScrapCategory(category, PageRequest.of(0, limit))
+            .findTopRankedByScrapCategory(scrapCategory, PageRequest.of(0, limit))
             .map { it.restaurantId }
     }
 }
