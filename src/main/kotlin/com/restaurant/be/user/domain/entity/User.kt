@@ -5,15 +5,8 @@ import com.restaurant.be.common.entity.BaseEntity
 import com.restaurant.be.common.exception.NotFoundUserException
 import com.restaurant.be.user.domain.constant.Gender
 import com.restaurant.be.user.presentation.dto.SignUpUserRequest
-import jakarta.persistence.Column
-import jakarta.persistence.Convert
-import jakarta.persistence.Entity
+import jakarta.persistence.*
 import jakarta.persistence.FetchType.LAZY
-import jakarta.persistence.GeneratedValue
-import jakarta.persistence.GenerationType
-import jakarta.persistence.Id
-import jakarta.persistence.OneToMany
-import jakarta.persistence.Table
 import java.time.LocalDate
 
 @Entity
@@ -41,7 +34,7 @@ class User(
     var roles: List<String> = listOf(),
     @Column
     var profileImageUrl: String? = null,
-    @OneToMany(mappedBy = "user", fetch = LAZY)
+    @OneToMany(mappedBy = "user", cascade = [CascadeType.REMOVE], fetch = LAZY)
     var socialUsers: MutableList<SocialUser> = mutableListOf()
 ) : BaseEntity() {
     companion object {

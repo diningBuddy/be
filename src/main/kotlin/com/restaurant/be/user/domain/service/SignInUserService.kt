@@ -21,6 +21,9 @@ class SignInUserService(
 ) {
     fun signIn(request: SignInUserRequest): Token {
         val user = userRepository.findByPhoneNumber(request.phoneNumber) ?: throw NotFoundUserException()
+        if (user.isDeleted) { // soft deleted된 유저 판별
+            throw NotFoundUserException()
+        }
         certificationSmsService.verifyCertificationNumber(VerifyCertificationSmsRequest(request.phoneNumber, request.certificationNumber))
         val token = tokenProvider.createTokens(user.getId(), user.roles)
         redisRepository.saveRefreshToken(user.getId(), token.refreshToken)
