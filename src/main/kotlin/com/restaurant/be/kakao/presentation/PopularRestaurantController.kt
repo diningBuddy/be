@@ -33,11 +33,13 @@ class PopularRestaurantController(
         pageable: Pageable,
         @RequestParam(required = false, defaultValue = "전체") categoryParam: CategoryParam
     ): CommonResponse<GetRestaurantsResponse> {
-        return CommonResponse.success(getRestaurantService.getPopularRestaurants(
-            request = request,
-            pageable = pageable,
-            userId = principal.name.toLong(),
-            restaurantIds = getPopularRestaurantService.getRestaurantIdsByScrapCategory(categoryParam)
-        ))
+        return CommonResponse.success(
+            getRestaurantService.getPopularRestaurants(
+                request = request,
+                pageable = pageable,
+                userId = principal.name.toLong(),
+                restaurantIds = getPopularRestaurantService.getRestaurantIdsByScrapCategory(categoryParam)
+            )
+        )
     }
 }
