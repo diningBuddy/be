@@ -9,9 +9,9 @@ data class FacilityInfoJsonEntity(
     val pet: String?,
     val parking: String?,
     val nursery: String?,
-    @JsonProperty("smokingroom")
+    @JsonProperty("smokingRoom")
     val smokingRoom: String?,
-    @JsonProperty("fordisabled")
+    @JsonProperty("forDisabled")
     val forDisabled: String?
 
 ) {
