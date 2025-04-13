@@ -64,8 +64,7 @@ data class GetRestaurantsRequest(
     val longitude: Double?,
     @Schema(title = "위도(거리순 정렬 할 때 사용)", example = "37.123456", required = false)
     val latitude: Double?
-) {
-}
+)
 
 enum class Sort {
     BASIC,

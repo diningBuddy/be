@@ -11,5 +11,4 @@ enum class ScrapCategory(private val displayName: String) {
 
     @JsonValue
     override fun toString(): String = displayName
-
 }

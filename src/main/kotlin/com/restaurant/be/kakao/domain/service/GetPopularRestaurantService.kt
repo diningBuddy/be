@@ -1,6 +1,5 @@
 package com.restaurant.be.kakao.domain.service
 
-import com.restaurant.be.kakao.domain.entity.ScrapCategory
 import com.restaurant.be.kakao.presentation.dto.CategoryParam
 import com.restaurant.be.kakao.repository.PopularRestaurantRepository
 import org.springframework.stereotype.Service
