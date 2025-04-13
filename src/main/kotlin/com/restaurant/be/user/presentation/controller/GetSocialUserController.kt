@@ -1,7 +1,6 @@
 package com.restaurant.be.user.presentation.controller
 
 import com.restaurant.be.common.response.CommonResponse
-import com.restaurant.be.user.domain.service.CheckNicknameService
 import com.restaurant.be.user.domain.service.GetSocialUserService
 import com.restaurant.be.user.presentation.dto.CheckNicknameResponse
 import com.restaurant.be.user.presentation.dto.GetSocialUserDtoResponse

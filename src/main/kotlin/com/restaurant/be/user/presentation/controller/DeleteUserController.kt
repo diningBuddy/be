@@ -2,8 +2,6 @@ package com.restaurant.be.user.presentation.controller
 
 import com.restaurant.be.common.response.CommonResponse
 import com.restaurant.be.user.domain.service.DeleteUserService
-import com.restaurant.be.user.domain.service.SignUpSocialUserService
-import com.restaurant.be.user.presentation.dto.SignUpSocialUserRequest
 import com.restaurant.be.user.presentation.dto.common.UserIdDto
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.media.Content
@@ -12,7 +10,6 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.tags.Tag
 import jakarta.validation.Valid
 import org.springframework.web.bind.annotation.DeleteMapping
-import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController

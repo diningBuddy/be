@@ -1,12 +1,8 @@
 package com.restaurant.be.user.domain.service
 
-import com.restaurant.be.common.exception.DuplicateUserPhoneNumberException
 import com.restaurant.be.common.exception.NotFoundUserException
-import com.restaurant.be.user.domain.entity.User
-import com.restaurant.be.user.presentation.dto.SignUpUserRequest
 import com.restaurant.be.user.presentation.dto.common.UserIdDto
 import com.restaurant.be.user.repository.UserRepository
-import com.restaurant.be.user.util.NickNameGenerateUtil
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
@@ -18,9 +14,9 @@ class DeleteUserService(
     @Transactional
     fun withdraw(request: UserIdDto): Boolean {
         val user = userRepository.findById(request.id).orElseThrow {
-            NotFoundUserException();
+            NotFoundUserException()
         }
-        user.delete();
+        user.delete()
         return true
     }
 }
