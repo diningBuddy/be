@@ -98,16 +98,15 @@ class HomeService(
             PageRequest.of(0, BANNER_MAX_SIZE),
             userId,
             getPopularRestaurantService
-                .getHomeBannerRestaurants(ScrapCategory.ALL)
+                .getRestaurantIdsByScrapCategory(ScrapCategory.ALL)//여기도 그럼 카테고리를 바꿔야함
         )
         return HomeResponse(
             restaurantBanner = bannerRestaurants.restaurants.content
-                .filter { !it.representativeImageUrl.isNullOrEmpty() && it.representativeImageUrl != "{}" }
                 .map { restaurant ->
                     GetBannerResponse(
                         imageUrl = requireNotNull(restaurant.representativeImageUrl) { "대표 이미지가 없습니다." },
                         title = restaurant.name,
-                        subtitle = "맛있는 ${restaurant.name}입니다."
+                        category = restaurant.categories.toString()//카테고리 대분류로 바꿔야
                     )
                 }.take(3),
             restaurantRecommendations = listOf(
