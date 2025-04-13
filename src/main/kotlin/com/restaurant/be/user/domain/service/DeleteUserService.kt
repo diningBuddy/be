@@ -13,9 +13,10 @@ class DeleteUserService(
 ) {
     @Transactional
     fun withdraw(request: UserIdDto): Boolean {
-        val user = userRepository.findById(request.id).orElseThrow {
-            NotFoundUserException()
-        }
+        val user =
+            userRepository.findById(request.id).orElseThrow {
+                NotFoundUserException()
+            }
         user.delete()
         return true
     }
