@@ -1,8 +1,8 @@
 package com.restaurant.be.kakao.presentation
 
 import com.restaurant.be.common.response.CommonResponse
-import com.restaurant.be.kakao.domain.entity.ScrapCategory
 import com.restaurant.be.kakao.domain.service.GetPopularRestaurantService
+import com.restaurant.be.kakao.presentation.dto.CategoryParam
 import com.restaurant.be.restaurant.domain.service.GetRestaurantService
 import com.restaurant.be.restaurant.presentation.controller.dto.GetRestaurantsRequest
 import com.restaurant.be.restaurant.presentation.controller.dto.GetRestaurantsResponse
@@ -31,17 +31,13 @@ class PopularRestaurantController(
         principal: Principal,
         @ModelAttribute request: GetRestaurantsRequest,
         pageable: Pageable,
-        @RequestParam(required = false, defaultValue = "전체") scrapCategoryParam: String
+        @RequestParam(required = false, defaultValue = "전체") categoryParam: CategoryParam
     ): CommonResponse<GetRestaurantsResponse> {
-        val scrapCategory = ScrapCategory.fromDisplayName(scrapCategoryParam) ?: ScrapCategory.ALL
-        val restaurantIds = getPopularRestaurantService.getRestaurantIdsByScrapCategory(scrapCategory)
-
-        val response = getRestaurantService.getPopularRestaurants(
+        return CommonResponse.success(getRestaurantService.getPopularRestaurants(
             request = request,
             pageable = pageable,
             userId = principal.name.toLong(),
-            restaurantIds = restaurantIds
-        )
-        return CommonResponse.success(response)
+            restaurantIds = getPopularRestaurantService.getRestaurantIdsByScrapCategory(categoryParam)
+        ))
     }
 }

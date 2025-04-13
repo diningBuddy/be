@@ -12,11 +12,4 @@ enum class ScrapCategory(private val displayName: String) {
     @JsonValue
     override fun toString(): String = displayName
 
-    companion object {
-        private val displayNameMap = entries.associateBy { it.displayName }
-
-        fun fromDisplayName(displayName: String): ScrapCategory? {
-            return displayNameMap[displayName]
-        }
-    }
 }
