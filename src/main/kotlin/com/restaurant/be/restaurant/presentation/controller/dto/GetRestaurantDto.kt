@@ -1,8 +1,6 @@
 package com.restaurant.be.restaurant.presentation.controller.dto
 
 import com.restaurant.be.restaurant.presentation.controller.dto.common.RestaurantDto
-import com.restaurant.be.restaurant.presentation.controller.dto.jsonentity.FacilityInfoDto
-import com.restaurant.be.restaurant.presentation.controller.dto.jsonentity.OperationInfoDto
 import io.swagger.v3.oas.annotations.media.Schema
 import org.springframework.data.domain.Page
 import java.time.DayOfWeek
@@ -67,32 +65,6 @@ data class GetRestaurantsRequest(
     @Schema(title = "위도(거리순 정렬 할 때 사용)", example = "37.123456", required = false)
     val latitude: Double?
 ) {
-    fun toFacilityInfoDto(): FacilityInfoDto? {
-        if (hasWifi == null && hasPet == null && hasParking == null &&
-            hasNursery == null && hasSmokingRoom == null && hasDisabledFacility == null
-        ) {
-            return null
-        }
-        return FacilityInfoDto(
-            wifi = hasWifi,
-            pet = hasPet,
-            parking = hasParking,
-            nursery = hasNursery,
-            smokingRoom = hasSmokingRoom,
-            forDisabled = hasDisabledFacility
-        )
-    }
-
-    fun toOperationInfoDto(): OperationInfoDto? {
-        if (hasAppointment == null && hasDelivery == null && hasPackagee == null) {
-            return null
-        }
-        return OperationInfoDto(
-            appointment = hasAppointment,
-            delivery = hasDelivery,
-            packagee = hasPackagee
-        )
-    }
 }
 
 enum class Sort {
