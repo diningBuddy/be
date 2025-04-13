@@ -3,6 +3,7 @@ package com.restaurant.be.restaurant.repository.dto
 import com.restaurant.be.category.domain.entity.Category
 import com.restaurant.be.restaurant.domain.entity.Menu
 import com.restaurant.be.restaurant.domain.entity.Restaurant
+import com.restaurant.be.restaurant.domain.entity.kakaoinfo.toResponse
 import com.restaurant.be.restaurant.presentation.controller.dto.common.RestaurantDetailDto
 import com.restaurant.be.restaurant.presentation.controller.dto.common.RestaurantDto
 import com.restaurant.be.review.domain.entity.Review
@@ -21,8 +22,8 @@ data class RestaurantProjectionDto(
             name = restaurant.name,
             ratingAvg = restaurant.ratingAvg,
             ratingCount = restaurant.ratingCount,
-            facilityInfos = restaurant.facilityInfos,
-            operationInfos = restaurant.operationInfos,
+            facilityInfos = restaurant.facilityInfos.toResponse(),
+            operationInfos = restaurant.operationInfos.toResponse(),
             operationTimes = restaurant.operationTimes,
             reviewCount = restaurant.reviewCount,
             bookmarkCount = restaurant.bookmarkCount,

@@ -5,9 +5,9 @@ import com.fasterxml.jackson.annotation.JsonProperty
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 data class OperationTimeInfosJsonEntity(
-    @JsonProperty("day_of_the_week")
+    @JsonProperty("dayOfTheWeek")
     val dayOfTheWeek: String?,
-    @JsonProperty("operation_time_info")
+    @JsonProperty("operationTimeInfo")
     val operationTimeInfo: OperationTimeInfoJsonEntity?
 
 ) {

@@ -9,29 +9,30 @@ data class FacilityInfoJsonEntity(
     val pet: String?,
     val parking: String?,
     val nursery: String?,
-    @JsonProperty("smokingroom")
+    @JsonProperty("smokingRoom")
     val smokingRoom: String?,
-    @JsonProperty("fordisabled")
+    @JsonProperty("forDisabled")
     val forDisabled: String?
 
-) {
-    companion object {
-        fun create(
-            wifi: String = "N",
-            pet: String = "N",
-            parking: String = "N",
-            nursery: String = "N",
-            smokingRoom: String = "N",
-            forDisabled: String = "N"
-        ): FacilityInfoJsonEntity {
-            return FacilityInfoJsonEntity(
-                wifi = wifi,
-                pet = pet,
-                parking = parking,
-                nursery = nursery,
-                smokingRoom = smokingRoom,
-                forDisabled = forDisabled
-            )
-        }
-    }
-}
+)
+
+data class FacilityInfoResponse(
+    val wifi: Boolean?,
+    val pet: Boolean?,
+    val parking: Boolean,
+    val nursery: Boolean,
+    val forDisabled: Boolean,
+    val smokingRoom: Boolean
+)
+
+fun FacilityInfoJsonEntity.toResponse(): FacilityInfoResponse =
+    FacilityInfoResponse(
+        wifi = wifi.toBooleanYn(),
+        pet = pet.toBooleanYn(),
+        parking = parking.toBooleanYn(),
+        nursery = nursery.toBooleanYn(),
+        forDisabled = forDisabled.toBooleanYn(),
+        smokingRoom = smokingRoom.toBooleanYn()
+    )
+
+fun String?.toBooleanYn(): Boolean = this == "Y"

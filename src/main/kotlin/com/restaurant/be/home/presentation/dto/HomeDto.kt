@@ -11,7 +11,7 @@ data class HomeRequest(
 )
 
 data class HomeResponse(
-    val restaurantBanner: List<GetBannerResponse>, // TODO: 배너는 랭킹 상위 6개 표기
+    val restaurantBanner: List<GetBannerResponse>,
     // TODO: 카테고리List
     val restaurantRecommendations: List<GetRecommendationRestaurantsResponse>
 )
@@ -22,7 +22,7 @@ data class GetBannerResponse(
     @Schema(description = "제목")
     val title: String,
     @Schema(description = "카테고리")
-    val category: String,
+    val category: String
 )
 
 data class GetRecommendationRestaurantsResponse(

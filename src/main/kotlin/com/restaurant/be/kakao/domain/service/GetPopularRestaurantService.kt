@@ -1,6 +1,7 @@
 package com.restaurant.be.kakao.domain.service
 
 import com.restaurant.be.kakao.domain.entity.ScrapCategory
+import com.restaurant.be.kakao.presentation.dto.CategoryParam
 import com.restaurant.be.kakao.repository.PopularRestaurantRepository
 import org.springframework.data.domain.PageRequest
 import org.springframework.stereotype.Service
@@ -16,11 +17,12 @@ class GetPopularRestaurantService(
 
     @Transactional(readOnly = true)
     fun getRestaurantIdsByScrapCategory(
-        scrapCategory: ScrapCategory,
+        mainCategory: CategoryParam,
         limit: Int = DEFAULT_MAX_RESULTS
     ): List<Long> {
         return popularRestaurantRepository
-            .findTopRankedByScrapCategory(scrapCategory, PageRequest.of(0, limit))
+            .findTopRankedByScrapCategory(mainCategory.toDomain()
+            , PageRequest.of(0, limit))
             .map { it.restaurantId }
     }
 }
