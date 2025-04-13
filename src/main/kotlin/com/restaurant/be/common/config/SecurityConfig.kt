@@ -43,7 +43,7 @@ class SecurityConfig(
                         "/v1/users/sign-in/social/kakao",
                         "/v1/users/token-reissue",
                         "/v1/users/refresh-token-reissue",
-                        "/v1/users/email/send",
+                        "/v1/users/school-email/authentication",
                         "/v1/users/email/validate",
                         "/v1/users/password",
                         "/v1/sms/send-certification-number",

@@ -1,8 +1,11 @@
 package com.restaurant.be.common.redis
 
 import com.restaurant.be.common.exception.ExpiredCertificationNumberException
+import com.restaurant.be.common.exception.InvalidEmailCodeException
 import com.restaurant.be.common.exception.InvalidTokenException
+import com.restaurant.be.common.exception.NotFoundAuthenticationSchoolEmailCodeException
 import com.restaurant.be.common.exception.NotFoundSocialKeyException
+import com.restaurant.be.common.exception.SendEmailException
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.data.redis.core.RedisTemplate
 import org.springframework.stereotype.Component
@@ -21,6 +24,7 @@ class RedisRepository(
         const val CERTIFICATION_PREFIX = "CERTIFICATION:"
         const val REFRESH_TOKEN_PREFIX = "REFRESH_TOKEN:"
         const val SOCIAL_USER_PREFIX = "SOCIAL_USER:"
+        const val AUTHENTICATION_SCHOOL_EMAIL_PREFIX = "AUTHENTICATION_SCHOOL_EMAIL:"
     }
 
     // 사용자별 추천 식당을 조회하는 메서드
@@ -138,5 +142,33 @@ class RedisRepository(
     fun getSocialKey(socialCode: String): String {
         val key = "$SOCIAL_USER_PREFIX$socialCode"
         return getValue(key) ?: throw NotFoundSocialKeyException()
+    }
+
+    fun saveAuthenticationSchoolEmail(userId: Long, uuid: String) {
+        val key = "$AUTHENTICATION_SCHOOL_EMAIL_PREFIX$userId"
+        val existingValue = getValue(key)
+        if (existingValue != null) {
+            val parts = existingValue.split(":")
+            val currentCount = parts.getOrNull(1)?.toIntOrNull() ?: 0
+            if (currentCount >= 5) {
+                throw SendEmailException()
+            }
+            val newCount = currentCount + 1
+            val newValue = "$uuid:$newCount"
+            setValue(key, newValue, 1, TimeUnit.HOURS)
+        } else {
+            val newValue = "$uuid:1"
+            setValue(key, newValue, 1, TimeUnit.HOURS)
+        }
+    }
+
+    fun authenticationSchoolEmail(userId: Long, authenticationSchoolEmailUuid: String) {
+        val key = "$AUTHENTICATION_SCHOOL_EMAIL_PREFIX$userId"
+        val value = getValue(key) ?: throw NotFoundAuthenticationSchoolEmailCodeException()
+        val uuid = value.split(":").first()
+        if (uuid != authenticationSchoolEmailUuid) {
+            throw InvalidEmailCodeException()
+        }
+        delValue(key)
     }
 }
