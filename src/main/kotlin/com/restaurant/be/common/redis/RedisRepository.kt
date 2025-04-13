@@ -6,6 +6,7 @@ import com.restaurant.be.common.exception.NotFoundSocialKeyException
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.data.redis.core.RedisTemplate
 import org.springframework.stereotype.Component
+import org.springframework.transaction.annotation.Transactional
 import java.util.concurrent.TimeUnit
 
 @Component
@@ -109,6 +110,12 @@ class RedisRepository(
     fun getRefreshToken(userId: Long): String {
         val key = "$REFRESH_TOKEN_PREFIX$userId"
         return getValue(key) ?: throw InvalidTokenException()
+    }
+
+    @Transactional
+    fun deleteRefreshToken(userId: Long) {
+        val key = "$REFRESH_TOKEN_PREFIX$userId"
+        redisTemplate.delete(key)
     }
 
     fun setValue(
