@@ -1,12 +1,13 @@
 package com.restaurant.be.home.domain.service
 
+import com.restaurant.be.category.domain.service.GetCategoryService
 import com.restaurant.be.home.presentation.dto.GetBannerResponse
 import com.restaurant.be.home.presentation.dto.GetRecommendationRestaurantsResponse
 import com.restaurant.be.home.presentation.dto.HomeRequest
 import com.restaurant.be.home.presentation.dto.HomeResponse
 import com.restaurant.be.home.presentation.dto.RecommendationType
-import com.restaurant.be.kakao.domain.entity.ScrapCategory
 import com.restaurant.be.kakao.domain.service.GetPopularRestaurantService
+import com.restaurant.be.kakao.presentation.dto.CategoryParam
 import com.restaurant.be.restaurant.domain.service.GetRestaurantService
 import com.restaurant.be.restaurant.presentation.controller.dto.GetRestaurantsRequest
 import com.restaurant.be.restaurant.presentation.controller.dto.Sort
@@ -15,6 +16,7 @@ import org.springframework.stereotype.Service
 
 @Service
 class HomeService(
+    private val getCategoryService: GetCategoryService,
     private val restaurantService: GetRestaurantService,
     private val getPopularRestaurantService: GetPopularRestaurantService
 ) {
@@ -98,7 +100,7 @@ class HomeService(
             PageRequest.of(0, BANNER_MAX_SIZE),
             userId,
             getPopularRestaurantService
-                .getRestaurantIdsByScrapCategory(ScrapCategory.ALL)//여기도 그럼 카테고리를 바꿔야함
+                .getRestaurantIdsByScrapCategory(CategoryParam.ALL)
         )
         return HomeResponse(
             restaurantBanner = bannerRestaurants.restaurants.content
@@ -106,7 +108,7 @@ class HomeService(
                     GetBannerResponse(
                         imageUrl = requireNotNull(restaurant.representativeImageUrl) { "대표 이미지가 없습니다." },
                         title = restaurant.name,
-                        category = restaurant.categories.toString()//카테고리 대분류로 바꿔야
+                        category = getCategoryService.getMainCategories(restaurant.categories.toString())
                     )
                 }.take(3),
             restaurantRecommendations = listOf(

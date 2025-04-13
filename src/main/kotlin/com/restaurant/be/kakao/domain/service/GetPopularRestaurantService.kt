@@ -20,9 +20,13 @@ class GetPopularRestaurantService(
         mainCategory: CategoryParam,
         limit: Int = DEFAULT_MAX_RESULTS
     ): List<Long> {
+        val scrapCategory = mainCategory.toDomain()
+        println("변환된 카테고리: $scrapCategory") // 디버깅용 로그
         return popularRestaurantRepository
-            .findTopRankedByScrapCategory(mainCategory.toDomain()
-            , PageRequest.of(0, limit))
+            .findTopRankedByScrapCategory(
+                scrapCategory,
+                PageRequest.of(0, limit)
+            )
             .map { it.restaurantId }
     }
 }

@@ -18,4 +18,25 @@ class GetCategoryService(
             categories = categories.map { CategoryDto(it.id ?: 0, it.name) }
         )
     }
+
+    @Transactional(readOnly = true)
+    fun getMainCategories(categoriesStr: String): String {
+        val categoryNames = categoriesStr.split(",").map { it.trim() }.filter { it.isNotEmpty() }
+
+        val allCategories = categoryRepository.findAll()
+
+        val categoryMap = allCategories.associateBy { it.name }
+
+        val mainCategories = categoryNames.mapNotNull { subCategoryName ->
+            val category = categoryMap[subCategoryName]
+
+            when {
+                category?.parent != null -> category.parent?.name
+                category != null -> category.name
+                else -> null
+            }
+        }.distinct()
+
+        return mainCategories.joinToString(", ")
+    }
 }
