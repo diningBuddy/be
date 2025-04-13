@@ -1,9 +1,8 @@
 package com.restaurant.be.user.domain.service
 
-import com.restaurant.be.common.exception.DuplicateUserNicknameException
 import com.restaurant.be.common.exception.NotFoundUserException
-import com.restaurant.be.user.presentation.dto.CheckNicknameResponse
 import com.restaurant.be.user.presentation.dto.GetSocialUserDtoResponse
+import com.restaurant.be.user.presentation.dto.SocialUserDto
 import com.restaurant.be.user.repository.UserRepository
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
@@ -14,9 +13,13 @@ class GetSocialUserService(
 ) {
     fun getSocialUser(userId: Long): GetSocialUserDtoResponse {
         val user = userRepository.findByIdOrNull(userId) ?: throw NotFoundUserException()
+        val socialUsersDto =
+            user.socialUsers.map {
+                SocialUserDto(socialType = it.socialType, socialKey = it.socialKey)
+            }
         return GetSocialUserDtoResponse(
-            id = userId, socialType = user.socialUsers.firstOrNull()?.socialType,
-            socialKey = user.socialUsers.firstOrNull()?.socialKey ?: ""
+            id = userId,
+            socialUsers = socialUsersDto
         )
     }
 }
