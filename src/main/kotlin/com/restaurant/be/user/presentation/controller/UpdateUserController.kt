@@ -11,6 +11,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.tags.Tag
 import jakarta.servlet.http.HttpServletResponse
 import jakarta.validation.Valid
+import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.*
 
 @Tag(name = "01. User Info", description = "유저 서비스")
@@ -19,7 +20,8 @@ import org.springframework.web.bind.annotation.*
 class UpdateUserController(
         private val updateUserService: UpdateUserService
 ) {
-    @PatchMapping("/")
+    @PatchMapping
+    @PreAuthorize("hasRole('USER')")
     @Operation(summary = "유저 수정 API")
     @ApiResponse(
             responseCode = "200",
