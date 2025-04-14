@@ -21,14 +21,14 @@ class GetCategoryService(
 
     @Transactional(readOnly = true)
     fun getMainCategories(categoriesStr: String): String {
-        val categoryNames = categoriesStr.split(",").map { it.trim() }.filter { it.isNotEmpty() }
+        val categoryNames = categoriesStr.split(",").map { it.trim() }
 
         val allCategories = categoryRepository.findAll()
 
         val categoryMap = allCategories.associateBy { it.name }
 
         val mainCategories = categoryNames.mapNotNull { subCategoryName ->
-            val category = categoryMap[subCategoryName]
+            val category = categoryMap.values.find { it.name.contains(subCategoryName) }
 
             when {
                 category?.parent != null -> category.parent?.name
@@ -39,4 +39,5 @@ class GetCategoryService(
 
         return mainCategories.joinToString(", ")
     }
+
 }
