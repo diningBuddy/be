@@ -1,6 +1,5 @@
 package com.restaurant.be.kakao.domain.service
 
-import com.restaurant.be.kakao.domain.entity.ScrapCategory
 import com.restaurant.be.kakao.presentation.dto.CategoryParam
 import com.restaurant.be.kakao.repository.PopularRestaurantRepository
 import org.springframework.data.domain.PageRequest
@@ -21,9 +20,8 @@ class GetPopularRestaurantService(
         limit: Int = DEFAULT_MAX_RESULTS
     ): List<Long> {
         val scrapCategory = mainCategory.toDomain()
-        println("변환된 카테고리: $scrapCategory") // 디버깅용 로그
         return popularRestaurantRepository
-            .findTopRankedByScrapCategory(
+            .findByScrapCategory(
                 scrapCategory,
                 PageRequest.of(0, limit)
             )

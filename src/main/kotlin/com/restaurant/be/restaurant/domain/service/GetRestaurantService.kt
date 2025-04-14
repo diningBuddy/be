@@ -88,7 +88,7 @@ class GetRestaurantService(
             restaurantRepository.findDtoByIds(
                 restaurants.map { it.id },
                 userId
-            ).filter { it.restaurant.representativeImageUrl != "{}" }
+            )
 
         val restaurantMap = restaurantProjections.associateBy { it.restaurant.id }
         val sortedRestaurantProjections = restaurants.mapNotNull { restaurantMap[it.id] }
