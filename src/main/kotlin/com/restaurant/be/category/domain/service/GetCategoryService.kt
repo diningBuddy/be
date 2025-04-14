@@ -39,5 +39,4 @@ class GetCategoryService(
 
         return mainCategories.joinToString(", ")
     }
-
 }

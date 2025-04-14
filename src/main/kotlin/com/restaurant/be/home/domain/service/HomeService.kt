@@ -8,7 +8,6 @@ import com.restaurant.be.home.presentation.dto.HomeResponse
 import com.restaurant.be.home.presentation.dto.RecommendationType
 import com.restaurant.be.kakao.domain.service.GetPopularRestaurantService
 import com.restaurant.be.kakao.presentation.dto.CategoryParam
-import com.restaurant.be.restaurant.domain.entity.Restaurant
 import com.restaurant.be.restaurant.domain.service.GetRestaurantService
 import com.restaurant.be.restaurant.presentation.controller.dto.GetRestaurantsRequest
 import com.restaurant.be.restaurant.presentation.controller.dto.Sort

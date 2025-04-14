@@ -1,6 +1,5 @@
 package com.restaurant.be.home.presentation.dto
 
-import com.restaurant.be.kakao.presentation.dto.CategoryParam
 import com.restaurant.be.restaurant.presentation.controller.dto.common.RestaurantDto
 import io.swagger.v3.oas.annotations.media.Schema
 
