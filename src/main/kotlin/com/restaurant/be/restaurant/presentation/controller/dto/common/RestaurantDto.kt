@@ -1,7 +1,7 @@
 package com.restaurant.be.restaurant.presentation.controller.dto.common
 
-import com.restaurant.be.restaurant.domain.entity.kakaoinfo.FacilityInfoJsonEntity
-import com.restaurant.be.restaurant.domain.entity.kakaoinfo.OperationInfoJsonEntity
+import com.restaurant.be.restaurant.domain.entity.kakaoinfo.FacilityInfoResponse
+import com.restaurant.be.restaurant.domain.entity.kakaoinfo.OperationInfoResponse
 import com.restaurant.be.restaurant.domain.entity.kakaoinfo.OperationTimeInfosJsonEntity
 import io.swagger.v3.oas.annotations.media.Schema
 
@@ -18,9 +18,9 @@ data class RestaurantDto(
     var ratingCount: Long?,
 
     @Schema(description = "식당 편의 정보")
-    var facilityInfos: FacilityInfoJsonEntity,
+    var facilityInfos: FacilityInfoResponse,
     @Schema(description = "식당 운영 정보(예약,배달,포장)")
-    var operationInfos: OperationInfoJsonEntity,
+    var operationInfos: OperationInfoResponse,
     @Schema(description = "식당 운영 시간")
     var operationTimes: List<OperationTimeInfosJsonEntity>,
 
@@ -72,4 +72,15 @@ data class MenuDto(
     val isRepresentative: Boolean,
     @Schema(description = "메뉴 이미지 URL")
     val imageUrl: String? = null
+)
+
+data class PopularRestaurantDto(
+    val rank: Long,
+    val name: String,
+    val originalCategories: String,
+    val longitude: Double,
+    val latitude: Double,
+    val ratingAvg: Double?,
+    val ratingCount: Long?,
+    val representativeImageUrl: String
 )

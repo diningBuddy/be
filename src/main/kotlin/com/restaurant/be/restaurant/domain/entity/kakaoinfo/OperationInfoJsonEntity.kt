@@ -10,18 +10,17 @@ data class OperationInfoJsonEntity(
     @JsonProperty("package")
     val packagee: String?
 
-) {
-    companion object {
-        fun create(
-            appointment: String = "N",
-            delivery: String = "N",
-            packagee: String = "N"
-        ): OperationInfoJsonEntity {
-            return OperationInfoJsonEntity(
-                appointment = appointment,
-                delivery = delivery,
-                packagee = packagee
-            )
-        }
-    }
-}
+)
+
+data class OperationInfoResponse(
+    val appointment: Boolean?,
+    val delivery: Boolean?,
+    val packagee: Boolean
+)
+
+fun OperationInfoJsonEntity.toResponse(): OperationInfoResponse =
+    OperationInfoResponse(
+        appointment = appointment.toBooleanYn(),
+        delivery = delivery.toBooleanYn(),
+        packagee = packagee.toBooleanYn()
+    )

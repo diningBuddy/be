@@ -4,15 +4,15 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.fasterxml.jackson.annotation.JsonProperty
 @JsonIgnoreProperties(ignoreUnknown = true)
 data class OperationTimeInfoJsonEntity(
-    @JsonProperty("start_time")
+    @JsonProperty("startTime")
     val startTime: String?,
-    @JsonProperty("end_time")
+    @JsonProperty("endTime")
     val endTime: String?,
-    @JsonProperty("break_start_time")
+    @JsonProperty("breakStartTime")
     val breakStartTime: String?,
-    @JsonProperty("break_end_time")
+    @JsonProperty("breakEndTime")
     val breakEndTime: String?,
-    @JsonProperty("last_order")
+    @JsonProperty("lastOrder")
     val lastOrder: String?
 
 ) {
