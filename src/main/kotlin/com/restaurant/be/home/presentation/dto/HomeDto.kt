@@ -1,5 +1,6 @@
 package com.restaurant.be.home.presentation.dto
 
+import com.restaurant.be.kakao.presentation.dto.CategoryParam
 import com.restaurant.be.restaurant.presentation.controller.dto.common.RestaurantDto
 import io.swagger.v3.oas.annotations.media.Schema
 
@@ -22,7 +23,9 @@ data class GetBannerResponse(
     @Schema(description = "제목")
     val title: String,
     @Schema(description = "카테고리")
-    val category: String
+    val category: String,
+    @Schema(description = "부제")
+    val subtitle: String
 )
 
 data class GetRecommendationRestaurantsResponse(

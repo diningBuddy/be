@@ -8,9 +8,11 @@ import com.restaurant.be.home.presentation.dto.HomeResponse
 import com.restaurant.be.home.presentation.dto.RecommendationType
 import com.restaurant.be.kakao.domain.service.GetPopularRestaurantService
 import com.restaurant.be.kakao.presentation.dto.CategoryParam
+import com.restaurant.be.restaurant.domain.entity.Restaurant
 import com.restaurant.be.restaurant.domain.service.GetRestaurantService
 import com.restaurant.be.restaurant.presentation.controller.dto.GetRestaurantsRequest
 import com.restaurant.be.restaurant.presentation.controller.dto.Sort
+import com.restaurant.be.restaurant.presentation.controller.dto.common.RestaurantDto
 import org.springframework.data.domain.PageRequest
 import org.springframework.stereotype.Service
 
@@ -95,20 +97,34 @@ class HomeService(
         val lunchResponse = restaurantService.getRestaurants(lunchRequest, pageable, userId)
         val midNightResponse = restaurantService.getRestaurants(midNightRequest, pageable, userId)
 
-        val bannerRestaurants = restaurantService.getPopularRestaurants(
-            baseRequest,
-            PageRequest.of(0, BANNER_MAX_SIZE),
-            userId,
-            getPopularRestaurantService
-                .getRestaurantIdsByScrapCategory(CategoryParam.ALL)
-        )
+        val categories = listOf(CategoryParam.ALL, CategoryParam.KOREAN, CategoryParam.JAPANESE)
+
+        val bannerRestaurants = mutableListOf<RestaurantDto>()
+
+        for (category in categories) {
+            val restaurant = restaurantService.getPopularRestaurants(
+                baseRequest,
+                PageRequest.of(0, 1),
+                userId,
+                getPopularRestaurantService.getRestaurantIdsByScrapCategory(category)
+            )
+
+            restaurant.restaurants.content.firstOrNull()?.let {
+                bannerRestaurants.add(it)
+            }
+
+            println("선택된 식당 이름: ${restaurant.restaurants.content.firstOrNull()?.name}")
+        }
+
+        val randomRestaurants = bannerRestaurants.shuffled().take(BANNER_MAX_SIZE)
         return HomeResponse(
-            restaurantBanner = bannerRestaurants.restaurants.content
+            restaurantBanner = randomRestaurants
                 .map { restaurant ->
                     GetBannerResponse(
                         imageUrl = requireNotNull(restaurant.representativeImageUrl) { "대표 이미지가 없습니다." },
                         title = restaurant.name,
-                        category = getCategoryService.getMainCategories(restaurant.categories.toString())
+                        category = CategoryParam.ALL.toString(),
+                        subtitle = "${restaurant.name} 추천 순위"
                     )
                 }.take(3),
             restaurantRecommendations = listOf(
