@@ -5,6 +5,7 @@ import com.restaurant.be.common.entity.BaseEntity
 import com.restaurant.be.common.exception.NotFoundUserException
 import com.restaurant.be.user.domain.constant.Gender
 import com.restaurant.be.user.presentation.dto.SignUpUserRequest
+import jakarta.persistence.CascadeType
 import jakarta.persistence.Column
 import jakarta.persistence.Convert
 import jakarta.persistence.Entity
@@ -41,12 +42,15 @@ class User(
     var roles: List<String> = listOf(),
     @Column
     var profileImageUrl: String? = null,
-    @OneToMany(mappedBy = "user", fetch = LAZY)
+    @OneToMany(mappedBy = "user", cascade = [CascadeType.REMOVE], fetch = LAZY)
     var socialUsers: MutableList<SocialUser> = mutableListOf()
 ) : BaseEntity() {
     companion object {
-        fun create(request: SignUpUserRequest, nickname: String): User {
-            return User(
+        fun create(
+            request: SignUpUserRequest,
+            nickname: String
+        ): User =
+            User(
                 phoneNumber = request.phoneNumber,
                 nickname = nickname,
                 name = request.name,
@@ -55,12 +59,9 @@ class User(
                 isTermsAgreed = true,
                 roles = listOf("ROLE_USER")
             )
-        }
     }
 
-    fun getId(): Long {
-        return id ?: throw NotFoundUserException()
-    }
+    fun getId(): Long = id ?: throw NotFoundUserException()
 
     fun delete() {
         this.isDeleted = true
