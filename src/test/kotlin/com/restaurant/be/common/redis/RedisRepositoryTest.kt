@@ -51,7 +51,7 @@ class RedisRepositoryTest : DescribeSpec({
 
                 // Then
                 verify { listOperations.remove(key, 0, queryToRemove) }
-                outContent.toString().replace("\r","") shouldBe "No instance of '$queryToRemove' found in the list.\n"
+                outContent.toString().replace("\r", "") shouldBe "No instance of '$queryToRemove' found in the list.\n"
 
                 // Restore stdout
                 System.setOut(stdout)

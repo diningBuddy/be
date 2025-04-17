@@ -97,8 +97,12 @@ class HomeService(
         val midNightResponse = restaurantService.getRestaurants(midNightRequest, pageable, userId)
 
         val categories = listOf(
-            CategoryParam.WESTERN, CategoryParam.KOREAN, CategoryParam.JAPANESE,
-            CategoryParam.ASIAN, CategoryParam.CAFE, CategoryParam.CHINESE
+            CategoryParam.WESTERN,
+            CategoryParam.KOREAN,
+            CategoryParam.JAPANESE,
+            CategoryParam.ASIAN,
+            CategoryParam.CAFE,
+            CategoryParam.CHINESE
         )
 
         val bannerRestaurants = mutableListOf<RestaurantDto>()
