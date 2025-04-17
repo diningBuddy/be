@@ -45,8 +45,11 @@ class User(
     var socialUsers: MutableList<SocialUser> = mutableListOf()
 ) : BaseEntity() {
     companion object {
-        fun create(request: SignUpUserRequest, nickname: String): User {
-            return User(
+        fun create(
+            request: SignUpUserRequest,
+            nickname: String
+        ): User =
+            User(
                 phoneNumber = request.phoneNumber,
                 nickname = nickname,
                 name = request.name,
@@ -55,14 +58,23 @@ class User(
                 isTermsAgreed = true,
                 roles = listOf("ROLE_USER")
             )
-        }
     }
 
-    fun getId(): Long {
-        return id ?: throw NotFoundUserException()
-    }
+    fun getId(): Long = id ?: throw NotFoundUserException()
 
     fun delete() {
         this.isDeleted = true
+    }
+
+    fun update(
+        nickname: String,
+        name: String,
+        profileImageUrl: String?,
+        gender: Gender
+    ) {
+        this.nickname = nickname
+        this.name = name
+        this.profileImageUrl = profileImageUrl
+        this.gender = gender
     }
 }
