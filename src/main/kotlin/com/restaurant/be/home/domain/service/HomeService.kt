@@ -96,7 +96,7 @@ class HomeService(
         val lunchResponse = restaurantService.getRestaurants(lunchRequest, pageable, userId)
         val midNightResponse = restaurantService.getRestaurants(midNightRequest, pageable, userId)
 
-        val categories = listOf(CategoryParam.ALL, CategoryParam.KOREAN, CategoryParam.JAPANESE)
+        val categories = listOf(CategoryParam.WESTERN, CategoryParam.KOREAN, CategoryParam.JAPANESE)
 
         val bannerRestaurants = mutableListOf<RestaurantDto>()
 
@@ -111,19 +111,24 @@ class HomeService(
             restaurant.restaurants.content.firstOrNull()?.let {
                 bannerRestaurants.add(it)
             }
+
+            println("선택된 식당 이름: ${restaurant.restaurants.content.firstOrNull()?.name}")
         }
 
         val randomRestaurants = bannerRestaurants.shuffled().take(BANNER_MAX_SIZE)
         return HomeResponse(
             restaurantBanner = randomRestaurants
                 .map { restaurant ->
+                    val mainCategory = restaurant.categories
+                        .mapNotNull { category ->
+                            getCategoryService.getMainCategories(category)
+                        }
+                        .firstOrNull() ?: CategoryParam.ALL.toString()
                     GetBannerResponse(
                         imageUrl = requireNotNull(restaurant.representativeImageUrl) { "대표 이미지가 없습니다." },
                         title = restaurant.name,
-                        category = restaurant.categories
-                            .map { category -> getCategoryService.getMainCategories(category) }
-                            .firstOrNull() ?: CategoryParam.ALL.toString(),
-                        subtitle = "${restaurant.name} 추천 순위"
+                        category = mainCategory,
+                        subtitle = "$mainCategory 추천 순위"
                     )
                 }.take(3),
             restaurantRecommendations = listOf(
