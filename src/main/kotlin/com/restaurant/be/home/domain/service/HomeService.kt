@@ -125,10 +125,12 @@ class HomeService(
                             getCategoryService.getMainCategories(category)
                         }
                         .firstOrNull() ?: CategoryParam.ALL.toString()
+
+                    val categoryEnum = CategoryParam.entries.find { it.displayName == mainCategory } ?: CategoryParam.ALL
                     GetBannerResponse(
                         imageUrl = requireNotNull(restaurant.representativeImageUrl) { "대표 이미지가 없습니다." },
                         title = restaurant.name,
-                        category = mainCategory,
+                        category = categoryEnum,
                         subtitle = "$mainCategory 추천 순위"
                     )
                 },
