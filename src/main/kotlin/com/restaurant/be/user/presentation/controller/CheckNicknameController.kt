@@ -20,7 +20,7 @@ class CheckNicknameController(
     private val checkNicknameService: CheckNicknameService
 ) {
     @GetMapping("/check-nickname")
-    @Operation(summary = "유저 정보 조회 API")
+    @Operation(summary = "닉네임 중복확인 API")
     @ApiResponse(
         responseCode = "200",
         description = "성공",

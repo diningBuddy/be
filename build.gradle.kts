@@ -78,6 +78,9 @@ dependencies {
     // Discord
     implementation("club.minnced:discord-webhooks:0.8.4")
 
+    // mail
+    implementation("org.springframework.boot:spring-boot-starter-mail")
+
     // Kotlin
     val coroutineVersion = "1.7.0"
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:$coroutineVersion")
