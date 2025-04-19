@@ -108,7 +108,7 @@ class HomeService(
         val baseRequest = createBaseRequest(userLongitude, userLatitude)
 
         return restaurantService.getRestaurants(createLunchRequest(baseRequest), pageable, userId)
-        }
+    }
 
     fun getMidnightSectionDetails(
         userId: Long,
@@ -159,5 +159,3 @@ class HomeService(
         )
     }
 }
-
-
