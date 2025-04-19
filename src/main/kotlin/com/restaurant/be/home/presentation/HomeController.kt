@@ -57,17 +57,11 @@ class HomeController(
         return CommonResponse.success(response)
     }
 
-    @GetMapping("/section")  // URL 경로를 /section으로 변경하여 중복을 방지
+    @GetMapping("/lunch-section")
     @PreAuthorize("hasRole('USER')")
     @Operation(
-        summary = "메인 하단 상세 조회 API",
+        summary = "메인 하단 점심 상세 조회 API",
         parameters = [
-            Parameter(
-                name = "type",
-                description = "요청 섹션 (LAUNCH, LATE_NIGHT)",
-                required = true,
-                example = "LAUNCH"
-            ),
             Parameter(
                 name = "page",
                 description = "페이지 번호 (0부터 시작)",
@@ -88,15 +82,54 @@ class HomeController(
             )
         ]
     )
-    fun getSectionDetails(
+
+    fun getLunchSectionDetails(
         principal: Principal,
-        @RequestParam type: String,
         @RequestParam(required = false, defaultValue = "0") page: Int,
         @RequestParam userLatitude: Double,
         @RequestParam userLongitude: Double
     ): CommonResponse<GetRestaurantsResponse> {
-        val response = homeService.getSectionDetails(
-            type,
+        val response = homeService.getLunchSectionDetails(
+            principal.name.toLong(),
+            page,
+            userLongitude,
+            userLatitude
+        )
+        return CommonResponse.success(response)
+    }
+
+    @GetMapping("/midnight-section")
+    @PreAuthorize("hasRole('USER')")
+    @Operation(
+        summary = "메인 하단 저녁 상세 조회 API",
+        parameters = [
+            Parameter(
+                name = "page",
+                description = "페이지 번호 (0부터 시작)",
+                required = false,
+                example = "0"
+            ),
+            Parameter(
+                name = "userLatitude",
+                description = "사용자 위치 - 위도",
+                required = true,
+                example = "37.2977142440725"
+            ),
+            Parameter(
+                name = "userLongitude",
+                description = "사용자 위치 - 경도",
+                required = true,
+                example = "126.970140339367"
+            )
+        ]
+    )
+    fun getMidnightSectionDetails(
+        principal: Principal,
+        @RequestParam(required = false, defaultValue = "0") page: Int,
+        @RequestParam userLatitude: Double,
+        @RequestParam userLongitude: Double
+    ): CommonResponse<GetRestaurantsResponse> {
+        val response = homeService.getMidnightSectionDetails(
             principal.name.toLong(),
             page,
             userLongitude,

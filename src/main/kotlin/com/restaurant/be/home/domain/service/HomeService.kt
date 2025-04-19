@@ -39,40 +39,6 @@ class HomeService(
         ).toList()
     }
 
-    private fun createBaseRequest(longitude: Double?, latitude: Double?): GetRestaurantsRequest {
-        return GetRestaurantsRequest(
-            query = null,
-            categories = null,
-            discountForSkku = null,
-            ratingAvg = null,
-            reviewCount = null,
-            priceMin = null,
-            priceMax = null,
-            customSort = Sort.CLOSELY_DESC,
-            ratingCount = null,
-            hasWifi = null,
-            hasPet = null,
-            hasParking = null,
-            hasNursery = null,
-            hasSmokingRoom = null,
-            hasDisabledFacility = null,
-            hasAppointment = null,
-            hasDelivery = null,
-            hasPackagee = null,
-            operationDay = null,
-            operationStartTime = null,
-            operationEndTime = null,
-            breakStartTime = null,
-            breakEndTime = null,
-            lastOrder = null,
-            kakaoRatingAvg = null,
-            kakaoRatingCount = null,
-            bookmark = null,
-            longitude = longitude,
-            latitude = latitude
-        )
-    }
-
     private fun createLunchRequest(baseRequest: GetRestaurantsRequest): GetRestaurantsRequest {
         return baseRequest.copy(
             categories = LUNCH_CATEGORIES,
@@ -129,12 +95,11 @@ class HomeService(
         )
     }
 
-    fun getSectionDetails(
-        type: String,
+    fun getLunchSectionDetails(
         userId: Long,
         page: Int = 0,
-        userLongitude: Double? = null,
-        userLatitude: Double? = null,
+        userLongitude: Double?,
+        userLatitude: Double?,
         customPageSize: Int? = null
     ): GetRestaurantsResponse {
         val pageSize = customPageSize ?: if (page == 0) 20 else 10
@@ -142,14 +107,57 @@ class HomeService(
 
         val baseRequest = createBaseRequest(userLongitude, userLatitude)
 
-        return when(type.uppercase()) {
-            "LAUNCH" -> {
-                restaurantService.getRestaurants(createLunchRequest(baseRequest), pageable, userId)
-            }
-            "LATE_NIGHT" -> {
-                restaurantService.getRestaurants(createMidnightRequest(baseRequest), pageable, userId)
-            }
-            else -> throw IllegalArgumentException("지원하지 않는 섹션 타입입니다: $type")
+        return restaurantService.getRestaurants(createLunchRequest(baseRequest), pageable, userId)
         }
+
+    fun getMidnightSectionDetails(
+        userId: Long,
+        page: Int = 0,
+        userLongitude: Double?,
+        userLatitude: Double?,
+        customPageSize: Int? = null
+    ): GetRestaurantsResponse {
+        val pageSize = customPageSize ?: if (page == 0) 20 else 10
+        val pageable = PageRequest.of(page, pageSize)
+
+        val baseRequest = createBaseRequest(userLongitude, userLatitude)
+
+        return restaurantService.getRestaurants(createMidnightRequest(baseRequest), pageable, userId)
+    }
+
+    private fun createBaseRequest(longitude: Double?, latitude: Double?): GetRestaurantsRequest {
+        return GetRestaurantsRequest(
+            query = null,
+            categories = null,
+            discountForSkku = null,
+            ratingAvg = null,
+            reviewCount = null,
+            priceMin = null,
+            priceMax = null,
+            customSort = Sort.CLOSELY_DESC,
+            ratingCount = null,
+            hasWifi = null,
+            hasPet = null,
+            hasParking = null,
+            hasNursery = null,
+            hasSmokingRoom = null,
+            hasDisabledFacility = null,
+            hasAppointment = null,
+            hasDelivery = null,
+            hasPackagee = null,
+            operationDay = null,
+            operationStartTime = null,
+            operationEndTime = null,
+            breakStartTime = null,
+            breakEndTime = null,
+            lastOrder = null,
+            kakaoRatingAvg = null,
+            kakaoRatingCount = null,
+            bookmark = null,
+            longitude = longitude,
+            latitude = latitude
+        )
     }
 }
+
+
