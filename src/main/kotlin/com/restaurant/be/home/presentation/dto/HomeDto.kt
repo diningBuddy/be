@@ -22,9 +22,9 @@ data class GetBannerResponse(
     val imageUrl: String,
     @Schema(description = "제목")
     val title: String,
-    @Schema(description = "소제목")
+    @Schema(description = "카테고리")
     val category: CategoryParam,
-    @Schema(description = "부제")
+    @Schema(description = "소제목")
     val subtitle: String
 )
 
