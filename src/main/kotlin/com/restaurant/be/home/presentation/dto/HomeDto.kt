@@ -13,7 +13,6 @@ data class HomeRequest(
 
 data class HomeResponse(
     val restaurantBanner: List<GetBannerResponse>,
-    // TODO: 카테고리List
     val restaurantRecommendations: List<GetRecommendationRestaurantsResponse>
 )
 
@@ -40,6 +39,6 @@ data class GetRecommendationRestaurantsResponse(
 enum class RecommendationType(
     val title: String
 ) {
-    LAUNCH("점심 맛집 정보,  오늘 뭐 먹지?"),
+    LUNCH("점심 맛집 정보,  오늘 뭐 먹지?"),
     LATE_NIGHT("야식의 성지! 새벽까지 든든하게")
 }
