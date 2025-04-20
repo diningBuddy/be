@@ -13,12 +13,10 @@ class LogOutUserService(
     private val userRepository: UserRepository,
     private val redisRepository: RedisRepository,
 ) {
-    fun logout(request: LogOutUserRequest): Boolean {
-        val user =
-            userRepository.findById(request.id).orElseThrow {
-                NotFoundUserException()
-            }
-        redisRepository.deleteRefreshToken(request.id)
-        return true
-    }
+    fun logout(request: LogOutUserRequest): Boolean =
+        userRepository
+            .findById(request.id)
+            .orElseThrow { NotFoundUserException() }
+            .also { redisRepository.deleteRefreshToken(request.id) }
+            .let { true }
 }
