@@ -100,7 +100,7 @@ class HomeService(
                 },
             restaurantRecommendations = listOf(
                 GetRecommendationRestaurantsResponse(
-                    RecommendationType.LAUNCH,
+                    RecommendationType.LUNCH,
                     lunchResponse.restaurants.content
                 ),
                 GetRecommendationRestaurantsResponse(
@@ -124,7 +124,7 @@ class HomeService(
 
         val baseRequest = createBaseRequest(userLongitude, userLatitude)
         val request = when (type) {
-            RecommendationType.LAUNCH -> createLunchRequest(baseRequest)
+            RecommendationType.LUNCH -> createLunchRequest(baseRequest)
             RecommendationType.LATE_NIGHT -> createLateNightRequest(baseRequest)
         }
         return restaurantService.getRestaurants(request, pageable, userId)
