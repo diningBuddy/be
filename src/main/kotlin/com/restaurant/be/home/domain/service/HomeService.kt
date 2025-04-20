@@ -141,10 +141,12 @@ class HomeService(
             restaurantRecommendations = listOf(
                 GetRecommendationRestaurantsResponse(
                     RecommendationType.LAUNCH,
+                    RecommendationType.LAUNCH.title,
                     lunchResponse.restaurants.content
                 ),
                 GetRecommendationRestaurantsResponse(
                     RecommendationType.LATE_NIGHT,
+                    RecommendationType.LATE_NIGHT.title,
                     midNightResponse.restaurants.content
                 )
             )
