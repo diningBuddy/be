@@ -1,6 +1,7 @@
 package com.restaurant.be.kakao.domain.entity
 
 import com.fasterxml.jackson.annotation.JsonValue
+import com.restaurant.be.common.exception.InvalidCategoryException
 
 enum class ScrapCategory(private val displayName: String) {
     ALL("전체"), KOREAN("한식"), WESTERN("양식"), JAPANESE("일식"),
@@ -11,4 +12,9 @@ enum class ScrapCategory(private val displayName: String) {
 
     @JsonValue
     override fun toString(): String = displayName
+
+    companion object {
+        fun fromString(value: String): ScrapCategory =
+            values().find { it.name == value } ?: throw InvalidCategoryException()
+    }
 }
