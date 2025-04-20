@@ -56,8 +56,7 @@ class HomeController(
         return CommonResponse.success(response)
     }
     /*
-    * 큰 페이지들이 나올 수 있도록하자
+    *
     * */
-    // TODO 랭킹 페이지 나오도록 하는 API ???
     // TODO 홈 하단 섹션 자세히 나오도록하는 API // 처음 20개, 이후 10개씩
 }

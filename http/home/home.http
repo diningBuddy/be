@@ -1,4 +1,0 @@
-### 홈 전체 조회
-GET {{host}}/v1/home?userLatitude=37.2977142440725&userLongitude=126.970140339367
-Content-Type: application/json
-Authorization: {{auth_token}}
