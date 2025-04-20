@@ -10,6 +10,7 @@ import com.restaurant.be.kakao.domain.service.GetPopularRestaurantService
 import com.restaurant.be.kakao.presentation.dto.CategoryParam
 import com.restaurant.be.restaurant.domain.service.GetRestaurantService
 import com.restaurant.be.restaurant.presentation.controller.dto.GetRestaurantsRequest
+import com.restaurant.be.restaurant.presentation.controller.dto.GetRestaurantsResponse
 import com.restaurant.be.restaurant.presentation.controller.dto.Sort
 import com.restaurant.be.restaurant.presentation.controller.dto.common.RestaurantDto
 import org.springframework.data.domain.PageRequest
@@ -24,13 +25,8 @@ class HomeService(
     companion object {
         const val RECOMMENDATION_SIZE = 5
         const val BANNER_MAX_SIZE = 3
-    }
 
-    fun getHome(
-        request: HomeRequest,
-        userId: Long
-    ): HomeResponse {
-        val categoriesForLunch = arrayOf(
+        private val LUNCH_CATEGORIES = arrayOf(
             "한식", "갈비", "감자탕", "곱창", "막창", "국밥", "국수", "닭강정", "닭요리", "도시락",
             "떡볶이", "매운탕", "해물탕", "분식", "삼겹살", "설렁탕", "순대", "실내포장마차", "육류",
             "고기", "족발", "보쌈", "주먹밥", "찌개", "전골", "치킨", "칼국수", "해물", "생선",
@@ -40,61 +36,25 @@ class HomeService(
             "동남아음식", "카페", "디저트카페", "아이스크림", "제과", "베이커리", "커피전문점", "간식",
             "장어", "철판요리", "호프", "요리주점", "술집", "퓨전요리", "퓨전한식", "온천", "음식점"
         ).distinct()
-        val baseRequest = GetRestaurantsRequest(
-            query = null,
-            categories = null,
-            discountForSkku = null,
-            ratingAvg = null,
-            reviewCount = null,
-            priceMin = null,
-            priceMax = null,
-            customSort = Sort.CLOSELY_DESC,
-            ratingCount = null,
-            hasWifi = null,
-            hasPet = null,
-            hasParking = null,
-            hasNursery = null,
-            hasSmokingRoom = null,
-            hasDisabledFacility = null,
-            hasAppointment = null,
-            hasDelivery = null,
-            hasPackagee = null,
-            operationDay = null,
-            operationStartTime = null,
-            operationEndTime = null,
-            breakStartTime = null,
-            breakEndTime = null,
-            lastOrder = null,
-            kakaoRatingAvg = null,
-            kakaoRatingCount = null,
-            bookmark = null,
-            longitude = request.userLongitude,
-            latitude = request.userLatitude
-        )
-        val categoriesForMidNight = arrayOf(
+
+        private val LATE_NIGHT_CATEGORIES = arrayOf(
             "한식", "갈비", "감자탕", "곱창", "막창", "국밥", "국수", "닭강정", "닭요리", "도시락",
             "떡볶이", "매운탕", "해물탕", "분식", "삼겹살", "설렁탕", "순대", "실내포장마차", "육류",
             "고기", "족발", "보쌈", "주먹밥", "찌개", "전골", "치킨", "칼국수", "해물", "생선",
             "해장국", "조개", "회", "피자", "패스트푸드", "햄버거", "일식", "돈까스", "우동", "일본식라면",
             "일본식주점", "오뎅바", "참치회", "초밥", "롤"
         ).toList()
-        val lunchRequest = baseRequest.copy(
-            categories = categoriesForLunch,
-            kakaoRatingAvg = 4.0,
-            operationStartTime = "11:00",
-            operationEndTime = "15:00"
-        )
+    }
 
-        val midNightRequest = baseRequest.copy(
-            categories = categoriesForMidNight,
-            kakaoRatingAvg = 3.5,
-            operationEndTime = "02:00"
-        )
-
+    fun getHome(
+        request: HomeRequest,
+        userId: Long
+    ): HomeResponse {
+        val baseRequest = createBaseRequest(request.userLongitude, request.userLatitude)
         val pageable = PageRequest.of(0, RECOMMENDATION_SIZE)
 
-        val lunchResponse = restaurantService.getRestaurants(lunchRequest, pageable, userId)
-        val midNightResponse = restaurantService.getRestaurants(midNightRequest, pageable, userId)
+        val lunchResponse = restaurantService.getRestaurants(createLunchRequest(baseRequest), pageable, userId)
+        val lateNightResponse = restaurantService.getRestaurants(createLateNightRequest(baseRequest), pageable, userId)
 
         val categories = listOf(
             CategoryParam.WESTERN,
@@ -140,14 +100,84 @@ class HomeService(
                 },
             restaurantRecommendations = listOf(
                 GetRecommendationRestaurantsResponse(
-                    RecommendationType.LAUNCH,
+                    RecommendationType.LUNCH,
                     lunchResponse.restaurants.content
                 ),
                 GetRecommendationRestaurantsResponse(
                     RecommendationType.LATE_NIGHT,
-                    midNightResponse.restaurants.content
+                    lateNightResponse.restaurants.content
                 )
             )
+        )
+    }
+
+    fun getSectionDetails(
+        type: RecommendationType,
+        userId: Long,
+        page: Int = 0,
+        userLongitude: Double?,
+        userLatitude: Double?,
+        customPageSize: Int? = null
+    ): GetRestaurantsResponse {
+        val pageSize = customPageSize ?: if (page == 0) 20 else 10
+        val pageable = PageRequest.of(page, pageSize)
+
+        val baseRequest = createBaseRequest(userLongitude, userLatitude)
+        val request = when (type) {
+            RecommendationType.LUNCH -> createLunchRequest(baseRequest)
+            RecommendationType.LATE_NIGHT -> createLateNightRequest(baseRequest)
+        }
+        return restaurantService.getRestaurants(request, pageable, userId)
+    }
+
+    private fun createBaseRequest(longitude: Double?, latitude: Double?): GetRestaurantsRequest {
+        return GetRestaurantsRequest(
+            query = null,
+            categories = null,
+            discountForSkku = null,
+            ratingAvg = null,
+            reviewCount = null,
+            priceMin = null,
+            priceMax = null,
+            customSort = Sort.CLOSELY_DESC,
+            ratingCount = null,
+            hasWifi = null,
+            hasPet = null,
+            hasParking = null,
+            hasNursery = null,
+            hasSmokingRoom = null,
+            hasDisabledFacility = null,
+            hasAppointment = null,
+            hasDelivery = null,
+            hasPackagee = null,
+            operationDay = null,
+            operationStartTime = null,
+            operationEndTime = null,
+            breakStartTime = null,
+            breakEndTime = null,
+            lastOrder = null,
+            kakaoRatingAvg = null,
+            kakaoRatingCount = null,
+            bookmark = null,
+            longitude = longitude,
+            latitude = latitude
+        )
+    }
+
+    private fun createLateNightRequest(baseRequest: GetRestaurantsRequest): GetRestaurantsRequest {
+        return baseRequest.copy(
+            categories = LATE_NIGHT_CATEGORIES,
+            kakaoRatingAvg = 3.5,
+            operationEndTime = "02:00"
+        )
+    }
+
+    private fun createLunchRequest(baseRequest: GetRestaurantsRequest): GetRestaurantsRequest {
+        return baseRequest.copy(
+            categories = LUNCH_CATEGORIES,
+            kakaoRatingAvg = 4.0,
+            operationStartTime = "11:00",
+            operationEndTime = "15:00"
         )
     }
 }
