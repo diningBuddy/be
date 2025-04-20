@@ -2,6 +2,8 @@ package com.restaurant.be.restaurant.domain.entity.kakaoinfo
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.fasterxml.jackson.annotation.JsonProperty
+import com.restaurant.be.restaurant.repository.dto.OperationTimeInfoEsDocument
+
 @JsonIgnoreProperties(ignoreUnknown = true)
 data class OperationTimeInfoJsonEntity(
     @JsonProperty("startTime")
@@ -15,22 +17,14 @@ data class OperationTimeInfoJsonEntity(
     @JsonProperty("lastOrder")
     val lastOrder: String?
 
-) {
-    companion object {
-        fun create(
-            startTime: String,
-            endTime: String,
-            breakStartTime: String,
-            breakEndTime: String,
-            lastOrder: String
-        ): OperationTimeInfoJsonEntity {
-            return OperationTimeInfoJsonEntity(
-                startTime = startTime,
-                endTime = endTime,
-                breakStartTime = breakStartTime,
-                breakEndTime = breakEndTime,
-                lastOrder = lastOrder
-            )
-        }
-    }
+)
+
+fun OperationTimeInfoEsDocument.toResponse(): OperationTimeInfoJsonEntity {
+    return OperationTimeInfoJsonEntity(
+        startTime = this.startTime,
+        endTime = this.endTime,
+        breakStartTime = this.breakStartTime,
+        breakEndTime = this.breakEndTime,
+        lastOrder = this.lastOrder
+    )
 }

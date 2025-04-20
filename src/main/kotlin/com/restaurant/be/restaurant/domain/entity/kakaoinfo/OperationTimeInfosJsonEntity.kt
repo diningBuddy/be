@@ -2,6 +2,7 @@ package com.restaurant.be.restaurant.domain.entity.kakaoinfo
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.fasterxml.jackson.annotation.JsonProperty
+import com.restaurant.be.restaurant.repository.dto.OperationTimeInfosEsDocument
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 data class OperationTimeInfosJsonEntity(
@@ -10,16 +11,11 @@ data class OperationTimeInfosJsonEntity(
     @JsonProperty("operationTimeInfo")
     val operationTimeInfo: OperationTimeInfoJsonEntity?
 
-) {
-    companion object {
-        fun create(
-            dayOfTheWeek: String,
-            operationTimeInfo: OperationTimeInfoJsonEntity
-        ): OperationTimeInfosJsonEntity {
-            return OperationTimeInfosJsonEntity(
-                dayOfTheWeek = dayOfTheWeek,
-                operationTimeInfo = operationTimeInfo
-            )
-        }
-    }
+)
+
+fun OperationTimeInfosEsDocument.toResponse(): OperationTimeInfosJsonEntity {
+    return OperationTimeInfosJsonEntity(
+        dayOfTheWeek = this.dayOfTheWeek,
+        operationTimeInfo = this.operationTimeInfo.toResponse()
+    )
 }
