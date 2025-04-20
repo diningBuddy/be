@@ -4,6 +4,7 @@ import com.restaurant.be.common.response.CommonResponse
 import com.restaurant.be.home.domain.service.HomeService
 import com.restaurant.be.home.presentation.dto.HomeRequest
 import com.restaurant.be.home.presentation.dto.HomeResponse
+import com.restaurant.be.home.presentation.dto.RecommendationType
 import com.restaurant.be.restaurant.presentation.controller.dto.GetRestaurantsResponse
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.Parameter
@@ -57,11 +58,17 @@ class HomeController(
         return CommonResponse.success(response)
     }
 
-    @GetMapping("/lunch-section")
+    @GetMapping("/section")
     @PreAuthorize("hasRole('USER')")
     @Operation(
         summary = "메인 하단 점심 상세 조회 API",
         parameters = [
+            Parameter(
+                name = "type",
+                description = "섹션 타입",
+                required = true,
+                example = "LUNCH"
+            ),
             Parameter(
                 name = "page",
                 description = "페이지 번호 (0부터 시작)",
@@ -84,51 +91,13 @@ class HomeController(
     )
     fun getLunchSectionDetails(
         principal: Principal,
+        @RequestParam type: RecommendationType,
         @RequestParam(required = false, defaultValue = "0") page: Int,
         @RequestParam userLatitude: Double,
         @RequestParam userLongitude: Double
     ): CommonResponse<GetRestaurantsResponse> {
-        val response = homeService.getLunchSectionDetails(
-            principal.name.toLong(),
-            page,
-            userLongitude,
-            userLatitude
-        )
-        return CommonResponse.success(response)
-    }
-
-    @GetMapping("/midnight-section")
-    @PreAuthorize("hasRole('USER')")
-    @Operation(
-        summary = "메인 하단 저녁 상세 조회 API",
-        parameters = [
-            Parameter(
-                name = "page",
-                description = "페이지 번호 (0부터 시작)",
-                required = false,
-                example = "0"
-            ),
-            Parameter(
-                name = "userLatitude",
-                description = "사용자 위치 - 위도",
-                required = true,
-                example = "37.2977142440725"
-            ),
-            Parameter(
-                name = "userLongitude",
-                description = "사용자 위치 - 경도",
-                required = true,
-                example = "126.970140339367"
-            )
-        ]
-    )
-    fun getMidnightSectionDetails(
-        principal: Principal,
-        @RequestParam(required = false, defaultValue = "0") page: Int,
-        @RequestParam userLatitude: Double,
-        @RequestParam userLongitude: Double
-    ): CommonResponse<GetRestaurantsResponse> {
-        val response = homeService.getMidnightSectionDetails(
+        val response = homeService.getSectionDetails(
+            type,
             principal.name.toLong(),
             page,
             userLongitude,
