@@ -15,10 +15,23 @@ import jakarta.persistence.GenerationType
 import jakarta.persistence.Id
 import jakarta.persistence.OneToMany
 import jakarta.persistence.Table
+import jakarta.persistence.UniqueConstraint
 import java.time.LocalDate
 
 @Entity
-@Table(name = "users")
+@Table(
+    name = "users",
+    uniqueConstraints = [
+        UniqueConstraint(
+            name = "UK_USERS_PHONE_ACTIVE",
+            columnNames = ["phoneNumber", "isDeleted"]
+        ),
+        UniqueConstraint(
+            name = "UK_USERS_NICKNAME_ACTIVE",
+            columnNames = ["nickname", "isDeleted"]
+        )
+    ]
+)
 class User(
     @Id
     @Column
