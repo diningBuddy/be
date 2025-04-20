@@ -15,13 +15,5 @@ enum class CategoryParam(val displayName: String) {
             values().find { it.displayName == value } ?: throw IllegalArgumentException("Unknown value: $value")
     }
 
-    fun toDomain(): ScrapCategory = when (this) {
-        ALL -> ScrapCategory.ALL
-        KOREAN -> ScrapCategory.KOREAN
-        WESTERN -> ScrapCategory.WESTERN
-        JAPANESE -> ScrapCategory.JAPANESE
-        CHINESE -> ScrapCategory.CHINESE
-        ASIAN -> ScrapCategory.ASIAN
-        CAFE -> ScrapCategory.CAFE
-    }
+    fun toDomain(): ScrapCategory = ScrapCategory.valueOf(name)
 }
