@@ -5,6 +5,7 @@ import com.restaurant.be.common.entity.BaseEntity
 import com.restaurant.be.common.exception.NotFoundUserException
 import com.restaurant.be.user.domain.constant.Gender
 import com.restaurant.be.user.presentation.dto.SignUpUserRequest
+import com.restaurant.be.user.presentation.dto.UpdateUserRequest
 import jakarta.persistence.Column
 import jakarta.persistence.Convert
 import jakarta.persistence.Entity
@@ -66,15 +67,10 @@ class User(
         this.isDeleted = true
     }
 
-    fun update(
-        nickname: String,
-        name: String,
-        profileImageUrl: String?,
-        gender: Gender
-    ) {
-        this.nickname = nickname
-        this.name = name
-        this.profileImageUrl = profileImageUrl
-        this.gender = gender
+    fun update(req: UpdateUserRequest) {
+        this.nickname = req.nickname
+        this.name = req.name
+        this.profileImageUrl = req.profileImageUrl
+        this.gender = req.gender
     }
 }
