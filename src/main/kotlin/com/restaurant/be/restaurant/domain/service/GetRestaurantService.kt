@@ -2,6 +2,7 @@ package com.restaurant.be.restaurant.domain.service
 
 import com.restaurant.be.common.exception.NotFoundRestaurantException
 import com.restaurant.be.common.redis.RedisRepository
+import com.restaurant.be.restaurant.domain.entity.kakaoinfo.toResponse
 import com.restaurant.be.restaurant.presentation.controller.dto.GetRestaurantResponse
 import com.restaurant.be.restaurant.presentation.controller.dto.GetRestaurantsRequest
 import com.restaurant.be.restaurant.presentation.controller.dto.GetRestaurantsResponse
@@ -54,11 +55,21 @@ class GetRestaurantService(
             )
 
         val restaurantMap = restaurantProjections.associateBy { it.restaurant.id }
-        val sortedRestaurantProjections = restaurants.mapNotNull { restaurantMap[it.id] }
+
+        val sortedRestaurantProjections = restaurants.mapNotNull { esRestaurant ->
+            val projection = restaurantMap[esRestaurant.id] ?: return@mapNotNull null
+            val dto = projection.toDto()
+
+            esRestaurant.operationTimeInfos?.let { esOperationTimes
+                ->
+                dto.operationTimes = esOperationTimes.map { it.toResponse() }
+            }
+            dto
+        }
 
         return GetRestaurantsResponse(
             PageImpl(
-                sortedRestaurantProjections.map { it.toDto() },
+                sortedRestaurantProjections,
                 pageable,
                 sortedRestaurantProjections.size.toLong()
             ),
