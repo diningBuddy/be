@@ -25,7 +25,7 @@ class AuthenticationSchoolEmailController(
 ) {
 
     @GetMapping
-    @Operation(summary = "학교 인증 메일 발송 API")
+    @Operation(summary = "메일 인증 API")
     @ApiResponse(
         responseCode = "200",
         description = "성공",

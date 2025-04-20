@@ -101,6 +101,10 @@ data class KaKaoGetTokenException(
     override val message: String = "카카오 토큰을 가져오는데 실패 했습니다."
 ) : ServerException(500, message)
 
+data class NotFoundMailTemplateException(
+    override val message: String = "메일 템플릿을 가져오는데 실패 했습니다."
+) : ServerException(500, message)
+
 data class NotFoundSocialKeyException(
     override val message: String = "소셜 로그인 키가 존재하지 않습니다."
 ) : ServerException(404, message)

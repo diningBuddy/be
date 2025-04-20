@@ -1,5 +1,6 @@
 package com.restaurant.be.user.domain.service
 
+import com.restaurant.be.common.exception.NotFoundMailTemplateException
 import com.restaurant.be.common.exception.NotFoundUserException
 import com.restaurant.be.common.exception.SkkuEmailException
 import com.restaurant.be.common.redis.RedisRepository
@@ -45,8 +46,9 @@ class AuthenticationSchoolEmailService(
         helper.setSubject("[Dining Buddy] 이메일 주소 인증")
 
         // HTML 콘텐츠 직접 작성
-        val resource = this::class.java.classLoader.getResource("templates/email-verification.html")
-        val htmlContent = resource!!.readText(Charsets.UTF_8)
+        val resource =
+            this::class.java.classLoader.getResource("templates/email-verification.html") ?: throw NotFoundMailTemplateException()
+        val htmlContent = resource.readText(Charsets.UTF_8)
             .replace("\${username}", "최대현")
             .replace("\${email}", to)
             .replace(
