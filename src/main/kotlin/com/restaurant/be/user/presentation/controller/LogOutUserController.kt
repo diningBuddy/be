@@ -18,18 +18,18 @@ import org.springframework.web.bind.annotation.RestController
 @RestController
 @RequestMapping("/v1/users")
 class LogOutUserController(
-    private val logOutUserService: LogOutUserService,
+    private val logOutUserService: LogOutUserService
 ) {
     @PostMapping("/logout")
     @Operation(summary = "로그아웃 API")
     @ApiResponse(
         responseCode = "200",
         description = "성공",
-        content = [Content(schema = Schema(implementation = Unit::class))],
+        content = [Content(schema = Schema(implementation = Unit::class))]
     )
     fun logout(
         @Valid @RequestBody
-        request: LogOutUserRequest,
+        request: LogOutUserRequest
     ): CommonResponse<Unit> {
         logOutUserService.logout(request)
         return CommonResponse.success("로그아웃 되었습니다.")

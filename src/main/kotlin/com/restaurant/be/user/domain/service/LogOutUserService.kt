@@ -11,7 +11,7 @@ import org.springframework.transaction.annotation.Transactional
 @Transactional(readOnly = true)
 class LogOutUserService(
     private val userRepository: UserRepository,
-    private val redisRepository: RedisRepository,
+    private val redisRepository: RedisRepository
 ) {
     fun logout(request: LogOutUserRequest): Boolean =
         userRepository
