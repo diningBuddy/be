@@ -111,6 +111,8 @@ dependencies {
 
     implementation("io.github.cdimascio:dotenv-kotlin:6.4.1")
     implementation("software.amazon.awssdk:s3:2.20.114")
+
+    implementation("net.coobird:thumbnailator:0.4.14")
 }
 
 allOpen {

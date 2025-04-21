@@ -1,6 +1,7 @@
 package com.restaurant.be.s3.domain.service
 
 import com.restaurant.be.common.config.S3Properties
+import com.restaurant.be.s3.util.ImageResizeUtil
 import org.springframework.stereotype.Service
 import org.springframework.web.multipart.MultipartFile
 import software.amazon.awssdk.core.sync.RequestBody
@@ -16,17 +17,18 @@ class S3UploadService(
     private val s3Properties: S3Properties
 ) {
     fun uploadImage(file: MultipartFile): String {
+        val resizedImageBytes = ImageResizeUtil.resizeMultipartFile(file, 1280)
         val uuid = UUID.randomUUID().toString()
-        val key = "images/${LocalDate.now()}/$uuid.jpg"
+        val path = "images/${LocalDate.now()}/$uuid.jpg"
 
         val putObjectRequest = PutObjectRequest.builder()
             .bucket(s3Properties.bucket)
-            .key(key)
-            .contentType(file.contentType)
+            .key(path)
+            .contentType("image/jpeg")
             .build()
 
-        s3Client.putObject(putObjectRequest, RequestBody.fromBytes(file.bytes))
+        s3Client.putObject(putObjectRequest, RequestBody.fromBytes(resizedImageBytes))
 
-        return "https://${s3Properties.bucket}.s3.${s3Properties.region}.amazonaws.com/$key"
+        return "https://${s3Properties.bucket}.s3.${s3Properties.region}.amazonaws.com/$path"
     }
 }
