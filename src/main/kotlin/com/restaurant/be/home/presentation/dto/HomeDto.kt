@@ -30,6 +30,8 @@ data class GetBannerResponse(
 data class GetRecommendationRestaurantsResponse(
     @Schema(description = "추천 타입")
     val recommendationType: RecommendationType,
+    @Schema(description = "섹션 제목")
+    val sectionTitle: String,
     @Schema(description = "식당 리스트")
     val restaurants: List<RestaurantDto>
 )

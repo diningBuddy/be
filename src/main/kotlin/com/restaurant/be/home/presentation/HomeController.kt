@@ -89,7 +89,7 @@ class HomeController(
             )
         ]
     )
-    fun getLunchSectionDetails(
+    fun getSectionDetails(
         principal: Principal,
         @RequestParam type: RecommendationType,
         @RequestParam(required = false, defaultValue = "0") page: Int,
