@@ -1,14 +1,13 @@
 package com.restaurant.be.s3.presentation
 
+import com.restaurant.be.common.response.CommonResponse
 import com.restaurant.be.s3.domain.service.S3UploadService
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.media.ArraySchema
 import io.swagger.v3.oas.annotations.media.Content
 import io.swagger.v3.oas.annotations.media.Schema
 import io.swagger.v3.oas.annotations.responses.ApiResponse
-import kotlinx.coroutines.runBlocking
 import org.springframework.http.MediaType
-import org.springframework.http.ResponseEntity
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestMapping
@@ -43,8 +42,8 @@ class ImageUploadController(
     fun uploadImagesSync(
         principal: Principal,
         @RequestPart files: List<MultipartFile>
-    ): ResponseEntity<List<String>> {
-        return ResponseEntity.ok(uploadService.uploadImagesSync(files))
+    ): CommonResponse<List<String>> {
+        return CommonResponse.success(uploadService.uploadImagesSync(files))
     }
 
     @Operation(
@@ -64,14 +63,12 @@ class ImageUploadController(
     )
     @PostMapping("/upload-image/async", consumes = [MediaType.MULTIPART_FORM_DATA_VALUE])
     @PreAuthorize("hasRole('USER')")
-    suspend fun uploadImagesAsync(
+    fun uploadImagesAsync(
         principal: Principal,
         @RequestPart files: List<MultipartFile>
-    ): ResponseEntity<List<String>> {
-        return ResponseEntity.ok(
-            runBlocking {
-                uploadService.uploadImagesAsync(files)
-            }
+    ): CommonResponse<List<String>> {
+        return CommonResponse.success(
+            uploadService.uploadImagesAsync(files)
         )
     }
 }
