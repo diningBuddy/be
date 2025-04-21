@@ -17,7 +17,7 @@ class S3UploadService(
     private val s3Properties: S3Properties
 ) {
     fun uploadImage(file: MultipartFile): String {
-        val resizedImageBytes = ImageResizeUtil.resizeMultipartFile(file, 1280)
+        val resizedImageBytes = ImageResizeUtil.resizeAndCompressWithFallback(file, 1280)
         val uuid = UUID.randomUUID().toString()
         val path = "images/${LocalDate.now()}/$uuid.jpg"
 
