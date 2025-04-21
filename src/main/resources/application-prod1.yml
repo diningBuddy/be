@@ -32,3 +32,11 @@ spring:
 es:
   host: es-singlenode
   port: 9200
+
+aws:
+  s3:
+    region: ${AWS_S3_REGION}
+    bucket: ${AWS_COMPRESSED_BUCKET:test}
+  accessKey: ${AWS_ACCESS_KEY:test}
+  secretKey: ${AWS_SECRET_KEY:test}
+  sender-email: ${SENDER_EMAIL:tlsrudejr123@g.skku.edu}
