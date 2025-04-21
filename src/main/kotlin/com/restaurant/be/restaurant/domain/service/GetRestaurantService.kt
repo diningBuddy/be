@@ -102,11 +102,20 @@ class GetRestaurantService(
             )
 
         val restaurantMap = restaurantProjections.associateBy { it.restaurant.id }
-        val sortedRestaurantProjections = restaurants.mapNotNull { restaurantMap[it.id] }
+        val sortedRestaurantProjections = restaurants.mapNotNull { esRestaurant ->
+            val projection = restaurantMap[esRestaurant.id] ?: return@mapNotNull null
+            val dto = projection.toDto()
+
+            esRestaurant.operationTimeInfos?.let { esOperationTimes
+                ->
+                dto.operationTimes = esOperationTimes.map { it.toResponse() }
+            }
+            dto
+        }
 
         return GetRestaurantsResponse(
             PageImpl(
-                sortedRestaurantProjections.map { it.toDto() },
+                sortedRestaurantProjections,
                 pageable,
                 sortedRestaurantProjections.size.toLong()
             ),
