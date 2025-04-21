@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestPart
 import org.springframework.web.bind.annotation.RestController
 import org.springframework.web.multipart.MultipartFile
 import java.security.Principal
-import kotlin.system.measureTimeMillis
 
 @RestController
 @RequestMapping("/v1")
@@ -45,12 +44,7 @@ class ImageUploadController(
         principal: Principal,
         @RequestPart files: List<MultipartFile>
     ): ResponseEntity<List<String>> {
-        var urls: List<String>
-        val time = measureTimeMillis {
-            urls = uploadService.uploadImagesSync(files)
-        }
-        println("🧱 동기 업로드 소요 시간: ${time}ms")
-        return ResponseEntity.ok(urls)
+        return ResponseEntity.ok(uploadService.uploadImagesSync(files))
     }
 
     @Operation(
@@ -74,13 +68,8 @@ class ImageUploadController(
         principal: Principal,
         @RequestPart files: List<MultipartFile>
     ): ResponseEntity<List<String>> {
-        var urls: List<String>
-        val time = measureTimeMillis {
-            urls = runBlocking {
-                uploadService.uploadImagesAsync(files)
-            }
-        }
-        println("⚡ 비동기(코루틴) 업로드 소요 시간: ${time}ms")
-        return ResponseEntity.ok(urls)
+        return ResponseEntity.ok(runBlocking {
+            uploadService.uploadImagesAsync(files)
+        })
     }
 }
