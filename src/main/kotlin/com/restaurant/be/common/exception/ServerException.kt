@@ -119,7 +119,7 @@ data class NotFoundAuthenticationSchoolEmailCodeException(
 
 data class AlreadySchoolEmailAuthenticationException(
     override val message: String = "이미 학교 인증된 회원 입니다."
-)
+) : ServerException(400, message)
 
 data class InvalidCategoryException(
     override val message: String = "존재하지 않는 카테고리 입니다."
