@@ -11,10 +11,10 @@ import software.amazon.awssdk.services.s3.S3Client
 class S3Config(
     private val s3Properties: S3Properties
 ) {
-    @Value("\${AWS_ACCESS_S3_KEY}")
+    @Value("\${aws.access-s3-key}")
     lateinit var accessKey: String
 
-    @Value("\${AWS_SECRET_S3_KEY}")
+    @Value("\${aws.secret-s3-key}")
     lateinit var secretKey: String
 
     @Bean
