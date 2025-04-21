@@ -34,9 +34,21 @@ object ImageResizeUtil {
     }
 
     private fun resizeImage(image: BufferedImage, maxWidth: Int): ByteArray {
+        val aspectRatio = image.width.toDouble() / image.height.toDouble()
+        val newWidth: Int
+        val newHeight: Int
+
+        if (image.width > image.height) {
+            newWidth = maxWidth
+            newHeight = (maxWidth / aspectRatio).toInt()
+        } else {
+            newHeight = maxWidth
+            newWidth = (maxWidth * aspectRatio).toInt()
+        }
+
         val outputStream = ByteArrayOutputStream()
         Thumbnails.of(image)
-            .size(maxWidth, maxWidth)
+            .size(newWidth, newHeight)
             .outputFormat("jpg")
             .toOutputStream(outputStream)
         return outputStream.toByteArray()
