@@ -68,8 +68,10 @@ class ImageUploadController(
         principal: Principal,
         @RequestPart files: List<MultipartFile>
     ): ResponseEntity<List<String>> {
-        return ResponseEntity.ok(runBlocking {
-            uploadService.uploadImagesAsync(files)
-        })
+        return ResponseEntity.ok(
+            runBlocking {
+                uploadService.uploadImagesAsync(files)
+            }
+        )
     }
 }
