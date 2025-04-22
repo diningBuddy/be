@@ -73,14 +73,3 @@ data class MenuDto(
     @Schema(description = "메뉴 이미지 URL")
     val imageUrl: String? = null
 )
-
-data class PopularRestaurantDto(
-    val rank: Long,
-    val name: String,
-    val originalCategories: String,
-    val longitude: Double,
-    val latitude: Double,
-    val ratingAvg: Double?,
-    val ratingCount: Long?,
-    val representativeImageUrl: String
-)
