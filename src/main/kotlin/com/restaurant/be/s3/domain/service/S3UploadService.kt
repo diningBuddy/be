@@ -1,6 +1,7 @@
 package com.restaurant.be.s3.domain.service
 
 import com.restaurant.be.common.config.S3Properties
+import com.restaurant.be.s3.domain.UploadPath
 import com.restaurant.be.s3.util.ImageResizeUtil
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
@@ -19,33 +20,29 @@ class S3UploadService(
     private val s3Client: S3Client,
     private val s3Properties: S3Properties
 ) {
-    fun uploadImagesSync(files: List<MultipartFile>): List<String> {
-        return files.map { uploadImage(it) }
-    }
-
-    fun uploadImagesAsync(files: List<MultipartFile>): List<String> {
+    fun uploadImagesAsync(path: UploadPath, files: List<MultipartFile>): List<String> {
         return runBlocking {
             files.map { file ->
                 async(Dispatchers.IO) {
-                    uploadImage(file)
+                    uploadImage(path, file)
                 }
             }.awaitAll()
         }
     }
 
-    fun uploadImage(file: MultipartFile): String {
+    fun uploadImage(path: UploadPath, file: MultipartFile): String {
         val resizedImageBytes = ImageResizeUtil.resizeAndCompressWithFallback(file, 1280)
         val uuid = UUID.randomUUID().toString()
-        val path = "images/${LocalDate.now()}/$uuid.jpg"
+        val fullPath = "$path/${LocalDate.now()}/$uuid.jpg"
 
         val putObjectRequest = PutObjectRequest.builder()
             .bucket(s3Properties.bucket)
-            .key(path)
+            .key(fullPath)
             .contentType("image/jpeg")
             .build()
 
         s3Client.putObject(putObjectRequest, RequestBody.fromBytes(resizedImageBytes))
 
-        return "https://${s3Properties.bucket}.s3.${s3Properties.region}.amazonaws.com/$path"
+        return "https://${s3Properties.bucket}.s3.${s3Properties.region}.amazonaws.com/$fullPath"
     }
 }
