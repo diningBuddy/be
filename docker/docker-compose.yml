@@ -11,7 +11,7 @@ services:
     restart: always
   skku-api-1:
     depends_on:
-      - skku-db
+      - mysql
     image: camelia9999/diningbuddy:be
     ports:
       - "8081:8081"
@@ -22,7 +22,7 @@ services:
     restart: always
   skku-api-2:
     depends_on:
-      - skku-db
+      - mysql
     image: camelia9999/diningbuddy:be
     ports:
       - "8082:8082"
@@ -31,7 +31,7 @@ services:
     env_file:
       - .env
     restart: always
-  skku-db:
+  mysql:
     image: mysql:8.0
     platform: linux/amd64
     ports:
