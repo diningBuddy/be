@@ -47,6 +47,7 @@ jobs:
         run: |
           echo '${{ secrets.DOCKER_PASSWORD }}' | docker login -u '${{ secrets.DOCKER_USERNAME }}' --password-stdin
           docker buildx build --platform linux/amd64,linux/arm64 -f docker/api.Dockerfile -t camelia9999/diningbuddy:be --push .
+
       - name: Debug SSH key
         run: |
           echo "${{ secrets.SSH_PRIVATE_KEY }}" > debug_key
@@ -54,6 +55,7 @@ jobs:
           head -n 1 debug_key    # 첫 줄 확인
           tail -n 1 debug_key    # 마지막 줄 확인
         shell: bash
+
       - name: Copy docker-compose.yml to server
         uses: appleboy/scp-action@v0.1.4
         with:
@@ -63,6 +65,7 @@ jobs:
           port: 22
           source: "docker/docker-compose.yml"
           target: "~/app/"
+
       - name: Deploy to OCI
         uses: appleboy/ssh-action@v0.1.4
         with:
@@ -74,37 +77,66 @@ jobs:
             cd ~/app/docker
             echo '${{ secrets.DOCKER_PASSWORD }}' | docker login -u '${{ secrets.DOCKER_USERNAME }}' --password-stdin
             docker pull camelia9999/diningbuddy:be
-            export AWS_ACCESS_KEY='${{ secrets.AWS_ACCESS_KEY }}'
-            export AWS_SECRET_KEY='${{ secrets.AWS_SECRET_KEY }}'
+
             echo "> 구동중인 Profile 확인"
-            CURRENT_PROFILE=$(curl -s http://localhost/profile)
-            echo "> $CURRENT_PROFILE"
-            
-            if [ "$CURRENT_PROFILE" == "prod1" ]
-            then
+            CURRENT_PROFILE=$(curl -s http://127.0.0.1/profile || echo "")
+
+            if [ -z "$CURRENT_PROFILE" ]; then
+              echo "> 현재 실행 중인 프로필을 찾을 수 없습니다. 기본 prod1으로 설정합니다."
+              IDLE_PROFILE=prod1
+              IDLE_SERVICE=skku-api-1
+              IDLE_PORT=8081
+              CURRENT_SERVICE=""
+            elif [ "$CURRENT_PROFILE" == "prod1" ]; then
               IDLE_PROFILE=prod2
               IDLE_SERVICE=skku-api-2
               IDLE_PORT=8082
-            elif [ "$CURRENT_PROFILE" == "prod2" ]
-            then
+              CURRENT_SERVICE=skku-api-1
+            elif [ "$CURRENT_PROFILE" == "prod2" ]; then
               IDLE_PROFILE=prod1
               IDLE_SERVICE=skku-api-1
               IDLE_PORT=8081
+              CURRENT_SERVICE=skku-api-2
             else
-              echo "> 일치하는 Profile이 없음."
+              echo "> 일치하는 Profile이 없음. 기본 prod1으로 설정합니다."
               IDLE_PROFILE=prod1
               IDLE_SERVICE=skku-api-1
               IDLE_PORT=8081
+              CURRENT_SERVICE=""
             fi
-            
+
             echo "> ${IDLE_PROFILE} 배포"
-            docker-compose up -d $IDLE_SERVICE
-            
-            echo "> 사용하지 않는 Docker Image 삭제" 
-            docker image prune -f
-            
-            sleep 60
-            
-            echo "> 전환"
+            docker-compose up -d --no-deps $IDLE_SERVICE
+
+            echo "> 새 서비스 Health Check 시작"
+            for RETRY_COUNT in {1..10}
+            do
+              RESPONSE=$(curl -s http://127.0.0.1:${IDLE_PORT}/health || echo "")
+              UP_COUNT=$(echo $RESPONSE | grep 'UP' | wc -l)
+
+              if [ "$UP_COUNT" -ge 1 ]; then
+                echo "> Health check 성공"
+                break
+              else
+                echo "> Health check 실패... (${RETRY_COUNT}/10)"
+                sleep 10
+              fi
+
+              if [ $RETRY_COUNT -eq 10 ]; then
+                echo "> Health check 실패로 배포를 종료합니다."
+                exit 1
+              fi
+            done
+
+            echo "> 서비스 전환"
             echo "set \$service_url http://127.0.0.1:${IDLE_PORT};" | sudo tee /etc/nginx/conf.d/service-url.inc
             sudo service nginx reload
+
+            if [ ! -z "$CURRENT_SERVICE" ]; then
+              echo "> 이전 서비스($CURRENT_SERVICE) 중지"
+              sleep 10
+              docker-compose stop $CURRENT_SERVICE
+            fi
+
+            echo "> 사용하지 않는 Docker Image 삭제" 
+            docker image prune -f
