@@ -10,8 +10,6 @@ services:
       - "8090:8090"
     restart: always
   skku-api-1:
-    depends_on:
-      - mysql
     image: camelia9999/diningbuddy:be
     ports:
       - "8081:8081"
@@ -23,8 +21,6 @@ services:
     networks:
       - ubuntu_app-network
   skku-api-2:
-    depends_on:
-      - mysql
     image: camelia9999/diningbuddy:be
     ports:
       - "8082:8082"
