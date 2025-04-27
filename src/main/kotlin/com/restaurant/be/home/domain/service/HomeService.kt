@@ -81,6 +81,8 @@ class HomeService(
         }
 
         val randomRestaurants = bannerRestaurants.shuffled().take(BANNER_MAX_SIZE)
+
+        var bannerId = 1L
         return HomeResponse(
             restaurantBanner = randomRestaurants
                 .map { restaurant ->
@@ -92,6 +94,7 @@ class HomeService(
 
                     val categoryEnum = CategoryParam.entries.find { it.displayName == mainCategory } ?: CategoryParam.ALL
                     GetBannerResponse(
+                        bannerId = bannerId++,
                         imageUrl = requireNotNull(restaurant.representativeImageUrl) { "대표 이미지가 없습니다." },
                         title = restaurant.name,
                         category = categoryEnum,

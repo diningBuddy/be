@@ -17,6 +17,8 @@ data class HomeResponse(
 )
 
 data class GetBannerResponse(
+    @Schema(description = "배너 id")
+    val bannerId: Long,
     @Schema(description = "대표 imageUrl")
     val imageUrl: String,
     @Schema(description = "제목")
