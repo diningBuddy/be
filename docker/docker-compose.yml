@@ -15,8 +15,13 @@ services:
       - "8081:8081"
     environment:
       - USE_PROFILE=prod1
-    env_file:
-      - .env
+      - AWS_S3_REGION=${AWS_S3_REGION}
+      - AWS_COMPRESSED_BUCKET=${AWS_COMPRESSED_BUCKET}
+      - AWS_ACCESS_S3_KEY=${AWS_ACCESS_S3_KEY}
+      - AWS_SECRET_S3_KEY=${AWS_SECRET_S3_KEY}
+      - AWS_ACCESS_KEY=${AWS_ACCESS_KEY}
+      - AWS_SECRET_KEY=${AWS_SECRET_KEY}
+      - SENDER_EMAIL=${SENDER_EMAIL}
     restart: always
     networks:
       - ubuntu_app-network
@@ -26,8 +31,13 @@ services:
       - "8082:8082"
     environment:
       - USE_PROFILE=prod2
-    env_file:
-      - .env
+      - AWS_S3_REGION=${AWS_S3_REGION}
+      - AWS_COMPRESSED_BUCKET=${AWS_COMPRESSED_BUCKET}
+      - AWS_ACCESS_S3_KEY=${AWS_ACCESS_S3_KEY}
+      - AWS_SECRET_S3_KEY=${AWS_SECRET_S3_KEY}
+      - AWS_ACCESS_KEY=${AWS_ACCESS_KEY}
+      - AWS_SECRET_KEY=${AWS_SECRET_KEY}
+      - SENDER_EMAIL=${SENDER_EMAIL}
     restart: always
     networks:
       - ubuntu_app-network
