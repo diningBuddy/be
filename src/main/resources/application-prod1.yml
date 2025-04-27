@@ -10,7 +10,7 @@ spring:
     name: be
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://skku-db:3306/skku?&characterEncoding=UTF-8
+    url: jdbc:mysql://mysql:3306/skku?&characterEncoding=UTF-8
     username: skku-user
     password: skku-pw
   jpa:
