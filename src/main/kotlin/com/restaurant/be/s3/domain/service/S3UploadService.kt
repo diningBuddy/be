@@ -24,25 +24,21 @@ class S3UploadService(
         return runBlocking {
             files.map { file ->
                 async(Dispatchers.IO) {
-                    uploadImage(path, file)
+                    val resizedImageBytes = ImageResizeUtil.resizeAndCompressWithFallback(file, 1280)
+                    val uuid = UUID.randomUUID().toString()
+                    val fullPath = "$path/${LocalDate.now()}/$uuid.jpg"
+
+                    val putObjectRequest = PutObjectRequest.builder()
+                        .bucket(s3Properties.bucket)
+                        .key(fullPath)
+                        .contentType("image/jpeg")
+                        .build()
+
+                    s3Client.putObject(putObjectRequest, RequestBody.fromBytes(resizedImageBytes))
+
+                    "https://${s3Properties.bucket}.s3.${s3Properties.region}.amazonaws.com/$fullPath"
                 }
             }.awaitAll()
         }
-    }
-
-    fun uploadImage(path: UploadPath, file: MultipartFile): String {
-        val resizedImageBytes = ImageResizeUtil.resizeAndCompressWithFallback(file, 1280)
-        val uuid = UUID.randomUUID().toString()
-        val fullPath = "$path/${LocalDate.now()}/$uuid.jpg"
-
-        val putObjectRequest = PutObjectRequest.builder()
-            .bucket(s3Properties.bucket)
-            .key(fullPath)
-            .contentType("image/jpeg")
-            .build()
-
-        s3Client.putObject(putObjectRequest, RequestBody.fromBytes(resizedImageBytes))
-
-        return "https://${s3Properties.bucket}.s3.${s3Properties.region}.amazonaws.com/$fullPath"
     }
 }

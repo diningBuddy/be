@@ -39,7 +39,7 @@ class ImageUploadController(
             ApiResponse(responseCode = "500", description = "서버 에러")
         ]
     )
-    @PostMapping("/upload-image/async", consumes = [MediaType.MULTIPART_FORM_DATA_VALUE])
+    @PostMapping("/upload-image", consumes = [MediaType.MULTIPART_FORM_DATA_VALUE])
     @PreAuthorize("hasRole('USER')")
     fun uploadImagesAsync(
         principal: Principal,
