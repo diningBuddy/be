@@ -82,7 +82,7 @@ class HomeService(
 
         val randomRestaurants = bannerRestaurants.shuffled().take(BANNER_MAX_SIZE)
 
-        var bannerId =1L;
+        var bannerId = 1L
         return HomeResponse(
             restaurantBanner = randomRestaurants
                 .map { restaurant ->
