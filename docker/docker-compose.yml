@@ -20,6 +20,8 @@ services:
     env_file:
       - .env
     restart: always
+    networks:
+      - ubuntu_app-network
   skku-api-2:
     depends_on:
       - mysql
@@ -31,6 +33,8 @@ services:
     env_file:
       - .env
     restart: always
+    networks:
+      - ubuntu_app-network
   mysql:
     image: mysql:8.0
     platform: linux/amd64
@@ -82,3 +86,7 @@ services:
     volumes:
       - ./kibana-config.yml:/usr/share/kibana/config/kibana.yml
     restart: always
+
+networks:
+  ubuntu_app-network:
+    external: true
