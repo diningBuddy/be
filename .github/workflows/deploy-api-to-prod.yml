@@ -54,6 +54,15 @@ jobs:
           head -n 1 debug_key    # 첫 줄 확인
           tail -n 1 debug_key    # 마지막 줄 확인
         shell: bash
+      - name: Copy docker-compose.yml to server
+        uses: appleboy/scp-action@v0.1.4
+        with:
+          host: ${{ secrets.HOST_PUBLIC_IP }}
+          username: ${{ secrets.HOST_USER_NAME }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: 22
+          source: "docker/docker-compose.yml"
+          target: "~/app/"
       - name: Deploy to OCI
         uses: appleboy/ssh-action@v0.1.4
         with:
@@ -62,7 +71,7 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           port: 22
           script: |
-            cd ~/
+            cd ~/app/
             echo '${{ secrets.DOCKER_PASSWORD }}' | docker login -u '${{ secrets.DOCKER_USERNAME }}' --password-stdin
             docker pull camelia9999/diningbuddy:be
             
