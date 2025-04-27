@@ -73,19 +73,22 @@ jobs:
             if [ "$CURRENT_PROFILE" == "prod1" ]
             then
               IDLE_PROFILE=prod2
+              IDLE_SERVICE=skku-api-2
               IDLE_PORT=8082
             elif [ "$CURRENT_PROFILE" == "prod2" ]
             then
               IDLE_PROFILE=prod1
+              IDLE_SERVICE=skku-api-1
               IDLE_PORT=8081
             else
               echo "> 일치하는 Profile이 없음."
               IDLE_PROFILE=prod1
+              IDLE_SERVICE=skku-api-1
               IDLE_PORT=8081
             fi
             
-            echo "> $IDLE_PROFILE 배포"
-            docker-compose up -d skku-api-$IDLE_PROFILE
+            echo "> ${IDLE_PROFILE} 배포"
+            docker-compose up -d $IDLE_SERVICE
             
             echo "> 사용하지 않는 Docker Image 삭제" 
             docker image prune -f
