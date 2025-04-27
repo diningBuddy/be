@@ -52,6 +52,7 @@ class SecurityConfig(
                         "/profile",
                         "/swagger-ui/**",
                         "/v3/api-docs/**",
+                        "/actuator/health",
                         "/webjars/**"
                     ).permitAll()
                     .anyRequest()

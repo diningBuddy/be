@@ -113,6 +113,7 @@ dependencies {
     implementation("software.amazon.awssdk:s3:2.20.114")
 
     implementation("net.coobird:thumbnailator:0.4.14")
+    implementation("org.springframework.boot:spring-boot-starter-actuator")
 }
 
 allOpen {

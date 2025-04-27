@@ -111,7 +111,7 @@ jobs:
             echo "> 새 서비스 Health Check 시작"
             for RETRY_COUNT in {1..10}
             do
-              RESPONSE=$(curl -s http://127.0.0.1:${IDLE_PORT}/health || echo "")
+              RESPONSE=$(curl -s http://127.0.0.1:${IDLE_PORT}/actuator/health || echo "")
               UP_COUNT=$(echo $RESPONSE | grep 'UP' | wc -l)
 
               if [ "$UP_COUNT" -ge 1 ]; then

@@ -46,3 +46,15 @@ aws:
   accessKey: ${AWS_ACCESS_KEY:test}
   secretKey: ${AWS_SECRET_KEY:test}
   sender-email: ${SENDER_EMAIL:test}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health
+  endpoint:
+    health:
+      show-details: never
+  health:
+    mail:
+      enabled: false
