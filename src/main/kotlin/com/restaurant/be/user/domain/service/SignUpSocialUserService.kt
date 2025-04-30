@@ -22,7 +22,7 @@ class SignUpSocialUserService(
 
     @Transactional
     fun kakaoSignUp(request: SignUpSocialUserRequest): Token {
-        val kakaoKey = redisRepository.getSocialKey(request.socialCode)
+        val kakaoKey = redisRepository.getSocialKey(request.accessToken)
         socialUserRepository.findBySocialKey(kakaoKey)?.let { throw DuplicateSocialUserException() }
 
         val user = signUpUserService.createUser(
