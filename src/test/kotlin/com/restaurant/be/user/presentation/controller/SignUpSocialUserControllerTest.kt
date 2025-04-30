@@ -58,7 +58,9 @@ class SignUpSocialUserControllerTest(
             it("카카오 회원가입 성공 테스트") {
                 // given
                 val request = SignUpSocialUserRequest(
-                    socialCode = "code2",
+                    accessToken = "code2",
+                    refreshToken = "refresh_token",
+                    tokenType = "token_type",
                     phoneNumber = "01011111111",
                     name = "test_name",
                     birthday = LocalDate.now(),
@@ -103,7 +105,9 @@ class SignUpSocialUserControllerTest(
             it("카카오 회원가입 실패 테스트") {
                 // given
                 val request = SignUpSocialUserRequest(
-                    socialCode = "code1",
+                    accessToken = "code1",
+                    refreshToken = "refresh_token",
+                    tokenType = "token_type",
                     phoneNumber = "01011111111",
                     name = "test_name",
                     birthday = LocalDate.now(),
@@ -140,7 +144,9 @@ class SignUpSocialUserControllerTest(
             it("Redis 에 소셜 키가 존재하지 않는 경우 테스트") {
                 // given
                 val request = SignUpSocialUserRequest(
-                    socialCode = "code3",
+                    accessToken = "code3",
+                    refreshToken = "refresh_token",
+                    tokenType = "token_type",
                     phoneNumber = "01011111111",
                     name = "test_name",
                     birthday = LocalDate.now(),
