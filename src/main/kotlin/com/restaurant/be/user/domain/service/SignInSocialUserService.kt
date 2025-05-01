@@ -19,9 +19,9 @@ class SignInSocialUserService(
     private val redisRepository: RedisRepository
 ) {
     fun kakaoSignIn(request: SignInSocialUserRequest): Token {
-        val kakaoKey = kakaoRepository.getKakaoKey(request.code)
+        val kakaoKey = kakaoRepository.getKakaoKey(request.accessToken)
         val user = socialUserRepository.findBySocialKey(kakaoKey)?.user ?: run {
-            redisRepository.saveSocialKey(request.code, kakaoKey)
+            redisRepository.saveSocialKey(request.accessToken, kakaoKey)
             throw NotFoundUserException()
         }
         val token = tokenProvider.createTokens(user.getId(), user.roles)

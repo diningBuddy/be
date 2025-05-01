@@ -21,12 +21,11 @@ class KakaoRepository(
     private val restClient: RestClient
 ) {
 
-    fun getKakaoKey(kakaoCode: String): String {
-        val kakaoToken = getkakaoToken(kakaoCode)
+    fun getKakaoKey(kakaoToken: String): String {
         return restClient
             .get()
             .uri("https://kapi.kakao.com/v2/user/me")
-            .header("Authorization", "Bearer ${kakaoToken.access_token}")
+            .header("Authorization", "Bearer $kakaoToken")
             .retrieve()
             .body(KakaoUserInfo::class.java)?.id ?: throw KaKaoGetTokenException()
     }
