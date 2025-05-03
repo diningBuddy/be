@@ -16,15 +16,8 @@ data class GetSocialUserDtoResponse(
 data class SocialUserDto(
     @Schema(title = "소셜 유형", example = "KAKAO", required = true)
     val socialType: SocialType?,
-    @Schema(
-        title = "소셜 키",
-        example = "awfwf@w3wf",
-        required = true
-    )
-    val socialKey: String?,
 ) {
     constructor(user: User) : this(
         socialType = user.socialUsers.firstOrNull()?.socialType,
-        socialKey = user.socialUsers.firstOrNull()?.socialKey ?: ""
     )
 }
