@@ -7,6 +7,7 @@ import com.restaurant.be.common.exception.NotFoundUserException
 import com.restaurant.be.user.domain.constant.Gender
 import com.restaurant.be.user.domain.constant.School
 import com.restaurant.be.user.presentation.dto.SignUpUserRequest
+import com.restaurant.be.user.presentation.dto.UpdateUserRequest
 import jakarta.persistence.CascadeType
 import jakarta.persistence.Column
 import jakarta.persistence.Convert
@@ -85,6 +86,13 @@ class User(
 
     fun delete() {
         this.isDeleted = true
+    }
+
+    fun update(req: UpdateUserRequest) {
+        this.nickname = req.nickname
+        this.name = req.name
+        this.profileImageUrl = req.profileImageUrl
+        this.gender = req.gender
     }
 
     fun schoolEmailAuthentication() {
