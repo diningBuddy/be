@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service
 
 @Service
 class GetSocialUserService(
-    private val userRepository: UserRepository,
+    private val userRepository: UserRepository
 ) {
     fun getSocialUser(userId: Long): GetSocialUserDtoResponse {
         val user = userRepository.findByIdOrNull(userId) ?: throw NotFoundUserException()
@@ -19,7 +19,7 @@ class GetSocialUserService(
             }
         return GetSocialUserDtoResponse(
             id = userId,
-            socialUsers = socialUsersDto,
+            socialUsers = socialUsersDto
         )
     }
 }
