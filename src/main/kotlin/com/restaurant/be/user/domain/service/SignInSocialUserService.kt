@@ -24,6 +24,9 @@ class SignInSocialUserService(
             redisRepository.saveSocialKey(request.accessToken, kakaoKey)
             throw NotFoundUserException()
         }
+        if (user.isDeleted) { // soft deleted된 유저 판별
+            throw NotFoundUserException()
+        }
         val token = tokenProvider.createTokens(user.getId(), user.roles)
         redisRepository.saveRefreshToken(user.getId(), token.refreshToken)
         return token
