@@ -16,13 +16,17 @@ import com.restaurant.be.user.presentation.dto.SignUpUserRequest
 import com.restaurant.be.user.repository.UserRepository
 import com.restaurant.be.user.util.NickNameGenerateUtil
 import io.kotest.matchers.shouldBe
+import io.kotest.matchers.shouldNotBe
+import io.kotest.matchers.string.shouldMatch
 import io.mockk.every
 import io.mockk.mockkObject
 import io.mockk.unmockkAll
+import org.hamcrest.Matchers
 import org.springframework.data.domain.Page
 import org.springframework.http.MediaType
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers.header
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 import org.springframework.transaction.annotation.Transactional
@@ -68,6 +72,9 @@ class SignUpUserControllerTest(
                 }
                     .andExpect(status().isOk)
                     .andExpect(jsonPath("$.result").value("SUCCESS"))
+                    .andExpect(header().exists("Authorization"))
+                    .andExpect(header().string("Authorization", Matchers.startsWith("Bearer ")))
+                    .andExpect(header().exists("RefreshToken"))
                     .andReturn()
 
                 val responseContent = result.response.getContentAsString(Charset.forName("UTF-8"))
@@ -79,8 +86,15 @@ class SignUpUserControllerTest(
                         responseType
                     )
 
+                val authorizationHeader = result.response.getHeader("Authorization")?.substring(7)
+                val refreshTokenHeader = result.response.getHeader("RefreshToken")
+
                 // then
                 actualResult.result shouldBe CommonResponse.Result.SUCCESS
+                authorizationHeader shouldNotBe null
+                authorizationHeader shouldMatch Regex("^[A-Za-z0-9-_=]+\\.[A-Za-z0-9-_=]+\\.[A-Za-z0-9-_=]+$")
+                refreshTokenHeader shouldNotBe null
+                refreshTokenHeader shouldMatch Regex("^[A-Za-z0-9-_=]+\\.[A-Za-z0-9-_=]+\\.[A-Za-z0-9-_=]+$")
             }
 
             it("1개의 중복 닉네임 테스트") {

@@ -1,6 +1,9 @@
 package com.restaurant.be.user.domain.service
 
 import com.restaurant.be.common.exception.DuplicateUserPhoneNumberException
+import com.restaurant.be.common.jwt.TokenProvider
+import com.restaurant.be.common.redis.RedisRepository
+import com.restaurant.be.common.response.Token
 import com.restaurant.be.user.domain.entity.User
 import com.restaurant.be.user.presentation.dto.SignUpUserRequest
 import com.restaurant.be.user.repository.UserRepository
@@ -11,10 +14,12 @@ import org.springframework.transaction.annotation.Transactional
 @Service
 @Transactional(readOnly = true)
 class SignUpUserService(
-    private val userRepository: UserRepository
+    private val userRepository: UserRepository,
+    private val tokenProvider: TokenProvider,
+    private val redisRepository: RedisRepository
 ) {
     @Transactional
-    fun signUp(request: SignUpUserRequest): User {
+    fun createUser(request: SignUpUserRequest): User {
         if (userRepository.findByPhoneNumber(request.phoneNumber) != null) {
             throw DuplicateUserPhoneNumberException()
         }
@@ -22,6 +27,15 @@ class SignUpUserService(
         val nickname = generateUniqueNickname()
         val user = User.create(request, nickname)
         return userRepository.save(user)
+    }
+
+    @Transactional
+    fun signUp(request: SignUpUserRequest): Token {
+        val user = createUser(request)
+
+        val token = tokenProvider.createTokens(user.getId(), user.roles)
+        redisRepository.saveRefreshToken(user.getId(), token.refreshToken)
+        return token
     }
 
     fun generateUniqueNickname(): String {

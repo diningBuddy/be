@@ -19,14 +19,18 @@ class SignInSocialUserService(
     private val redisRepository: RedisRepository
 ) {
     fun kakaoSignIn(request: SignInSocialUserRequest): Token {
-        val kakaoKey = kakaoRepository.getKakaoKey(request.code)
-        val user =
-            socialUserRepository.findBySocialKey(kakaoKey)?.user ?: run {
-                redisRepository.saveSocialKey(request.code, kakaoKey)
-                throw NotFoundUserException()
-            }
-        val token = tokenProvider.createTokens(user.getId(), user.roles)
-        redisRepository.saveRefreshToken(user.getId(), token.refreshToken)
-        return token
+    val kakaoKey = kakaoRepository.getKakaoKey(request.accessToken)
+    val user = socialUserRepository.findBySocialKey(kakaoKey)?.user ?: run {
+        redisRepository.saveSocialKey(request.accessToken, kakaoKey)
+        throw NotFoundUserException()
+    }
+
+    if (user.isDeleted) { // soft deleted된 유저 판별
+        throw NotFoundUserException()
+    }
+
+    val token = tokenProvider.createTokens(user.getId(), user.roles)
+    redisRepository.saveRefreshToken(user.getId(), token.refreshToken)
+    return token
     }
 }
