@@ -2,13 +2,17 @@ package com.restaurant.be.user.domain.entity
 
 import com.restaurant.be.common.converter.SeparatorConverter
 import com.restaurant.be.common.entity.BaseEntity
+import com.restaurant.be.common.exception.AlreadySchoolEmailAuthenticationException
 import com.restaurant.be.common.exception.NotFoundUserException
 import com.restaurant.be.user.domain.constant.Gender
+import com.restaurant.be.user.domain.constant.School
 import com.restaurant.be.user.presentation.dto.SignUpUserRequest
 import jakarta.persistence.CascadeType
 import jakarta.persistence.Column
 import jakarta.persistence.Convert
 import jakarta.persistence.Entity
+import jakarta.persistence.EnumType
+import jakarta.persistence.Enumerated
 import jakarta.persistence.FetchType.LAZY
 import jakarta.persistence.GeneratedValue
 import jakarta.persistence.GenerationType
@@ -55,6 +59,9 @@ class User(
     var roles: List<String> = listOf(),
     @Column
     var profileImageUrl: String? = null,
+    @Column
+    @Enumerated(EnumType.STRING)
+    var verifiedSchool: School? = null,
     @OneToMany(mappedBy = "user", cascade = [CascadeType.REMOVE], fetch = LAZY)
     var socialUsers: MutableList<SocialUser> = mutableListOf()
 ) : BaseEntity() {
@@ -78,5 +85,15 @@ class User(
 
     fun delete() {
         this.isDeleted = true
+    }
+
+    fun schoolEmailAuthentication() {
+        verifiedSchool = School.SKKU
+    }
+
+    fun isVerifiedSchool() {
+        if (verifiedSchool != null) {
+            throw AlreadySchoolEmailAuthenticationException()
+        }
     }
 }

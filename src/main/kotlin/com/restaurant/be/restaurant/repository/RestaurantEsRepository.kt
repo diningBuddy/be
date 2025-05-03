@@ -38,7 +38,7 @@ class RestaurantEsRepository(
         bookmark: Boolean?
     ): Pair<List<RestaurantEsDocument>, List<Double>?> {
         val dsl = SearchDSL()
-        val termQueries: MutableList<ESQuery> = mutableListOf()
+        val termQueries: MutableList<ESQuery> = buildCommonRestaurantFilters(request, dsl)
         if (restaurantIds != null) {
             if (bookmark == true) {
                 termQueries.add(
@@ -53,159 +53,6 @@ class RestaurantEsRepository(
                     }
                 )
             }
-        }
-
-        if (!request.categories.isNullOrEmpty()) {
-            termQueries.add(
-                dsl.terms("categories", *request.categories.toTypedArray())
-            )
-        }
-
-        if (request.discountForSkku == true) {
-            termQueries.add(
-                dsl.exists("discount_content")
-            )
-        } else if (request.discountForSkku == false) {
-            termQueries.add(
-                dsl.bool {
-                    mustNot(
-                        dsl.exists("discount_content")
-                    )
-                }
-            )
-        }
-
-        if (request.operationDay != null) {
-            val dayOfWeek = when (request.operationDay) {
-                DayOfWeek.MONDAY -> "월요일"
-                DayOfWeek.TUESDAY -> "화요일"
-                DayOfWeek.WEDNESDAY -> "수요일"
-                DayOfWeek.THURSDAY -> "목요일"
-                DayOfWeek.FRIDAY -> "금요일"
-                DayOfWeek.SATURDAY -> "토요일"
-                DayOfWeek.SUNDAY -> "일요일"
-            }
-
-            termQueries.add(
-                createTimeBasedQuery(
-                    request,
-                    dayOfWeek,
-                    dsl
-                )
-            )
-        }
-
-        if (request.hasWifi != null) {
-            termQueries.add(
-                dsl.match("facility_infos.wifi", if (request.hasWifi) "Y" else "N")
-            )
-        }
-
-        if (request.hasPet != null) {
-            termQueries.add(
-                dsl.match("facility_infos.pet", if (request.hasPet) "Y" else "N")
-            )
-        }
-
-        if (request.hasParking != null) {
-            termQueries.add(
-                dsl.match("facility_infos.parking", if (request.hasParking) "Y" else "N")
-            )
-        }
-
-        if (request.hasNursery != null) {
-            termQueries.add(
-                dsl.match("facility_infos.nursery", if (request.hasNursery) "Y" else "N")
-            )
-        }
-
-        if (request.hasSmokingRoom != null) {
-            termQueries.add(
-                dsl.match("facility_infos.smokingroom", if (request.hasSmokingRoom) "Y" else "N")
-            )
-        }
-
-        if (request.hasDisabledFacility != null) {
-            termQueries.add(
-                dsl.match("facility_infos.fordisabled", if (request.hasDisabledFacility) "Y" else "N")
-            )
-        }
-
-        if (request.hasAppointment != null) {
-            termQueries.add(
-                dsl.match("operation_infos.appointment", if (request.hasAppointment) "Y" else "N")
-            )
-        }
-
-        if (request.hasDelivery != null) {
-            termQueries.add(
-                dsl.match("operation_infos.delivery", if (request.hasDelivery) "Y" else "N")
-            )
-        }
-
-        if (request.hasPackagee != null) {
-            termQueries.add(
-                dsl.match("operation_infos.package", if (request.hasPackagee) "Y" else "N")
-            )
-        }
-
-        if (request.kakaoRatingAvg != null) {
-            termQueries.add(
-                dsl.range("kakao_rating_avg") {
-                    gte = request.kakaoRatingAvg
-                }
-            )
-        }
-
-        if (request.kakaoRatingCount != null) {
-            termQueries.add(
-                dsl.range("kakao_rating_count") {
-                    gte = request.kakaoRatingCount
-                }
-            )
-        }
-
-        if (request.ratingAvg != null) {
-            termQueries.add(
-                dsl.range("rating_avg") {
-                    gte = request.ratingAvg
-                }
-            )
-        }
-        if (request.reviewCount != null) {
-            termQueries.add(
-                dsl.range("review_count") {
-                    gte = request.reviewCount
-                }
-            )
-        }
-        if (request.priceMax != null) {
-            termQueries.add(
-                dsl.nested {
-                    path = "menus"
-                    query = dsl.bool {
-                        filter(
-                            dsl.range("menus.price") {
-                                lte = request.priceMax
-                            }
-                        )
-                    }
-                }
-            )
-        }
-        if (request.priceMin != null) {
-            termQueries.add(
-                dsl.nested {
-                    path = "menus"
-                    query = dsl.bool {
-                        filter(
-                            dsl.range("menus.price") {
-                                gte = request.priceMin
-                            }
-                        )
-                    }
-                }
-            )
         }
 
         val result = runBlocking {
@@ -243,25 +90,23 @@ class RestaurantEsRepository(
                             )
                             minimumShouldMatch(1)
                         }
-                        sort {
-                            when (request.customSort) {
-                                Sort.BASIC -> add("_score", SortOrder.DESC)
-                                Sort.CLOSELY_DESC -> add("_geo_distance", SortOrder.ASC) {
-                                    this["location"] = mapOf(
-                                        "lat" to request.latitude,
-                                        "lon" to request.longitude
-                                    )
-                                    this["unit"] = "m"
-                                    this["mode"] = "min"
-                                    this["distance_type"] = "arc"
-                                }
-                                Sort.RATING_DESC -> add("rating_avg", SortOrder.DESC)
-                                Sort.REVIEW_COUNT_DESC -> add("review_count", SortOrder.DESC)
-                                Sort.BOOKMARK_COUNT_DESC -> add("bookmark_count", SortOrder.DESC)
-                                Sort.ID_ASC -> null
+                    }
+                    sort {
+                        when (request.customSort) {
+                            Sort.BASIC -> add("_score", SortOrder.DESC)
+                            Sort.CLOSELY_DESC -> add("_geo_distance", SortOrder.ASC) {
+                                this["location"] = mapOf(
+                                    "lat" to request.latitude,
+                                    "lon" to request.longitude
+                                )
+                                this["unit"] = "m"
+                                this["mode"] = "min"
+                                this["distance_type"] = "arc"
                             }
-
-                            add("id", SortOrder.ASC)
+                            Sort.RATING_DESC -> add("rating_avg", SortOrder.DESC)
+                            Sort.REVIEW_COUNT_DESC -> add("review_count", SortOrder.DESC)
+                            Sort.BOOKMARK_COUNT_DESC -> add("bookmark_count", SortOrder.DESC)
+                            Sort.ID_ASC -> add("id", SortOrder.ASC)
                         }
                     }
                 },
@@ -370,6 +215,192 @@ class RestaurantEsRepository(
                     )
                 }
             )
+        }
+    }
+
+    fun searchPopularRestaurants(
+        request: GetRestaurantsRequest,
+        pageable: Pageable,
+        restaurantIds: List<Long>
+    ): Pair<List<RestaurantEsDocument>, List<Double>?> {
+        val dsl = SearchDSL()
+        val termQueries = buildCommonRestaurantFilters(request, dsl)
+
+        if (restaurantIds.isNotEmpty()) {
+            termQueries.add(
+                dsl.terms("id", *restaurantIds.map { it.toString() }.toTypedArray())
+            )
+        }
+
+        val result = runBlocking {
+            val res = client.search(
+                target = searchIndex,
+                block = {
+                    query = bool {
+                        filter(termQueries)
+
+                        if (!request.query.isNullOrEmpty()) {
+                            should(
+                                match("name", request.query) {
+                                    boost = 0.1
+                                },
+                                match("categories", request.query) {
+                                    boost = 0.03
+                                }
+                            )
+                            minimumShouldMatch(1)
+                        }
+                    }
+
+                    sort {
+                        when (request.customSort) {
+                            Sort.BASIC -> add("_score", SortOrder.DESC)
+                            Sort.CLOSELY_DESC -> add("_geo_distance", SortOrder.ASC) {
+                                this["location"] = mapOf(
+                                    "lat" to request.latitude,
+                                    "lon" to request.longitude
+                                )
+                                this["unit"] = "m"
+                                this["mode"] = "min"
+                                this["distance_type"] = "arc"
+                            }
+                            Sort.RATING_DESC -> add("rating_avg", SortOrder.DESC)
+                            Sort.REVIEW_COUNT_DESC -> add("review_count", SortOrder.DESC)
+                            Sort.BOOKMARK_COUNT_DESC -> add("bookmark_count", SortOrder.DESC)
+                            Sort.ID_ASC -> add("id", SortOrder.ASC)
+                        }
+                    }
+                },
+                size = pageable.pageSize,
+                from = pageable.offset.toInt(),
+                trackTotalHits = true
+            )
+
+            val nextCursor: List<Double>? = res.hits?.hits?.lastOrNull()?.sort?.mapNotNull { jsonElement ->
+                jsonElement.jsonPrimitive.contentOrNull?.toDouble()
+            }
+
+            Pair(res.parseHits<RestaurantEsDocument>(), nextCursor)
+        }
+
+        return result
+    }
+
+    private fun buildCommonRestaurantFilters(
+        request: GetRestaurantsRequest,
+        dsl: SearchDSL
+    ): MutableList<ESQuery> {
+        val termQueries = mutableListOf<ESQuery>()
+
+        termQueries += buildCategoryFilters(request, dsl)
+        termQueries += buildDiscountFilters(request, dsl)
+        termQueries += buildOperationDayFilter(request, dsl)
+        termQueries += buildFacilityFilters(request, dsl)
+        termQueries += buildOperationInfoFilters(request, dsl)
+        termQueries += buildRatingFilters(request, dsl)
+        termQueries += buildPriceFilters(request, dsl)
+
+        return termQueries
+    }
+
+    private fun buildPriceFilters(request: GetRestaurantsRequest, dsl: SearchDSL): List<ESQuery> {
+        if (request.priceMin == null && request.priceMax == null) return emptyList()
+
+        return listOf(
+            dsl.nested {
+                path = "menus"
+                query = dsl.bool {
+                    val rangeQuery = dsl.range("menus.price") {
+                        request.priceMin?.let { gte = it }
+                        request.priceMax?.let { lte = it }
+                    }
+                    filter(rangeQuery)
+                }
+            }
+        )
+    }
+
+    private fun buildRatingFilters(request: GetRestaurantsRequest, dsl: SearchDSL): List<ESQuery> {
+        val result = mutableListOf<ESQuery>()
+        request.kakaoRatingAvg?.let {
+            result.add(dsl.range("kakao_rating_avg") { gte = it })
+        }
+        request.kakaoRatingCount?.let {
+            result.add(dsl.range("kakao_rating_count") { gte = it })
+        }
+        request.ratingAvg?.let {
+            result.add(dsl.range("rating_avg") { gte = it })
+        }
+        request.reviewCount?.let {
+            result.add(dsl.range("review_count") { gte = it })
+        }
+        return result
+    }
+
+    private fun buildOperationInfoFilters(
+        request: GetRestaurantsRequest,
+        dsl: SearchDSL
+    ): List<ESQuery> {
+        val result = mutableListOf<ESQuery>()
+        addOperationInfoMatch(result, dsl, "appointment", request.hasAppointment)
+        addOperationInfoMatch(result, dsl, "delivery", request.hasDelivery)
+        addOperationInfoMatch(result, dsl, "package", request.hasPackagee)
+        return result
+    }
+
+    private fun buildFacilityFilters(request: GetRestaurantsRequest, dsl: SearchDSL): List<ESQuery> {
+        val result = mutableListOf<ESQuery>()
+        addFacilityMatch(result, dsl, "wifi", request.hasWifi)
+        addFacilityMatch(result, dsl, "pet", request.hasPet)
+        addFacilityMatch(result, dsl, "parking", request.hasParking)
+        addFacilityMatch(result, dsl, "nursery", request.hasNursery)
+        addFacilityMatch(result, dsl, "smokingroom", request.hasSmokingRoom)
+        addFacilityMatch(result, dsl, "fordisabled", request.hasDisabledFacility)
+        return result
+    }
+
+    private fun buildOperationDayFilter(request: GetRestaurantsRequest, dsl: SearchDSL): List<ESQuery> {
+        return request.operationDay?.let {
+            val dayOfWeek = when (it) {
+                DayOfWeek.MONDAY -> "월요일"
+                DayOfWeek.TUESDAY -> "화요일"
+                DayOfWeek.WEDNESDAY -> "수요일"
+                DayOfWeek.THURSDAY -> "목요일"
+                DayOfWeek.FRIDAY -> "금요일"
+                DayOfWeek.SATURDAY -> "토요일"
+                DayOfWeek.SUNDAY -> "일요일"
+            }
+            listOf(createTimeBasedQuery(request, dayOfWeek, dsl))
+        } ?: emptyList()
+    }
+
+    private fun buildCategoryFilters(request: GetRestaurantsRequest, dsl: SearchDSL): List<ESQuery> {
+        return if (!request.categories.isNullOrEmpty()) {
+            listOf(
+                dsl.terms("categories", *request.categories.toTypedArray())
+            )
+        } else {
+            emptyList()
+        }
+    }
+
+    private fun buildDiscountFilters(request: GetRestaurantsRequest, dsl: SearchDSL): List<ESQuery> {
+        return when (request.discountForSkku) {
+            true -> listOf(dsl.exists("discount_content"))
+            false -> listOf(dsl.bool { mustNot(dsl.exists("discount_content")) })
+            else -> emptyList()
+        }
+    }
+
+    private fun addFacilityMatch(termQueries: MutableList<ESQuery>, dsl: SearchDSL, field: String, value: Boolean?) {
+        value?.let {
+            termQueries.add(dsl.match("facility_infos.$field", if (it) "Y" else "N"))
+        }
+    }
+
+    private fun addOperationInfoMatch(termQueries: MutableList<ESQuery>, dsl: SearchDSL, field: String, value: Boolean?) {
+        value?.let {
+            termQueries.add(dsl.match("operation_infos.$field", if (it) "Y" else "N"))
         }
     }
 }

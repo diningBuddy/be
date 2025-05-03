@@ -78,6 +78,9 @@ dependencies {
     // Discord
     implementation("club.minnced:discord-webhooks:0.8.4")
 
+    // mail
+    implementation("org.springframework.boot:spring-boot-starter-mail")
+
     // Kotlin
     val coroutineVersion = "1.7.0"
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:$coroutineVersion")
@@ -105,6 +108,11 @@ dependencies {
 
     // ES
     testImplementation("org.springframework.boot:spring-boot-starter-data-elasticsearch")
+
+    implementation("io.github.cdimascio:dotenv-kotlin:6.4.1")
+    implementation("software.amazon.awssdk:s3:2.20.114")
+
+    implementation("net.coobird:thumbnailator:0.4.14")
 }
 
 allOpen {

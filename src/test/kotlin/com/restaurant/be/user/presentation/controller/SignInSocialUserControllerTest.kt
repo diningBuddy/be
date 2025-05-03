@@ -58,7 +58,9 @@ class SignInSocialUserControllerTest(
             it("카카오 로그인 성공 테스트") {
                 // given
                 val request = SignInSocialUserRequest(
-                    code = "code"
+                    accessToken = "code",
+                    refreshToken = "refreshToken",
+                    tokenType = "tokenType"
                 )
 
                 every { kakaoRepository.getKakaoKey(any()) } returns "kakao_key"
@@ -100,7 +102,9 @@ class SignInSocialUserControllerTest(
             it("카카오 로그인 실패 테스트") {
                 // given
                 val request = SignInSocialUserRequest(
-                    code = "code"
+                    accessToken = "code",
+                    refreshToken = "refreshToken",
+                    tokenType = "tokenType"
                 )
 
                 every { kakaoRepository.getKakaoKey(any()) } returns "kakao_fail_key"

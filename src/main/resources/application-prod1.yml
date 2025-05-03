@@ -2,6 +2,10 @@ server:
   port: 8081
 
 spring:
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 100MB
   application:
     name: be
   datasource:
@@ -32,3 +36,13 @@ spring:
 es:
   host: es-singlenode
   port: 9200
+
+aws:
+  s3:
+    region: ${AWS_S3_REGION:test}
+    bucket: ${AWS_COMPRESSED_BUCKET:test}
+  access-s3-key: ${AWS_ACCESS_S3_KEY:test}
+  secret-s3-key: ${AWS_SECRET_S3_KEY:test}
+  accessKey: ${AWS_ACCESS_KEY:test}
+  secretKey: ${AWS_SECRET_KEY:test}
+  sender-email: ${SENDER_EMAIL:test}

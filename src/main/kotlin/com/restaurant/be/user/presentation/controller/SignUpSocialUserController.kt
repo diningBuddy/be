@@ -8,6 +8,7 @@ import io.swagger.v3.oas.annotations.media.Content
 import io.swagger.v3.oas.annotations.media.Schema
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.tags.Tag
+import jakarta.servlet.http.HttpServletResponse
 import jakarta.validation.Valid
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
@@ -29,9 +30,12 @@ class SignUpSocialUserController(
     )
     fun kakaoSignUp(
         @RequestBody @Valid
-        request: SignUpSocialUserRequest
+        request: SignUpSocialUserRequest,
+        servletResponse: HttpServletResponse
     ): CommonResponse<Unit> {
-        signUpSocialUserService.kakaoSignUp(request)
+        val token = signUpSocialUserService.kakaoSignUp(request)
+        servletResponse.setHeader("Authorization", "Bearer ${token.accessToken}")
+        servletResponse.setHeader("RefreshToken", token.refreshToken)
         return CommonResponse.success("소셜 회원가입 되었습니다.")
     }
 }
