@@ -24,7 +24,7 @@ data class GetAccountResponse(
     @Schema(title = "전화번호", example = "010-1234-1234", required = true)
     val phoneNumber: String,
     @Schema(title = "캠퍼스 인증", example = "SKKU", required = true)
-    val verifiedSchool: School?,
+    val verifiedSchool: School,
 ) {
     constructor(user: User) : this(
         id = user.id ?: 0,
