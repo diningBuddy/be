@@ -37,11 +37,10 @@ class AutoCompleteController(
             return CommonResponse.success(AutoCompleteResponse(emptyList()))
         }
 
-        val suggestions = autoCompleteService.getSuggestions(prefix)
+        val userId = principal?.name?.toLongOrNull()
+        val suggestions = autoCompleteService.getSuggestions(prefix, userId)
 
-        principal?.let {
-            autoCompleteService.recordSearchQuery(prefix, it.name.toLong())
-        }
+
 
         return CommonResponse.success(AutoCompleteResponse(suggestions))
     }
