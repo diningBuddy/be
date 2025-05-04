@@ -7,6 +7,8 @@ import com.restaurant.be.common.exception.NotFoundUserException
 import com.restaurant.be.user.domain.constant.Gender
 import com.restaurant.be.user.domain.constant.School
 import com.restaurant.be.user.presentation.dto.SignUpUserRequest
+import com.restaurant.be.user.presentation.dto.UpdateUserRequest
+import jakarta.persistence.CascadeType
 import jakarta.persistence.Column
 import jakarta.persistence.Convert
 import jakarta.persistence.Entity
@@ -18,10 +20,23 @@ import jakarta.persistence.GenerationType
 import jakarta.persistence.Id
 import jakarta.persistence.OneToMany
 import jakarta.persistence.Table
+import jakarta.persistence.UniqueConstraint
 import java.time.LocalDate
 
 @Entity
-@Table(name = "users")
+@Table(
+    name = "users",
+    uniqueConstraints = [
+        UniqueConstraint(
+            name = "UK_USERS_PHONE_ACTIVE",
+            columnNames = ["phoneNumber", "isDeleted"]
+        ),
+        UniqueConstraint(
+            name = "UK_USERS_NICKNAME_ACTIVE",
+            columnNames = ["nickname", "isDeleted"]
+        )
+    ]
+)
 class User(
     @Id
     @Column
@@ -48,12 +63,15 @@ class User(
     @Column
     @Enumerated(EnumType.STRING)
     var verifiedSchool: School? = null,
-    @OneToMany(mappedBy = "user", fetch = LAZY)
+    @OneToMany(mappedBy = "user", cascade = [CascadeType.REMOVE], fetch = LAZY)
     var socialUsers: MutableList<SocialUser> = mutableListOf()
 ) : BaseEntity() {
     companion object {
-        fun create(request: SignUpUserRequest, nickname: String): User {
-            return User(
+        fun create(
+            request: SignUpUserRequest,
+            nickname: String
+        ): User =
+            User(
                 phoneNumber = request.phoneNumber,
                 nickname = nickname,
                 name = request.name,
@@ -62,15 +80,19 @@ class User(
                 isTermsAgreed = true,
                 roles = listOf("ROLE_USER")
             )
-        }
     }
 
-    fun getId(): Long {
-        return id ?: throw NotFoundUserException()
-    }
+    fun getId(): Long = id ?: throw NotFoundUserException()
 
     fun delete() {
         this.isDeleted = true
+    }
+
+    fun update(req: UpdateUserRequest) {
+        this.nickname = req.nickname
+        this.name = req.name
+        this.profileImageUrl = req.profileImageUrl
+        this.gender = req.gender
     }
 
     fun schoolEmailAuthentication() {
