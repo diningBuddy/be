@@ -22,9 +22,9 @@ class AutoCompleteEsRepository(
         if (prefix.length < MIN_INPUT_LENGTH) return emptyList()
 
         val cleanedPrefix = prefix.lowercase()
-        val chosung = JamoUtils.decomposeToJamo(cleanedPrefix)//자소매핑
-        val mappedHangul = KeyboardMapper.convert(cleanedPrefix)//영한매핑 -> dbf ㅇㅠㄹ 이어서 매핑안됐는데? 자모 유틸로 변환해서 가능하게 바꿈
-        //TODO 1.레디스 저장확인 2. 데이터 es 적재
+        val chosung = JamoUtils.decomposeToJamo(cleanedPrefix) // 자소매핑
+        val mappedHangul = KeyboardMapper.convert(cleanedPrefix) // 영한매핑 -> dbf ㅇㅠㄹ 이어서 매핑안됐는데? 자모 유틸로 변환해서 가능하게 바꿈
+        // TODO 1.레디스 저장확인 2. 데이터 es 적재
 
         return runBlocking {
             val res = client.search(

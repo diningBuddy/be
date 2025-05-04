@@ -40,8 +40,6 @@ class AutoCompleteController(
         val userId = principal?.name?.toLongOrNull()
         val suggestions = autoCompleteService.getSuggestions(prefix, userId)
 
-
-
         return CommonResponse.success(AutoCompleteResponse(suggestions))
     }
 }
