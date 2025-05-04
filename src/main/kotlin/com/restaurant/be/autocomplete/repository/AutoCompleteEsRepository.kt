@@ -3,7 +3,11 @@ package com.restaurant.be.autocomplete.repository
 import com.jillesvangurp.ktsearch.SearchClient
 import com.jillesvangurp.ktsearch.parseHits
 import com.jillesvangurp.ktsearch.search
-import com.jillesvangurp.searchdsls.querydsl.*
+import com.jillesvangurp.searchdsls.querydsl.SortOrder
+import com.jillesvangurp.searchdsls.querydsl.bool
+import com.jillesvangurp.searchdsls.querydsl.match
+import com.jillesvangurp.searchdsls.querydsl.matchPhrasePrefix
+import com.jillesvangurp.searchdsls.querydsl.sort
 import com.restaurant.be.autocomplete.repository.dto.AutoCompleteEsDocument
 import com.restaurant.be.autocomplete.util.JamoUtils
 import com.restaurant.be.autocomplete.util.KeyboardMapper
