@@ -62,7 +62,7 @@ class User(
     var profileImageUrl: String? = null,
     @Column
     @Enumerated(EnumType.STRING)
-    var verifiedSchool: School? = null,
+    var verifiedSchool: School = School.SKKU,
     @OneToMany(mappedBy = "user", cascade = [CascadeType.REMOVE], fetch = LAZY)
     var socialUsers: MutableList<SocialUser> = mutableListOf()
 ) : BaseEntity() {
@@ -78,7 +78,8 @@ class User(
                 birthday = request.birthday,
                 gender = request.gender,
                 isTermsAgreed = true,
-                roles = listOf("ROLE_USER")
+                roles = listOf("ROLE_USER"),
+                verifiedSchool = School.SKKU // 향후 타학교에도 서비스 제공할때 변경
             )
     }
 
