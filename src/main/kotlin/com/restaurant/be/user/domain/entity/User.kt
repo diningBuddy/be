@@ -47,27 +47,28 @@ class User(
     var profileImageUrl: String? = null,
     @Column
     @Enumerated(EnumType.STRING)
-    var verifiedSchool: School? = null,
+    var verifiedSchool: School,
     @OneToMany(mappedBy = "user", fetch = LAZY)
-    var socialUsers: MutableList<SocialUser> = mutableListOf()
+    var socialUsers: MutableList<SocialUser> = mutableListOf(),
 ) : BaseEntity() {
     companion object {
-        fun create(request: SignUpUserRequest, nickname: String): User {
-            return User(
+        fun create(
+            request: SignUpUserRequest,
+            nickname: String,
+        ): User =
+            User(
                 phoneNumber = request.phoneNumber,
                 nickname = nickname,
                 name = request.name,
                 birthday = request.birthday,
                 gender = request.gender,
                 isTermsAgreed = true,
-                roles = listOf("ROLE_USER")
+                roles = listOf("ROLE_USER"),
+                verifiedSchool = School.SKKU, // 향후 타학교에도 서비스 제공할때 변경
             )
-        }
     }
 
-    fun getId(): Long {
-        return id ?: throw NotFoundUserException()
-    }
+    fun getId(): Long = id ?: throw NotFoundUserException()
 
     fun delete() {
         this.isDeleted = true
