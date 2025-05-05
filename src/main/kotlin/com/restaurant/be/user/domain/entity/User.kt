@@ -29,13 +29,13 @@ import java.time.LocalDate
     uniqueConstraints = [
         UniqueConstraint(
             name = "UK_USERS_PHONE_ACTIVE",
-            columnNames = ["phoneNumber", "isDeleted"]
+            columnNames = ["phoneNumber", "isDeleted"],
         ),
         UniqueConstraint(
             name = "UK_USERS_NICKNAME_ACTIVE",
-            columnNames = ["nickname", "isDeleted"]
-        )
-    ]
+            columnNames = ["nickname", "isDeleted"],
+        ),
+    ],
 )
 class User(
     @Id
@@ -62,14 +62,14 @@ class User(
     var profileImageUrl: String? = null,
     @Column
     @Enumerated(EnumType.STRING)
-    var verifiedSchool: School,
+    var verifiedSchool: School = School.SKKU,
     @OneToMany(mappedBy = "user", cascade = [CascadeType.REMOVE], fetch = LAZY)
-    var socialUsers: MutableList<SocialUser> = mutableListOf()
+    var socialUsers: MutableList<SocialUser> = mutableListOf(),
 ) : BaseEntity() {
     companion object {
         fun create(
             request: SignUpUserRequest,
-            nickname: String
+            nickname: String,
         ): User =
             User(
                 phoneNumber = request.phoneNumber,
@@ -79,7 +79,7 @@ class User(
                 gender = request.gender,
                 isTermsAgreed = true,
                 roles = listOf("ROLE_USER"),
-                verifiedSchool = School.SKKU // 향후 타학교에도 서비스 제공할때 변경
+                verifiedSchool = School.SKKU, // 향후 타학교에도 서비스 제공할때 변경
             )
     }
 
