@@ -49,12 +49,12 @@ class User(
     @Enumerated(EnumType.STRING)
     var verifiedSchool: School,
     @OneToMany(mappedBy = "user", fetch = LAZY)
-    var socialUsers: MutableList<SocialUser> = mutableListOf(),
+    var socialUsers: MutableList<SocialUser> = mutableListOf()
 ) : BaseEntity() {
     companion object {
         fun create(
             request: SignUpUserRequest,
-            nickname: String,
+            nickname: String
         ): User =
             User(
                 phoneNumber = request.phoneNumber,
@@ -64,7 +64,7 @@ class User(
                 gender = request.gender,
                 isTermsAgreed = true,
                 roles = listOf("ROLE_USER"),
-                verifiedSchool = School.SKKU, // 향후 타학교에도 서비스 제공할때 변경
+                verifiedSchool = School.SKKU // 향후 타학교에도 서비스 제공할때 변경
             )
     }
 

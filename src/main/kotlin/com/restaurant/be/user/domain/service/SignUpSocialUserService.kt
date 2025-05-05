@@ -19,25 +19,26 @@ class SignUpSocialUserService(
     private val redisRepository: RedisRepository,
     private val tokenProvider: TokenProvider
 ) {
-
     @Transactional
     fun kakaoSignUp(request: SignUpSocialUserRequest): Token {
         val kakaoKey = redisRepository.getSocialKey(request.accessToken)
         socialUserRepository.findBySocialKey(kakaoKey)?.let { throw DuplicateSocialUserException() }
 
-        val user = signUpUserService.createUser(
-            SignUpUserRequest(
-                phoneNumber = request.phoneNumber,
-                name = request.name,
-                birthday = request.birthday,
-                gender = request.gender
+        val user =
+            signUpUserService.createUser(
+                SignUpUserRequest(
+                    phoneNumber = request.phoneNumber,
+                    name = request.name,
+                    birthday = request.birthday,
+                    gender = request.gender
+                )
             )
-        )
 
-        val socialUser = SocialUser.createKakao(
-            user = user,
-            socialKey = kakaoKey
-        )
+        val socialUser =
+            SocialUser.createKakao(
+                user = user,
+                socialKey = kakaoKey
+            )
 
         socialUserRepository.save(socialUser)
 
