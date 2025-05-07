@@ -1,6 +1,6 @@
-package com.restaurant.be.search.repository
+package com.restaurant.be.recent.repository
 
-import com.restaurant.be.search.domain.entity.RecentSearch
+import com.restaurant.be.recent.domain.entity.RecentSearch
 import com.restaurant.be.user.domain.entity.User
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.stereotype.Repository

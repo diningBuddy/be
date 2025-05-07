@@ -1,9 +1,9 @@
 package com.restaurant.be.recent.presentation.controller
 
 import com.restaurant.be.common.response.CommonResponse
+import com.restaurant.be.recent.domain.service.RecentSearchService
 import com.restaurant.be.recent.presentation.dto.DeleteRecentQueriesRequest
 import com.restaurant.be.recent.presentation.dto.RecentQueriesResponse
-import com.restaurant.be.recent.service.RecentQueryService
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.media.Content
 import io.swagger.v3.oas.annotations.media.Schema
@@ -13,7 +13,6 @@ import jakarta.validation.Valid
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 import java.security.Principal
@@ -22,7 +21,7 @@ import java.security.Principal
 @RestController
 @RequestMapping("/v1/recents")
 class RecentQueryController(
-    private val recentQueryService: RecentQueryService
+    private val recentSearchService: RecentSearchService
 ) {
     @GetMapping
     @PreAuthorize("hasRole('USER')")
@@ -33,7 +32,7 @@ class RecentQueryController(
         content = [Content(schema = Schema(implementation = RecentQueriesResponse::class))]
     )
     fun getRecentQueries(principal: Principal): CommonResponse<RecentQueriesResponse> {
-        val response = recentQueryService.getRecentQueries(principal.name.toLong())
+        val response = recentSearchService.getRecentQueries(principal.name.toLong())
         return CommonResponse.success(response)
     }
 
@@ -47,10 +46,10 @@ class RecentQueryController(
     )
     fun deleteRecentQueries(
         principal: Principal,
-        @Valid @RequestBody
+        @Valid
         request: DeleteRecentQueriesRequest
     ): CommonResponse<RecentQueriesResponse> {
-        val response = recentQueryService.deleteRecentQueries(principal.name.toLong(), request)
-        return CommonResponse.success(response)
+//        val response = recentSearchService.deleteRecentQueries(principal.name.toLong(), request)
+        return CommonResponse.success()
     }
 }

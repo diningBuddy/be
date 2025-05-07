@@ -2,6 +2,7 @@ package com.restaurant.be.restaurant.domain.service
 
 import com.restaurant.be.common.exception.NotFoundRestaurantException
 import com.restaurant.be.common.redis.RedisRepository
+import com.restaurant.be.recent.domain.service.RecentSearchService
 import com.restaurant.be.restaurant.domain.entity.kakaoinfo.toResponse
 import com.restaurant.be.restaurant.presentation.controller.dto.GetRestaurantResponse
 import com.restaurant.be.restaurant.presentation.controller.dto.GetRestaurantsRequest
@@ -9,7 +10,6 @@ import com.restaurant.be.restaurant.presentation.controller.dto.GetRestaurantsRe
 import com.restaurant.be.restaurant.repository.RestaurantBookmarkRepository
 import com.restaurant.be.restaurant.repository.RestaurantEsRepository
 import com.restaurant.be.restaurant.repository.RestaurantRepository
-import com.restaurant.be.search.domain.service.RecentSearchService
 import com.restaurant.be.user.domain.service.GetUserService
 import com.restaurant.be.user.repository.UserRepository
 import org.springframework.data.domain.PageImpl

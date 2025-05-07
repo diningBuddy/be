@@ -12,6 +12,8 @@ data class RecentQueriesResponse(
 )
 
 data class RecentQueriesDto(
+    @Schema(description = "최근 검색어 ID")
+    val id: Long,
     @Schema(description = "최근 검색어")
     val query: String
 )

@@ -1,6 +1,7 @@
-package com.restaurant.be.search.domain.entity
+package com.restaurant.be.recent.domain.entity
 
 import com.restaurant.be.common.entity.BaseEntity
+import com.restaurant.be.common.exception.NotFoundRecentSearchException
 import com.restaurant.be.user.domain.entity.User
 import jakarta.persistence.Column
 import jakarta.persistence.ConstraintMode
@@ -36,5 +37,9 @@ class RecentSearch(
                 keyword = keyword,
                 user = user
             )
+    }
+
+    fun getId(): Long {
+        return id ?: throw NotFoundRecentSearchException()
     }
 }
