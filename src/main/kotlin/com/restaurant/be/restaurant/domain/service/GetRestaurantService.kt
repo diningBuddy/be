@@ -9,6 +9,9 @@ import com.restaurant.be.restaurant.presentation.controller.dto.GetRestaurantsRe
 import com.restaurant.be.restaurant.repository.RestaurantBookmarkRepository
 import com.restaurant.be.restaurant.repository.RestaurantEsRepository
 import com.restaurant.be.restaurant.repository.RestaurantRepository
+import com.restaurant.be.search.domain.service.RecentSearchService
+import com.restaurant.be.user.domain.service.GetUserService
+import com.restaurant.be.user.repository.UserRepository
 import org.springframework.data.domain.PageImpl
 import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Service
@@ -19,9 +22,12 @@ class GetRestaurantService(
     private val restaurantEsRepository: RestaurantEsRepository,
     private val redisRepository: RedisRepository,
     private val restaurantRepository: RestaurantRepository,
-    private val restaurantLikeRepository: RestaurantBookmarkRepository
+    private val restaurantLikeRepository: RestaurantBookmarkRepository,
+    private val recentSearchService: RecentSearchService,
+    private val userRepository: UserRepository,
+    private val getUserService: GetUserService
 ) {
-    @Transactional(readOnly = true)
+    @Transactional
     fun getRestaurants(
         request: GetRestaurantsRequest,
         pageable: Pageable,
@@ -44,10 +50,6 @@ class GetRestaurantService(
                 request.bookmark
             )
 
-        if (!request.query.isNullOrEmpty()) {
-            redisRepository.addSearchQuery(userId, request.query)
-        }
-
         val restaurantProjections =
             restaurantRepository.findDtoByIds(
                 restaurants.map { it.id },
@@ -65,6 +67,13 @@ class GetRestaurantService(
                 dto.operationTimes = esOperationTimes.map { it.toResponse() }
             }
             dto
+        }
+
+        if (!request.query.isNullOrEmpty() && sortedRestaurantProjections.isNotEmpty()) {
+            userRepository.findById(userId)
+                .ifPresent { user ->
+                    recentSearchService.saveRecentSearch(user, request.query)
+                }
         }
 
         return GetRestaurantsResponse(
