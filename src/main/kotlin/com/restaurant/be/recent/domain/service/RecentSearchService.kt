@@ -1,7 +1,9 @@
 package com.restaurant.be.recent.domain.service
 
 import com.restaurant.be.common.exception.NotFoundUserException
+import com.restaurant.be.common.exception.UnAuthorizedDeleteRecentSearchException
 import com.restaurant.be.recent.domain.entity.RecentSearch
+import com.restaurant.be.recent.presentation.dto.DeleteRecentQueriesRequest
 import com.restaurant.be.recent.presentation.dto.RecentQueriesDto
 import com.restaurant.be.recent.presentation.dto.RecentQueriesResponse
 import com.restaurant.be.recent.repository.RecentSearchRepository
@@ -35,5 +37,17 @@ class RecentSearchService(
         val user = userRepository.findById(userId).orElseThrow { NotFoundUserException() }
         val queries = recentSearchRepository.findAllByUserOrderByCreatedAt(user)
         return RecentQueriesResponse(recentQueries = queries.map { RecentQueriesDto(it.getId(), it.keyword) })
+    }
+
+    @Transactional
+    fun deleteRecentQueries(userId: Long, request: DeleteRecentQueriesRequest) {
+        val user = userRepository.findById(userId).orElseThrow { NotFoundUserException() }
+        val deleteList = recentSearchRepository.findAllById(request.deleteRecentIdList)
+        deleteList.forEach {
+            if (it.user.id != user.id) {
+                throw UnAuthorizedDeleteRecentSearchException()
+            }
+        }
+        recentSearchRepository.deleteAll(deleteList)
     }
 }

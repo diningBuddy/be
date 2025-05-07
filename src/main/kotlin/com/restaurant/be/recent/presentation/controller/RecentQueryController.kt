@@ -48,8 +48,8 @@ class RecentQueryController(
         principal: Principal,
         @Valid
         request: DeleteRecentQueriesRequest
-    ): CommonResponse<RecentQueriesResponse> {
-//        val response = recentSearchService.deleteRecentQueries(principal.name.toLong(), request)
+    ): CommonResponse<Unit> {
+        recentSearchService.deleteRecentQueries(principal.name.toLong(), request)
         return CommonResponse.success()
     }
 }
