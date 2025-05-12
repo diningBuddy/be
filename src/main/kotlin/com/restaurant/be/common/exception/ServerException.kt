@@ -57,6 +57,10 @@ data class NotFoundUserException(
     override val message: String = "존재 하지 않는 유저 입니다."
 ) : ServerException(400, message)
 
+data class NotFoundRecentSearchException(
+    override val message: String = "존재 하지 않는 최근 검색어 입니다."
+) : ServerException(400, message)
+
 data class NotFoundReviewException(
     override val message: String = "존재하지 않은 리뷰 입니다."
 ) : ServerException(400, message)
@@ -67,6 +71,10 @@ data class UnAuthorizedUpdateException(
 
 data class UnAuthorizedDeleteException(
     override val message: String = "해당 게시글을 삭제할 권한이 없습니다."
+) : ServerException(401, message)
+
+data class UnAuthorizedDeleteRecentSearchException(
+    override val message: String = "해당 최근 검색어를 삭제할 권한이 없습니다."
 ) : ServerException(401, message)
 
 data class DuplicateLikeException(
