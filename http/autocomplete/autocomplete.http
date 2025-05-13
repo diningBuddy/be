@@ -1,0 +1,5 @@
+### 자동완성 API 테스트
+GET {{host}}/v1/autocomplete?prefix=dbf
+Content-Type: application/json
+Authorization: {{auth_token}}
+
