@@ -24,17 +24,19 @@ class InquiryController(
     private val inquiryService: InquiryService
 ) {
     @PostMapping(consumes = [MediaType.MULTIPART_FORM_DATA_VALUE])
-    @Operation(summary = "문의하기 API")
+    @Operation(
+        summary = "문의하기 API",
+        description = "문의 정보와 함께 이미지 파일을 업로드할 수 있습니다."
+    )
     @ApiResponse(
         responseCode = "200",
         description = "성공",
         content = [Content(schema = Schema(implementation = CreateInquiryResponse::class))]
     )
     fun createInquiry(
-        @RequestPart request: CreateInquiryRequest,
-        @RequestPart(value = "image", required = false) image: MultipartFile?
+        @ModelAttribute request: CreateInquiryRequest
     ): CommonResponse<CreateInquiryResponse> {
-        val response = inquiryService.createInquiry(request, image)
+        val response = inquiryService.createInquiry(request, request.image)
         return CommonResponse.success(response)
     }
 }
