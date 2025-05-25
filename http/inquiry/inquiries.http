@@ -1,0 +1,27 @@
+### 문의 등록 (Create Inquiry)
+POST {{host}}/v1/inquiries
+Authorization: {{auth_token}}
+Content-Type: multipart/form-data; boundary=boundary
+
+--boundary
+Content-Disposition: form-data; name="email"
+
+user@example.com
+--boundary
+Content-Disposition: form-data; name="title"
+
+문의 제목
+--boundary
+Content-Disposition: form-data; name="content"
+
+문의 내용
+--boundary
+Content-Disposition: form-data; name="category"
+
+MEMBER
+--boundary
+Content-Disposition: form-data; name="image"; filename="image.jpg"
+Content-Type: image/jpeg
+
+< ../s3/test-images/image1.jpg
+--boundary--

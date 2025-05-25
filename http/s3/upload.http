@@ -1,5 +1,5 @@
-### ⚡ 비동기 업로드 테스트 (코루틴)
-POST {{host}}/v1/upload-image/async
+### 비동기 업로드 테스트 (코루틴)
+POST {{host}}/v1/upload-image
 Content-Type: multipart/form-data; boundary=boundary
 Authorization: {{auth_token}}
 
