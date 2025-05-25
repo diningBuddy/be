@@ -1,10 +1,9 @@
 package com.restaurant.be.inquiry.presentation.controller.dto
 
+import com.fasterxml.jackson.annotation.JsonIgnore
 import com.restaurant.be.inquiry.domain.entity.InquiryCategory
 import io.swagger.v3.oas.annotations.media.Schema
 import org.springframework.web.multipart.MultipartFile
-
-import com.fasterxml.jackson.annotation.JsonIgnore
 
 data class CreateInquiryRequest(
     @Schema(description = "이메일", example = "user@example.com")
