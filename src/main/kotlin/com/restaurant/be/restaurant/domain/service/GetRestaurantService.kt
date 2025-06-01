@@ -10,6 +10,7 @@ import com.restaurant.be.restaurant.presentation.controller.dto.GetRestaurantsRe
 import com.restaurant.be.restaurant.repository.RestaurantBookmarkRepository
 import com.restaurant.be.restaurant.repository.RestaurantEsRepository
 import com.restaurant.be.restaurant.repository.RestaurantRepository
+import com.restaurant.be.searchhistory.domain.service.SearchHistoryService
 import com.restaurant.be.user.domain.service.GetUserService
 import com.restaurant.be.user.repository.UserRepository
 import org.springframework.data.domain.PageImpl
@@ -25,7 +26,8 @@ class GetRestaurantService(
     private val restaurantLikeRepository: RestaurantBookmarkRepository,
     private val recentSearchService: RecentSearchService,
     private val userRepository: UserRepository,
-    private val getUserService: GetUserService
+    private val getUserService: GetUserService,
+    private val searchHistoryService: SearchHistoryService
 ) {
     @Transactional
     fun getRestaurants(
@@ -74,6 +76,7 @@ class GetRestaurantService(
                 .ifPresent { user ->
                     recentSearchService.saveRecentSearch(user, request.query)
                 }
+            searchHistoryService.saveSearchHistory(request.query)
         }
 
         return GetRestaurantsResponse(
