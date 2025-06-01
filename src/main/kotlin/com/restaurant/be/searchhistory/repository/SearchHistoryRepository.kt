@@ -7,4 +7,5 @@ import org.springframework.stereotype.Repository
 @Repository
 interface SearchHistoryRepository : JpaRepository<SearchHistory, Long> {
     fun findByKeyword(content: String): SearchHistory?
+    fun findTop8ByOrderByCountDesc(): List<SearchHistory>
 }
