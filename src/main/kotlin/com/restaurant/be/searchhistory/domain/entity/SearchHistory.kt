@@ -19,12 +19,12 @@ class SearchHistory(
     var keyword: String,
 
     @Column
-    var count: Long = 1,
+    var count: Long = 1
 
-    ) : BaseEntity() {
+) : BaseEntity() {
     companion object {
         fun create(
-            keyword: String,
+            keyword: String
         ): SearchHistory =
             SearchHistory(
                 keyword = keyword
